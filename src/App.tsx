@@ -91,7 +91,7 @@ function App() {
               <div className="aspect-[9/16] w-full max-w-[360px] mx-auto">
                 <iframe 
                     className="w-full h-full rounded-lg shadow-lg"
-                    src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ"
+                    src="https://youtube.com/embed/nGSuU-unq1E"
                     title="Test Video"
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
