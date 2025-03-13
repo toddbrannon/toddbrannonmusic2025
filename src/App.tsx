@@ -56,32 +56,7 @@ function App() {
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-light mb-12">Featured Work</h2>
           
-          {/* Live Performances */}
-          <div className="mb-16">
-            <h3 className="text-2xl font-light mb-8">Live Performances</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="aspect-video">
-                <iframe 
-                  className="w-full h-full rounded-lg shadow-lg"
-                  src="https://www.youtube.com/embed/HJlMHuzPDKY"
-                  title="All I Can Say - Valley Creek Worship"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
-              </div>
-              <div className="aspect-video">
-                <iframe 
-                  className="w-full h-full rounded-lg shadow-lg"
-                  src="https://www.youtube.com/embed/M5SHz--FuVg"
-                  title="This Is Love - Valley Creek Worship"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
-              </div>
-            </div>
-          </div>
+          
 
           {/* YouTube Shorts */}
           <div className="mb-16">
@@ -137,6 +112,33 @@ function App() {
                   className="w-full h-full rounded-lg shadow-lg"
                   src="https://www.youtube.com/embed/YEt4bJQQ0Dc"
                   title="Performance Short 5"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            </div>
+          </div>
+
+          {/* Live Performances */}
+          <div className="mb-16">
+            <h3 className="text-2xl font-light mb-8">Live Performances</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="aspect-video">
+                <iframe 
+                  className="w-full h-full rounded-lg shadow-lg"
+                  src="https://www.youtube.com/embed/HJlMHuzPDKY"
+                  title="All I Can Say - Valley Creek Worship"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
+              <div className="aspect-video">
+                <iframe 
+                  className="w-full h-full rounded-lg shadow-lg"
+                  src="https://www.youtube.com/embed/M5SHz--FuVg"
+                  title="This Is Love - Valley Creek Worship"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
