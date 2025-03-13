@@ -2,6 +2,34 @@ import React from 'react';
 import { Menu, ArrowDown, Github, Instagram, Youtube } from 'lucide-react';
 
 function App() {
+
+  const albums = [
+    {
+      title: "The Master's Plan (2023 Stirred Up Version)",
+      artist: 'The Shake',
+      image: '/albums/masters-plan-2023.jpg',
+      year: '2023',
+    },
+    {
+      title: '26',
+      artist: 'HIAUTMSKI',
+      image: 'albums/hiautmski-26.jpg',
+      year: '2023',
+    },
+    {
+      title: 'Excellent Way (The Revival Beat Remix)',
+      artist: 'The Shake',
+      image: 'albums/excellent-way-remix.jpg',
+      year: '2023',
+    },
+    {
+      title: 'In This Chaos',
+      artist: 'The Shake',
+      image: 'albums/in-this-chaos.jpg',
+      year: '1999',
+    },
+  ];
+
   return (
     <div className="relative">
       {/* Hero Section */}
@@ -144,6 +172,34 @@ function App() {
                   allowFullScreen
                 ></iframe>
               </div>
+            </div>
+          </div>
+
+          {/* Studio Productions */}
+          <div className="mb-16">
+            <h3 className="text-2xl font-light mb-8">Studio Productions</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {albums.map((album, index) => (
+                <div
+                  key={index}
+                  className="group relative aspect-square overflow-hidden rounded-lg shadow-lg"
+                >
+                  <img
+                    src={album.image}
+                    alt={`${album.title} by ${album.artist}`}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-white opacity-0 bg-[#2F4F4F]/80 transition-opacity group-hover:opacity-100 p-4 text-center">
+                    <span className="text-xl font-light mb-2">
+                      {album.title}
+                    </span>
+                    <span className="text-sm font-light mb-1">
+                      {album.artist}
+                    </span>
+                    <span className="text-sm font-light">{album.year}</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
