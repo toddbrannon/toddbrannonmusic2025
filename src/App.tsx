@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import heroImage from './assets/todd-hero.jpg'; // ✅ This imports a string URL
+import heroImage from './assets/RivoltaLive.jpg'; // ✅ This imports a string URL
 import mastersPlanImg from './assets/albums/MastersPlanStirredCover.jpg';
 import twentySixImg from './assets/albums/HIAUTMSKI_26_Cover.jpg';
 import exWayImg from './assets/albums/TheShakeExWayCover.jpg';
@@ -14,7 +14,7 @@ interface VideoPlayer {
   id: string;
 }
 
-function App() {
+function App() {``
   const [players, setPlayers] = useState<VideoPlayer[]>([]);
   const [apiReady, setApiReady] = useState(false);
   const currentPlayerRef = useRef<YT.Player | null>(null);
@@ -134,7 +134,7 @@ function App() {
         </nav>
         <div className="absolute inset-0 flex flex-col justify-center items-center text-white z-10">
           <h1 className="text-6xl md:text-8xl font-light mb-6">Todd Brannon</h1>
-          <p className="text-xl md:text-2xl font-light mb-4">Guitarist • Songwriter • Producer • Instructor</p>
+          <p className="text-xl md:text-2xl font-light mb-4">Guitarist • Songwriter • Engineer • Producer • Instructor</p>
           <ArrowDown className="w-8 h-8 animate-bounce mt-12" />
         </div>
       </div>
@@ -225,7 +225,7 @@ function App() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="group relative aspect-[4/3] overflow-hidden bg-gray-200">
               <div className="absolute inset-0 flex flex-col items-center justify-center text-white opacity-0 bg-[#2F4F4F]/80 transition-opacity group-hover:opacity-100">
                 <span className="text-xl font-light mb-2">Studio Productions</span>
@@ -238,7 +238,7 @@ function App() {
                 <span className="text-sm font-light">Teaching Portfolio</span>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
 
@@ -247,7 +247,7 @@ function App() {
           <h2 className="text-4xl md:text-5xl font-light mb-12">Services</h2>
           <div className="space-y-12">
             <div>
-              <h3 className="text-2xl font-light mb-4">Music Production</h3>
+              <h3 className="text-2xl font-light mb-4">Studio Engineering & Music Production</h3>
               <p className="text-lg font-light leading-relaxed">
                 Full-service studio production, from pre-production planning through final mastering. Specializing in guitar-driven genres and acoustic arrangements.
               </p>
@@ -275,14 +275,27 @@ function App() {
             Available for production, session work, and private instruction. Let's create something extraordinary together.
           </p>
           <div className="flex justify-center space-x-8">
-            <a href="https://www.youtube.com/CHANNEL_ID" target="_blank" rel="noopener noreferrer">
+            {/* <a href="https://www.youtube.com/CHANNEL_ID" target="_blank" rel="noopener noreferrer">
               <Youtube className="w-6 h-6 cursor-pointer hover:text-[#2F4F4F] transition-colors" />
+            </a> */}
+            <a
+              href="https://www.instagram.com/todd_brannon_music"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-2 text-[#E1306C] hover:text-[#C13584] transition-colors"
+            >
+              <Instagram className="w-6 h-6 cursor-pointer" />
+              <span>todd_brannon_music</span>
             </a>
-            <a href="https://www.instagram.com/todd_brannon_music" target="_blank" rel="noopener noreferrer">
-              <Instagram className="w-6 h-6 cursor-pointer hover:text-[#2F4F4F] transition-colors" />
-            </a>
-            <a href="https://www.instagram.com/the_shake_band" target="_blank" rel="noopener noreferrer">
-              <Instagram className="w-6 h-6 cursor-pointer hover:text-[#2F4F4F] transition-colors" />
+
+            <a
+              href="https://www.instagram.com/the_shake_band"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-2 text-[#E1306C] hover:text-[#C13584] transition-colors"
+            >
+              <Instagram className="w-6 h-6 cursor-pointer" />
+              <span>the_shake_band</span>
             </a>
           </div>
         </div>
