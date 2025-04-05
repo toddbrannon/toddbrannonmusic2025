@@ -134,7 +134,7 @@ function App() {``
         </nav>
         <div className="absolute inset-0 flex flex-col justify-center items-center text-white z-10">
           <h1 className="text-6xl md:text-8xl font-light mb-6">Todd Brannon</h1>
-          <p className="text-xl md:text-2xl font-light mb-4">Guitarist • Songwriter • Engineer • Producer • Instructor</p>
+{/*           <p className="text-xl md:text-2xl font-light mb-4">Guitarist • Songwriter • Engineer • Producer • Instructor</p> */}
           <ArrowDown className="w-8 h-8 animate-bounce mt-12" />
         </div>
       </div>
