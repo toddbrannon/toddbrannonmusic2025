@@ -130,11 +130,15 @@ function App() {``
           <img src={heroImage} alt="Hero Background" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gray-900 opacity-75"></div>
         </div>
+        {/* <nav className="absolute top-0 w-full p-6 flex justify-between items-center z-10">
+          <img src={brandLogo} alt="TBM Brand Logo" className="h-8 md:h-10 object-contain" /> */}
+          {/* <span className="text-white text-2xl font-light">TB</span> */}
+          {/* <Menu className="text-white w-6 h-6 cursor-pointer" />
+        </nav> */}
         <nav className="absolute top-0 w-full p-6 flex justify-between items-center z-10">
           <img src={brandLogo} alt="TBM Brand Logo" className="h-8 md:h-10 object-contain" />
-          {/* <span className="text-white text-2xl font-light">TB</span> */}
-          <Menu className="text-white w-6 h-6 cursor-pointer" />
         </nav>
+
         <div className="absolute inset-0 flex flex-col justify-center items-center text-white z-10">
           {/* <h1 className="text-6xl md:text-8xl font-light mb-6">Todd Brannon</h1> */}
           <img src={logo} alt="TB Music Logo" className="h-[350px] md:h-[400px] lg:h-[600px] xl:h-[700px] mb-6 object-contain opacity-70" />
