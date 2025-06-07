@@ -152,9 +152,7 @@ function App() {``
           <h2 className="text-4xl md:text-5xl font-light mb-12">About</h2>
           <div className="space-y-8">
             <p className="text-lg md:text-xl font-light leading-relaxed">
-              With over two decades of experience in music production and performance, I've dedicated my life to crafting authentic sounds and helping others discover their musical voice. Currently, I teach guitar at two local studios serving the Lewisville and Flower Mound, Texas areas, specializing in beginner to intermediate instruction with a focus on rock, pop, and worship music.
-            </p>
-            <p className="text-lg md:text-xl font-light leading-relaxed">
+              With over two decades of experience in music production and performance, I've dedicated my life to crafting authentic sounds and helping others discover their musical voice.
               My musical roots run deep — the son of a southern gospel singer, I was placed in piano lessons at a young age, training steadily until I was 14. That early foundation shaped my ear for melody and harmony and continues to influence my work today.
             </p>
             <p className="text-lg md:text-xl font-light leading-relaxed">
@@ -164,7 +162,7 @@ function App() {``
               Recent projects include instrumental compositions released on major streaming platforms (Spotify, Apple Music, YouTube) under the HIAUTMSKI moniker. I've also produced and released remixes of two classic Shake songs from "In This Chaos," while also releasing the complete original album on streaming platforms for a new generation to discover.
             </p>
             <p className="text-lg md:text-xl font-light leading-relaxed">
-              As an instructor, I focus on developing each student's unique style while building a strong foundation in music theory and technique. I'm always open to inquiries from potential new students, offering personalized guidance to help them achieve their musical goals.
+              I also teach guitar at two local studios serving the Lewisville and Flower Mound, Texas areas five days per week, specializing in beginner to intermediate instruction with a focus on rock, pop, and worship music. As an instructor, I focus on developing each student's unique style while building a strong foundation in music theory and technique. I'm always open to inquiries from potential new students, offering personalized guidance to help them achieve their musical goals.
             </p>
           </div>
         </div>
