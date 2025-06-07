@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import heroImage from './assets/RivoltaLive.jpg'; // ✅ This imports a string URL
+import logo from './assets/tb_music_logo_1400.png';
+import brandLogo from './assets/tbm_brand.png';
 import mastersPlanImg from './assets/albums/MastersPlanStirredCover.jpg';
 import twentySixImg from './assets/albums/HIAUTMSKI_26_Cover.jpg';
 import exWayImg from './assets/albums/TheShakeExWayCover.jpg';
@@ -126,36 +128,36 @@ function App() {``
       <div className="relative h-screen">
         <div className="absolute inset-0">
           <img src={heroImage} alt="Hero Background" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-[#2F4F4F] opacity-75"></div>
+          <div className="absolute inset-0 bg-gray-900 opacity-75"></div>
         </div>
         <nav className="absolute top-0 w-full p-6 flex justify-between items-center z-10">
-          <span className="text-white text-2xl font-light">TB</span>
+          <img src={brandLogo} alt="TBM Brand Logo" className="h-8 md:h-10 object-contain" />
+          {/* <span className="text-white text-2xl font-light">TB</span> */}
           <Menu className="text-white w-6 h-6 cursor-pointer" />
         </nav>
         <div className="absolute inset-0 flex flex-col justify-center items-center text-white z-10">
-          <h1 className="text-6xl md:text-8xl font-light mb-6">Todd Brannon</h1>
+          {/* <h1 className="text-6xl md:text-8xl font-light mb-6">Todd Brannon</h1> */}
+          <img src={logo} alt="TB Music Logo" className="h-[350px] md:h-[400px] lg:h-[600px] xl:h-[700px] mb-6 object-contain opacity-70" />
 {/*           <p className="text-xl md:text-2xl font-light mb-4">Guitarist • Songwriter • Engineer • Producer • Instructor</p> */}
           <ArrowDown className="w-8 h-8 animate-bounce mt-12" />
         </div>
       </div>
 
-      <section className="py-24 px-6 md:px-24 bg-white">
+      <section className="py-24 px-6 md:px-24 bg-gray-900 text-gray-100">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-light mb-12">About</h2>
           <div className="space-y-8">
             <p className="text-lg md:text-xl font-light leading-relaxed">
-              With over two decades of experience in music production and performance, I've dedicated my life to crafting authentic sounds and helping others discover their musical voice. Currently, I teach guitar at two local studios serving the Lewisville and Flower Mound, Texas areas five days per week, specializing in beginner to intermediate instruction with a focus on rock, pop, and worship music.
+              With over two decades of experience in music production and performance, I've dedicated my life to crafting authentic sounds and helping others discover their musical voice. Currently, I teach guitar at two local studios serving the Lewisville and Flower Mound, Texas areas, specializing in beginner to intermediate instruction with a focus on rock, pop, and worship music.
             </p>
             <p className="text-lg md:text-xl font-light leading-relaxed">
-              My musical journey began in 1996 
-              when I formed The Shake with my cousin and two friends. We recorded multiple projects, including a 
-              3-song EP (1998), a full-length album "In This Chaos" (1999), and additional unreleased tracks in 
-              Nashville (2001). During our five years together, we performed extensively throughout the Dallas-Fort Worth 
-              area and beyond. Since 2013, I've been an active member of the worship team at Valley Creek Church in Flower Mound, 
-              contributing to three live worship albums (2015, 2023, and 2024).
+              My musical roots run deep — the son of a southern gospel singer, I was placed in piano lessons at a young age, training steadily until I was 14. That early foundation shaped my ear for melody and harmony and continues to influence my work today.
             </p>
             <p className="text-lg md:text-xl font-light leading-relaxed">
-              Recent projects include instrumental compositions released on major streaming platforms (Spotify, Apple Music, YouTube) under the HIAUTMSKI moniker. I've also produced and released remixes of two classic Shake songs from "In This Chaos," alongside making the complete original album available on streaming platforms for a new generation to discover.
+              My musical journey continued in 1996 when I formed The Shake with my cousin and two friends. We recorded multiple projects, including a 3-song EP (1998), a full-length album "In This Chaos" (1999), and additional unreleased tracks in Nashville (2001). During our five years together, we performed extensively throughout the Dallas-Fort Worth area and beyond. Since 2013, I've served on the worship team at Valley Creek Church in Flower Mound, contributing to three live worship albums (2015, 2023, and 2024).
+            </p>
+            <p className="text-lg md:text-xl font-light leading-relaxed">
+              Recent projects include instrumental compositions released on major streaming platforms (Spotify, Apple Music, YouTube) under the HIAUTMSKI moniker. I've also produced and released remixes of two classic Shake songs from "In This Chaos," while also releasing the complete original album on streaming platforms for a new generation to discover.
             </p>
             <p className="text-lg md:text-xl font-light leading-relaxed">
               As an instructor, I focus on developing each student's unique style while building a strong foundation in music theory and technique. I'm always open to inquiries from potential new students, offering personalized guidance to help them achieve their musical goals.
@@ -164,7 +166,8 @@ function App() {``
         </div>
       </section>
 
-      <section className="py-24 px-6 md:px-24 bg-gray-50">
+
+      <section className="py-24 px-6 md:px-24 bg-gray-300">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-light mb-12">Featured Work</h2>
 
@@ -242,7 +245,7 @@ function App() {``
         </div>
       </section>
 
-      <section className="py-24 px-6 md:px-24 bg-white">
+      <section className="py-24 px-6 md:px-24 bg-gray-900 text-gray-100">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-light mb-12">Services</h2>
           <div className="space-y-12">
@@ -268,7 +271,7 @@ function App() {``
         </div>
       </section>
 
-      <section className="py-24 px-6 md:px-24 bg-gray-50">
+      <section className="py-24 px-6 md:px-24 bg-gray-250">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-light mb-12">Get in Touch</h2>
           <p className="text-lg md:text-xl font-light mb-12">
@@ -301,11 +304,12 @@ function App() {``
         </div>
       </section>
 
-      <footer className="py-6 px-6 md:px-24 bg-white border-t border-gray-100">
-        <div className="max-w-6xl mx-auto text-center text-sm text-gray-500">
+      <footer className="py-6 px-6 md:px-24 bg-gray-900 border-t border-gray-800">
+        <div className="max-w-6xl mx-auto text-center text-sm text-white/80">
           © {new Date().getFullYear()} Todd Brannon. All rights reserved.
         </div>
       </footer>
+
     </div>
   );
 }
