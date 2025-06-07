@@ -162,7 +162,7 @@ function App() {``
               Recent projects include instrumental compositions released on major streaming platforms (Spotify, Apple Music, YouTube) under the HIAUTMSKI moniker. I've also produced and released remixes of two classic Shake songs from "In This Chaos," while also releasing the complete original album on streaming platforms for a new generation to discover.
             </p>
             <p className="text-lg md:text-xl font-light leading-relaxed">
-              I also teach guitar at two local studios serving the Lewisville and Flower Mound, Texas areas five days per week, specializing in beginner to intermediate instruction with a focus on rock, pop, and worship music. As an instructor, I focus on developing each student's unique style while building a strong foundation in music theory and technique. I'm always open to inquiries from potential new students, offering personalized guidance to help them achieve their musical goals.
+              I also teach guitar at two local studios serving the north Dallas Fort Worth and Denton areas specializing in beginner to intermediate instruction with a focus on rock, pop, and worship music. As an instructor, I focus on developing each student's unique style while building a strong foundation in music theory and technique. I'm always open to inquiries from potential new students, offering personalized guidance to help them achieve their musical goals.
             </p>
           </div>
         </div>
