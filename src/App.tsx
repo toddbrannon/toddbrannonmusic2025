@@ -13,7 +13,7 @@ import thumbM5SHzFuVg from './assets/thumbnails/M5SHz--FuVg.png';
 import thumbGusVP from './assets/thumbnails/gusVP-y0vfE.png';
 import thumbJK0Pg from './assets/thumbnails/jK0PgX6k6k8.png';
 
-import { SiSpotify, SiApplemusic, SiYoutubemusic, SiSoundcloud, SiBandcamp } from 'react-icons/si';
+import { SiSpotify, SiApplemusic, SiYoutubemusic, SiSoundcloud, SiBandcamp, SiYoutube } from 'react-icons/si';
 import { ArrowDown, Instagram } from 'lucide-react';
 
 interface VideoPlayer {
@@ -270,7 +270,7 @@ function App() {
           <p className="text-lg md:text-xl font-light mb-12">
             Available for production, session work, and private instruction. Let's create something extraordinary together.
           </p>
-          <div className="flex justify-center space-x-8">
+          <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
             {/* <a href="https://www.youtube.com/CHANNEL_ID" target="_blank" rel="noopener noreferrer">
               <Youtube className="w-6 h-6 cursor-pointer hover:text-[#2F4F4F] transition-colors" />
             </a> */}
@@ -281,10 +281,42 @@ function App() {
               className="flex items-center space-x-2 text-[#E1306C] hover:text-[#C13584] transition-colors"
             >
               <Instagram className="w-6 h-6 cursor-pointer" />
-              <span>todd_brannon_music</span>
+              <span>Instagram</span>
             </a>
 
             <a
+              href="https://youtube.com/@toddbrannonmusic?si=H3_Ao1IBbC_OuXO3"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-2 text-[#FF0000] hover:text-[#CC0000] transition-colors"
+            >
+              <SiYoutube className="w-6 h-6 cursor-pointer" />
+              <span>YouTube</span>
+            </a>
+
+            <a
+              href="https://toddbrannon.bandcamp.com/track/deep-calls-to-deep-demo"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-2 text-[#629AA9] hover:text-[#517e8d] transition-colors"
+            >
+              <SiBandcamp className="w-6 h-6 cursor-pointer" />
+              <span>Bandcamp</span>
+            </a>
+
+            <a
+              href="https://soundcloud.com/todd-437268405"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-2 text-[#FF5500] hover:text-[#e94f00] transition-colors"
+            >
+              <SiSoundcloud className="w-6 h-6 cursor-pointer" />
+              <span>SoundCloud</span>
+            </a>
+            
+            
+
+            {/* <a
               href="https://www.instagram.com/the_shake_band"
               target="_blank"
               rel="noopener noreferrer"
@@ -292,7 +324,7 @@ function App() {
             >
               <Instagram className="w-6 h-6 cursor-pointer" />
               <span>the_shake_band</span>
-            </a>
+            </a> */}
           </div>
         </div>
       </section>
