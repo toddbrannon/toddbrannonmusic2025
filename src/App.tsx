@@ -144,11 +144,20 @@ function App() {
       <section className="py-24 px-6 md:px-24 bg-gray-900 text-gray-100">
         <div className="max-w-3xl mx-auto space-y-8">
           <h2 className="text-4xl md:text-5xl font-light mb-12">About</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed">With over two decades of experience...</p>
-          <p className="text-lg md:text-xl font-light leading-relaxed">My musical journey continued in 1996...</p>
-          <p className="text-lg md:text-xl font-light leading-relaxed">Recent projects include instrumental compositions...</p>
-          <p className="text-lg md:text-xl font-light leading-relaxed">I also teach guitar at two local studios...</p>
-        </div>
+          <p className="text-lg md:text-xl font-light leading-relaxed">
+              With over two decades of experience in music production and performance, I've dedicated my life to crafting authentic sounds and helping others discover their musical voice.
+              My musical roots run deep — the son of a southern gospel singer, I was placed in piano lessons at a young age, training steadily until I was 14. That early foundation shaped my ear for melody and harmony and continues to influence my work today.
+            </p>
+            <p className="text-lg md:text-xl font-light leading-relaxed">
+              My musical journey continued in 1996 when I formed The Shake with my cousin and two friends. We recorded multiple projects, including a 3-song EP (1998), a full-length album "In This Chaos" (1999), and additional unreleased tracks in Nashville (2001). During our five years together, we performed extensively throughout the Dallas-Fort Worth area and beyond. Since 2013, I've served on the worship team at Valley Creek Church in Flower Mound, contributing to three live worship albums (2015, 2023, and 2024).
+            </p>
+            <p className="text-lg md:text-xl font-light leading-relaxed">
+              Recent projects include instrumental compositions released on major streaming platforms (Spotify, Apple Music, YouTube) under the HIAUTMSKI moniker. I've also produced and released remixes of two classic Shake songs from "In This Chaos," while also releasing the complete original album on streaming platforms for a new generation to discover.
+            </p>
+            <p className="text-lg md:text-xl font-light leading-relaxed">
+              I also teach guitar at two local studios serving the north Dallas Fort Worth and Denton areas specializing in beginner to intermediate instruction with a focus on rock, pop, and worship music. As an instructor, I focus on developing each student's unique style while building a strong foundation in music theory and technique. I'm always open to inquiries from potential new students, offering personalized guidance to help them achieve their musical goals.
+            </p>
+          </div>
       </section>
 
       <section className="py-24 px-6 md:px-24 bg-gray-300">
