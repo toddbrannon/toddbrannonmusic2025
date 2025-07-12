@@ -8,6 +8,11 @@ import exWayImg from './assets/albums/TheShakeExWayCover.jpg';
 import chaosImg from './assets/albums/TheShakeChaosCover.jpg';
 import deepImg from './assets/albums/DeepCallsToDeepDemoCover.png';
 import winsImg from './assets/albums/WinsAndScarsDemoCover.png';
+import thumbHJlMHuzPDKY from './assets/thumbnails/HJlMHuzPDKY.png';
+import thumbM5SHzFuVg from './assets/thumbnails/M5SHz--FuVg.png';
+import thumbGusVP from './assets/thumbnails/gusVP-y0vfE.png';
+import thumbJK0Pg from './assets/thumbnails/jK0PgX6k6k8.png';
+
 
 import { SiSpotify, SiApplemusic, SiYoutubemusic, SiSoundcloud, SiBandcamp } from 'react-icons/si';
 import { ArrowDown, Instagram } from 'lucide-react';
@@ -64,10 +69,10 @@ function App() {
 
   const shorts = ['rgtTCIE7i0k', 'COfxfBqVXV4', 'txoq8QpRBnA', 'naAJz__fqgQ', '8NSZnh1d5_8','_sAxY1MxrR8', 'nGSuU-unq1E', 'KLOqY1d4ByA', 'QKfNKczBk0k', 'UevV3DAJpCQ', 'YEt4bJQQ0Dc', 'DaD7cpzlmWE'];
   const livePerformances = [
-    { id: 'HJlMHuzPDKY', title: 'All I Can Say - Valley Creek Worship' },
-    { id: 'M5SHz--FuVg', title: 'This Is Love - Valley Creek Worship' },
-    { id: 'gusVP-y0vfE', title: 'Christmas 2024 - Valley Creek Worship', start: 3277, end: 3401 },
-    { id: 'jK0PgX6k6k8', title: 'Praise God - Valley Creek Worship', start: 900, end: 1006}
+    { id: 'HJlMHuzPDKY', title: 'All I Can Say - Valley Creek Worship', image: thumbHJlMHuzPDKY },
+    { id: 'M5SHz--FuVg', title: 'This Is Love - Valley Creek Worship', image: thumbM5SHzFuVg },
+    { id: 'gusVP-y0vfE', title: 'Christmas 2024 - Valley Creek Worship', image: thumbGusVP, start: 3277, end: 3401 },
+    { id: 'jK0PgX6k6k8', title: 'Praise God - Valley Creek Worship', image: thumbJK0Pg, start: 900, end: 1006}
   ];
 
   useEffect(() => {
@@ -135,10 +140,19 @@ function App() {
       <section className="py-24 px-6 md:px-24 bg-gray-900 text-gray-100">
         <div className="max-w-3xl mx-auto space-y-8">
           <h2 className="text-4xl md:text-5xl font-light mb-12">About</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed">With over two decades...</p>
-          <p className="text-lg md:text-xl font-light leading-relaxed">My musical journey continued...</p>
-          <p className="text-lg md:text-xl font-light leading-relaxed">Recent projects include instrumental compositions...</p>
-          <p className="text-lg md:text-xl font-light leading-relaxed">I also teach guitar...</p>
+            <p className="text-lg md:text-xl font-light leading-relaxed">
+              With over two decades of experience in music production and performance, I've dedicated my life to crafting authentic sounds and helping others discover their musical voice.
+              My musical roots run deep — the son of a southern gospel singer, I was placed in piano lessons at a young age, training steadily until I was 14. That early foundation shaped my ear for melody and harmony and continues to influence my work today.
+            </p>
+            <p className="text-lg md:text-xl font-light leading-relaxed">
+              My musical journey continued in 1996 when I formed The Shake with my cousin and two friends. We recorded multiple projects, including a 3-song EP (1998), a full-length album "In This Chaos" (1999), and additional unreleased tracks in Nashville (2001). During our five years together, we performed extensively throughout the Dallas-Fort Worth area and beyond. Since 2013, I've served on the worship team at Valley Creek Church in Flower Mound, contributing to three live worship albums (2015, 2023, and 2024).
+            </p>
+            <p className="text-lg md:text-xl font-light leading-relaxed">
+              Recent projects include instrumental compositions released on major streaming platforms (Spotify, Apple Music, YouTube) under the HIAUTMSKI moniker. I've also produced and released remixes of two classic Shake songs from "In This Chaos," while also releasing the complete original album on streaming platforms for a new generation to discover.
+            </p>
+            <p className="text-lg md:text-xl font-light leading-relaxed">
+              I also teach guitar at two local studios serving the north Dallas Fort Worth and Denton areas specializing in beginner to intermediate instruction with a focus on rock, pop, and worship music. As an instructor, I focus on developing each student's unique style while building a strong foundation in music theory and technique. I'm always open to inquiries from potential new students, offering personalized guidance to help them achieve their musical goals.
+            </p>
         </div>
       </section>
 
@@ -156,7 +170,7 @@ function App() {
             </div>
           </div>
 
-          <div className="mb-16">
+          {/* <div className="mb-16">
             <h3 className="text-2xl font-light mb-8">Live Performances</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {livePerformances.map(video => (
@@ -164,6 +178,43 @@ function App() {
                   <div id={`live_player_${video.id}`} className="w-full h-full rounded-lg shadow-lg" ref={setPlayerRef(video.id, 'live')} />
                 </div>
               ))}
+            </div>
+          </div> */}
+
+          <div className="mb-16">
+            <h3 className="text-2xl font-light mb-8">Live Performances</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {livePerformances.map(video => {
+                const isPlaying = players.some(p => p.id === video.id && p.player?.getPlayerState() === YT.PlayerState.PLAYING);
+                return (
+                  <div key={video.id} className="aspect-video relative rounded-lg shadow-lg overflow-hidden">
+                    <div
+                      id={`live_player_${video.id}`}
+                      className="w-full h-full"
+                      ref={setPlayerRef(video.id, 'live')}
+                    />
+                    {!isPlaying && (
+                      <div
+                        className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 cursor-pointer transition-opacity hover:bg-opacity-70"
+                        onClick={() => {
+                          const playerObj = players.find(p => p.id === video.id);
+                          if (playerObj?.player) {
+                            playerObj.player.playVideo();
+                          }
+                        }}
+                      >
+                        {/* OPTIONAL: your own custom screenshot here instead of solid overlay */}
+                        <img src={video.image} alt="Video thumbnail" className="absolute inset-0 w-full h-full object-cover" />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <svg className="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
 
