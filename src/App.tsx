@@ -12,6 +12,11 @@ import thumbHJlMHuzPDKY from './assets/thumbnails/HJlMHuzPDKY.png';
 import thumbM5SHzFuVg from './assets/thumbnails/M5SHz--FuVg.png';
 import thumbGusVP from './assets/thumbnails/gusVP-y0vfE.png';
 import thumbJK0Pg from './assets/thumbnails/jK0PgX6k6k8.png';
+import toddLive2 from './assets/live/ToddLive2.jpeg';
+import toddLive3 from './assets/live/ToddLive10.png';
+import toddLive5 from './assets/live/ToddLive30.png';
+import toddLive10 from './assets/live/ToddLive22.png';
+import toddLive14 from './assets/live/ToddLive24.png';
 
 import { SiSpotify, SiApplemusic, SiYoutubemusic, SiSoundcloud, SiBandcamp, SiYoutube } from 'react-icons/si';
 import { ArrowDown, Instagram } from 'lucide-react';
@@ -27,6 +32,9 @@ function App() {
   const currentPlayerRef = useRef<YT.Player | null>(null);
   const playerRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const [videoStates, setVideoStates] = useState<Record<string, boolean>>({});
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [touchStartX, setTouchStartX] = useState(0);
+  const [touchEndX, setTouchEndX] = useState(0);
 
   const albums = [
     { title: 'Deep Calls To Deep (demo)', artist: 'Todd Brannon', image: deepImg, year: '2025',
@@ -58,6 +66,8 @@ function App() {
       youtubeMusic: 'https://music.youtube.com/playlist?list=OLAK5uy_lymBl8qbqpgcHoFe3fltbaTqH7ly_Wj10&si=jvU3i4z4wzsk7Sgl'
     }
   ];
+
+  const liveShots = [toddLive2, toddLive3, toddLive5, toddLive10, toddLive14]
 
   const platforms = [
     { key: 'appleMusic', icon: <SiApplemusic className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
@@ -125,6 +135,39 @@ function App() {
     }
   };
 
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % liveShots.length);
+  };
+  
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + liveShots.length) % liveShots.length);
+  };
+  
+  const handleTouchStart = (e) => {
+    setTouchStartX(e.targetTouches[0].clientX);
+  };
+  
+  const handleTouchMove = (e) => {
+    setTouchEndX(e.targetTouches[0].clientX);
+  };
+  
+  const handleTouchEnd = () => {
+    if (!touchStartX || !touchEndX) return;
+    
+    const distance = touchStartX - touchEndX;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+  
+    if (isLeftSwipe) {
+      nextImage();
+    } else if (isRightSwipe) {
+      prevImage();
+    }
+  
+    setTouchStartX(0);
+    setTouchEndX(0);
+  };
+
   return (
     <div className="relative">
       <div className="relative h-screen">
@@ -136,8 +179,69 @@ function App() {
           <img src={brandLogo} alt="TBM Brand Logo" className="h-8 md:h-10 object-contain" />
         </nav>
         <div className="absolute inset-0 flex flex-col justify-center items-center text-white z-10">
-          <img src={logo} alt="TB Music Logo" className="h-[350px] md:h-[400px] lg:h-[600px] xl:h-[700px] mb-6 object-contain opacity-70" />
-          <ArrowDown className="w-8 h-8 animate-bounce mt-12" />
+          <img src={logo} alt="TB Music Logo" className="h-[250px] md:h-[300px] lg:h-[400px] xl:h-[500px] mb-6 object-contain opacity-70" />
+          
+          {/* <ArrowDown className="w-8 h-8 animate-bounce mb-8" /> */}
+          
+          {/* Mobile: Single image with swipe */}
+          <div className="block md:hidden w-full px-4 relative">
+            <div 
+              className="relative overflow-hidden rounded-lg shadow-lg max-w-xs mx-auto"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
+              <img
+                src={liveShots[currentImageIndex]}
+                className="w-full h-96 object-cover"
+              />
+              
+              {/* Navigation arrows for mobile */}
+              <button
+                onClick={prevImage}
+                className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-70 transition-opacity"
+              >
+                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <button
+                onClick={nextImage}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-70 transition-opacity"
+              >
+                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+              
+              
+            </div>
+            
+            {/* Dot indicators */}
+            <div className="flex justify-center mt-4 space-x-2">
+              {albums.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentImageIndex(index)}
+                  className={`w-2 h-2 rounded-full transition-colors ${
+                    index === currentImageIndex ? 'bg-white' : 'bg-white bg-opacity-50'
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Desktop: All images in a row */}
+          <div className="hidden md:flex w-full px-4 max-w-6xl mx-auto space-x-4">
+            {liveShots.map((image, index) => (
+              <div key={index} className="flex-1 relative group">
+                <img
+                  src={image}
+                  className="w-full h-80 object-cover rounded-lg shadow-lg"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
