@@ -31,10 +31,10 @@ function App() {
   const albums = [
     { title: 'Deep Calls To Deep (demo)', artist: 'Todd Brannon', image: deepImg, year: '2025',
       bandcamp: 'https://toddbrannon.bandcamp.com/track/deep-calls-to-deep-demo',
-      soundcloud: 'https://soundcloud.com/todd-437268405/deep-calls-to-deep-demo?si=8bf98b2ab6dc48348c187f4706a596b1&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
+      soundcloud: 'https://soundcloud.com/todd-437268405/deepcallstodeepdemomasterjuly2?si=ebe8da59bb3a487884b3c617dece743a&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
     },
     { title: 'Wins & Scars (demo)', artist: 'Todd Brannon', image: winsImg, year: '2025',
-      bandcamp: 'https://open.spotify.com/album/6nV9Sjp2BMS9w68olk4JHf?si=YLri_IEJT8iYicU9PR8Tlg',
+      bandcamp: 'https://toddbrannon.bandcamp.com/track/wins-and-scars-demo',
       soundcloud: 'https://soundcloud.com/todd-437268405/wins-and-scars-demo?si=b49d8879fb2043e2b687510f8ed0a9b0&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
     },
     { title: 'In This Chaos', artist: 'The Shake', image: chaosImg, year: '1999',
