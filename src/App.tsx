@@ -202,11 +202,11 @@ function App() {
                         className="absolute inset-0 z-20 flex items-center justify-center bg-black bg-opacity-50 cursor-pointer transition-opacity hover:bg-opacity-70"
                         onClick={() => {
                           const playerObj = players.find(p => p.id === video.id);
-                          if (playerObj?.player) {
+                          if (playerObj?.player && typeof playerObj.player.playVideo === "function") {
                             playerObj.player.playVideo();
+                            setPlayingVideos(prev => [...prev, video.id]);
                           }
-                          setPlayingVideos(prev => [...prev, video.id]);
-                        }}
+                        }}                        
                       >
                         <img src={video.image} alt="Video thumbnail" className="absolute inset-0 w-full h-full object-cover" />
                         <div className="absolute inset-0 flex items-center justify-center">
