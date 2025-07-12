@@ -6,9 +6,11 @@ import mastersPlanImg from './assets/albums/MastersPlanStirredCover.jpg';
 import twentySixImg from './assets/albums/HIAUTMSKI_26_Cover.jpg';
 import exWayImg from './assets/albums/TheShakeExWayCover.jpg';
 import chaosImg from './assets/albums/TheShakeChaosCover.jpg';
+import deepImg from './assets/albums/DeepCallsToDeepDemoCover.png';
+import winsImg from './assets/albums/WinsAndScarsDemoCover.png';
 
 
-import { SiSpotify, SiApplemusic, SiYoutubemusic } from 'react-icons/si';
+import { SiSpotify, SiApplemusic, SiYoutubemusic, SiSoundcloud, SiBandcamp } from 'react-icons/si';
 import { Menu, ArrowDown, Instagram, Youtube } from 'lucide-react';
 
 interface VideoPlayer {
@@ -23,6 +25,24 @@ function App() {``
   const playerRefs = useRef<Map<string, HTMLDivElement>>(new Map());
 
   const albums = [
+    {
+      title: 'Deep Calls To Deep (demo)',
+      artist: 'Todd Brannon',
+      image: deepImg,
+      year: '2025',
+      bandcamp: 'https://toddbrannon.bandcamp.com/track/deep-calls-to-deep-demo',
+      soundcloud: 'https://soundcloud.com/todd-437268405/deep-calls-to-deep-demo?si=8bf98b2ab6dc48348c187f4706a596b1&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing',
+      // youtubeMusic: 'https://music.youtube.com/playlist?list=OLAK5uy_meBCEETXYmq4R6KX0JkAQiCpduPstL2Ck&si=eFGHGxK5BXJJUo3u',
+    },
+    {
+      title: 'Wins & Scars (demo)',
+      artist: 'Todd Brannon',
+      image: winsImg,
+      year: '2025',
+      bandcamp: 'https://open.spotify.com/album/6nV9Sjp2BMS9w68olk4JHf?si=YLri_IEJT8iYicU9PR8Tlg',
+      soundcloud: 'https://music.apple.com/us/album/in-this-chaos/1705257577',
+      // youtubeMusic: 'https://music.youtube.com/playlist?list=OLAK5uy_meBCEETXYmq4R6KX0JkAQiCpduPstL2Ck&si=eFGHGxK5BXJJUo3u',
+    },
     {
       title: 'In This Chaos',
       artist: 'The Shake',
@@ -60,6 +80,15 @@ function App() {``
       youtubeMusic: 'https://music.youtube.com/playlist?list=OLAK5uy_lymBl8qbqpgcHoFe3fltbaTqH7ly_Wj10&si=jvU3i4z4wzsk7Sgl',
     },
   ];
+
+  const platforms = [
+    { key: 'appleMusic', icon: <SiApplemusic className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
+    { key: 'spotify', icon: <SiSpotify className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
+    { key: 'youtubeMusic', icon: <SiYoutubemusic className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
+    { key: 'bandcamp', icon: <SiBandcamp className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
+    { key: 'soundcloud', icon: <SiSoundcloud className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
+  ];
+  
 
   const shorts = ['nGSuU-unq1E', 'KLOqY1d4ByA', 'QKfNKczBk0k', 'UevV3DAJpCQ', 'YEt4bJQQ0Dc'];
   const livePerformances = [
@@ -204,7 +233,8 @@ function App() {``
           </div>
 
           <div className="mb-16">
-            <h3 className="text-2xl font-light mb-8">Studio Productions</h3>
+            <h3 className="text-2xl font-light mb-2">Studio Productions</h3>
+            <p className="text-sm font-light mb-8">Hover over cover to listen</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {albums.map((album, index) => (
                 <div key={index} className="group relative aspect-square overflow-hidden rounded-lg shadow-lg">
@@ -214,21 +244,20 @@ function App() {``
                     <span className="text-sm font-light mb-1">{album.artist}</span>
                     <span className="text-sm font-light">{album.year}</span>
                     <div className="flex space-x-4 mt-4">
-                      <a href={album.appleMusic} target="_blank" rel="noopener noreferrer">
-                        <SiApplemusic className="w-6 h-6 text-white hover:text-gray-300 transition-colors" />
-                      </a>
-                      <a href={album.spotify} target="_blank" rel="noopener noreferrer">
-                        <SiSpotify className="w-6 h-6 text-white hover:text-gray-300 transition-colors" />
-                      </a>
-                      <a href={album.youtubeMusic} target="_blank" rel="noopener noreferrer">
-                        <SiYoutubemusic className="w-6 h-6 text-white hover:text-gray-300 transition-colors" />
-                      </a>
+                      {platforms.map(({ key, icon }) =>
+                        album[key as keyof typeof album] ? (
+                          <a key={key} href={album[key as keyof typeof album]} target="_blank" rel="noopener noreferrer">
+                            {icon}
+                          </a>
+                        ) : null                        
+                      )}
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
+
 
           {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="group relative aspect-[4/3] overflow-hidden bg-gray-200">
