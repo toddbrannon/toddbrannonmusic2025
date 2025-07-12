@@ -90,11 +90,10 @@ function App() {``
   ];
   
 
-  const shorts = ['nGSuU-unq1E', 'KLOqY1d4ByA', 'QKfNKczBk0k', 'UevV3DAJpCQ', 'YEt4bJQQ0Dc'];
+  const shorts = ['nGSuU-unq1E', 'KLOqY1d4ByA', 'QKfNKczBk0k', 'UevV3DAJpCQ', 'YEt4bJQQ0Dc', 'DaD7cpzlmWE'];
   const livePerformances = [
     { id: 'HJlMHuzPDKY', title: 'All I Can Say - Valley Creek Worship' },
     { id: 'M5SHz--FuVg', title: 'This Is Love - Valley Creek Worship' },
-    { id: 'gusVP-y0vfE', title: 'Light of the World - Valley Creek Christmas 2024'}
   ];
 
   useEffect(() => {
