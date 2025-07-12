@@ -121,6 +121,9 @@ function App() {
     }
   };
 
+  const [playingVideos, setPlayingVideos] = useState<string[]>([]);
+
+
   return (
     <div className="relative">
       <div className="relative h-screen">
@@ -185,14 +188,8 @@ function App() {
             <h3 className="text-2xl font-light mb-8">Live Performances</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {livePerformances.map(video => {
-                const isPlaying = typeof YT !== "undefined" && YT.PlayerState &&
-                players.some(p =>
-                  p.id === video.id &&
-                  p.player &&
-                  typeof p.player.getPlayerState === "function" &&
-                  p.player.getPlayerState() === YT.PlayerState.PLAYING
-                );
-              
+                const isOverlayVisible = !playingVideos.includes(video.id);
+
                 return (
                   <div key={video.id} className="aspect-video relative rounded-lg shadow-lg overflow-hidden">
                     <div
@@ -200,17 +197,17 @@ function App() {
                       className="w-full h-full"
                       ref={setPlayerRef(video.id, 'live')}
                     />
-                    {!isPlaying && (
+                    {isOverlayVisible && (
                       <div
-                      className="absolute inset-0 z-20 flex items-center justify-center bg-black bg-opacity-50 cursor-pointer transition-opacity hover:bg-opacity-70"
+                        className="absolute inset-0 z-20 flex items-center justify-center bg-black bg-opacity-50 cursor-pointer transition-opacity hover:bg-opacity-70"
                         onClick={() => {
                           const playerObj = players.find(p => p.id === video.id);
                           if (playerObj?.player) {
                             playerObj.player.playVideo();
                           }
+                          setPlayingVideos(prev => [...prev, video.id]);
                         }}
                       >
-                        {/* OPTIONAL: your own custom screenshot here instead of solid overlay */}
                         <img src={video.image} alt="Video thumbnail" className="absolute inset-0 w-full h-full object-cover" />
                         <div className="absolute inset-0 flex items-center justify-center">
                           <svg className="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -224,6 +221,7 @@ function App() {
               })}
             </div>
           </div>
+
 
           <div className="mb-16">
             <h3 className="text-2xl font-light mb-2">Studio Productions</h3>
