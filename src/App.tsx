@@ -239,24 +239,59 @@ function App() {
       </section>
 
       <section className="py-24 px-6 md:px-24 bg-gray-900 text-gray-100">
-        <div className="max-w-3xl mx-auto space-y-12">
+        <div className="max-w-3xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-light mb-12">Services</h2>
-          <div><h3 className="text-2xl font-light mb-4">Studio Engineering & Music Production</h3><p className="text-lg font-light leading-relaxed">Full-service studio production...</p></div>
-          <div><h3 className="text-2xl font-light mb-4">Guitar Instruction</h3><p className="text-lg font-light leading-relaxed">Private lessons for all skill levels...</p></div>
-          <div><h3 className="text-2xl font-light mb-4">Session Work</h3><p className="text-lg font-light leading-relaxed">Professional guitar tracks...</p></div>
+          <div className="space-y-12">
+            <div>
+              <h3 className="text-2xl font-light mb-4">Studio Engineering & Music Production</h3>
+              <p className="text-lg font-light leading-relaxed">
+                Full-service studio production, from pre-production planning through final mastering. Specializing in guitar-driven genres and acoustic arrangements.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-2xl font-light mb-4">Guitar Instruction</h3>
+              <p className="text-lg font-light leading-relaxed">
+                Private lessons for all skill levels. Customized curriculum focusing on technique, theory, and personal style development.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-2xl font-light mb-4">Session Work</h3>
+              <p className="text-lg font-light leading-relaxed">
+                Professional guitar tracks for your recordings. Remote sessions available with quick turnaround times.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
       <section className="py-24 px-6 md:px-24 bg-gray-250">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-light mb-12">Get in Touch</h2>
-          <p className="text-lg md:text-xl font-light mb-12">Available for production, session work, and private instruction. Let's create something extraordinary together.</p>
+          <p className="text-lg md:text-xl font-light mb-12">
+            Available for production, session work, and private instruction. Let's create something extraordinary together.
+          </p>
           <div className="flex justify-center space-x-8">
-            <a href="https://www.instagram.com/todd_brannon_music" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 text-[#E1306C] hover:text-[#C13584] transition-colors">
-              <Instagram className="w-6 h-6 cursor-pointer" /><span>todd_brannon_music</span>
+            {/* <a href="https://www.youtube.com/CHANNEL_ID" target="_blank" rel="noopener noreferrer">
+              <Youtube className="w-6 h-6 cursor-pointer hover:text-[#2F4F4F] transition-colors" />
+            </a> */}
+            <a
+              href="https://www.instagram.com/todd_brannon_music"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-2 text-[#E1306C] hover:text-[#C13584] transition-colors"
+            >
+              <Instagram className="w-6 h-6 cursor-pointer" />
+              <span>todd_brannon_music</span>
             </a>
-            <a href="https://www.instagram.com/the_shake_band" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 text-[#E1306C] hover:text-[#C13584] transition-colors">
-              <Instagram className="w-6 h-6 cursor-pointer" /><span>the_shake_band</span>
+
+            <a
+              href="https://www.instagram.com/the_shake_band"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-2 text-[#E1306C] hover:text-[#C13584] transition-colors"
+            >
+              <Instagram className="w-6 h-6 cursor-pointer" />
+              <span>the_shake_band</span>
             </a>
           </div>
         </div>
