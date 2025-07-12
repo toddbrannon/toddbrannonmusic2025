@@ -67,6 +67,7 @@ function App() {
     { id: 'HJlMHuzPDKY', title: 'All I Can Say - Valley Creek Worship' },
     { id: 'M5SHz--FuVg', title: 'This Is Love - Valley Creek Worship' },
     { id: 'gusVP-y0vfE', title: 'Christmas 2024 - Valley Creek Worship', start: 3277, end: 3401 },
+    { id: 'jK0PgX6k6k8', title: 'Praise God - Valley Creek Worship', start: 900, end: 1006}
   ];
 
   useEffect(() => {
