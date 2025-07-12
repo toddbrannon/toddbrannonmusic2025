@@ -94,7 +94,7 @@ function App() {``
   const livePerformances = [
     { id: 'HJlMHuzPDKY', title: 'All I Can Say - Valley Creek Worship' },
     { id: 'M5SHz--FuVg', title: 'This Is Love - Valley Creek Worship' },
-    { id: 'YPzODruk1lHr359j&t', title: 'Light of the World - Valley Creek Christmas 2024'}
+    { id: 'gusVP-y0vfE', title: 'Light of the World - Valley Creek Christmas 2024'}
   ];
 
   useEffect(() => {
