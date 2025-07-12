@@ -35,7 +35,7 @@ function App() {
     },
     { title: 'Wins & Scars (demo)', artist: 'Todd Brannon', image: winsImg, year: '2025',
       bandcamp: 'https://open.spotify.com/album/6nV9Sjp2BMS9w68olk4JHf?si=YLri_IEJT8iYicU9PR8Tlg',
-      soundcloud: 'https://music.apple.com/us/album/in-this-chaos/1705257577'
+      soundcloud: 'https://soundcloud.com/todd-437268405/wins-and-scars-demo?si=b49d8879fb2043e2b687510f8ed0a9b0&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'
     },
     { title: 'In This Chaos', artist: 'The Shake', image: chaosImg, year: '1999',
       spotify: 'https://open.spotify.com/album/6nV9Sjp2BMS9w68olk4JHf?si=YLri_IEJT8iYicU9PR8Tlg',
