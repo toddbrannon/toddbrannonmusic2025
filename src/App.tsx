@@ -67,7 +67,7 @@ function App() {
     { key: 'soundcloud', icon: <SiSoundcloud className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
   ];
 
-  const shorts = ['rgtTCIE7i0k', 'COfxfBqVXV4', 'txoq8QpRBnA', 'naAJz__fqgQ', '8NSZnh1d5_8','_sAxY1MxrR8', 'nGSuU-unq1E', 'KLOqY1d4ByA', 'QKfNKczBk0k', 'UevV3DAJpCQ', 'YEt4bJQQ0Dc', 'DaD7cpzlmWE'];
+  const shorts = ['rgtTCIE7i0k', 'txoq8QpRBnA', '8NSZnh1d5_8','_sAxY1MxrR8', 'nGSuU-unq1E', 'KLOqY1d4ByA', 'QKfNKczBk0k', 'UevV3DAJpCQ', 'YEt4bJQQ0Dc', 'DaD7cpzlmWE'];
   const livePerformances = [
     { id: 'HJlMHuzPDKY', title: 'All I Can Say - Valley Creek Worship', image: thumbHJlMHuzPDKY },
     { id: 'M5SHz--FuVg', title: 'This Is Love - Valley Creek Worship', image: thumbM5SHzFuVg },
