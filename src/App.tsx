@@ -165,11 +165,26 @@ function App() {
           <h2 className="text-4xl md:text-5xl font-light mb-12">Featured Work</h2>
 
           <div className="mb-16">
-            <h3 className="text-2xl font-light mb-8">Performance Shorts</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 max-w-[1400px] mx-auto">
-              {shorts.map(videoId => (
-                <div key={videoId} className="aspect-[9/16] w-full max-w-[360px] mx-auto">
-                  <div id={`short_player_${videoId}`} className="w-full h-full rounded-lg shadow-lg" ref={setPlayerRef(videoId, 'short')} />
+            <h3 className="text-2xl font-light mb-2">Studio Productions</h3>
+            <p className="text-sm font-light mb-8">Hover over cover to listen</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {albums.map((album, index) => (
+                <div key={index} className="group relative aspect-square overflow-hidden rounded-lg shadow-lg">
+                  <img src={album.image} alt={`${album.title} by ${album.artist}`} className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-white opacity-0 bg-[#2F4F4F]/80 transition-opacity group-hover:opacity-100 p-4 text-center">
+                    <span className="text-xl font-light mb-2">{album.title}</span>
+                    <span className="text-sm font-light mb-1">{album.artist}</span>
+                    <span className="text-sm font-light">{album.year}</span>
+                    <div className="flex space-x-4 mt-4">
+                      {platforms.map(({ key, icon }) =>
+                        album[key as keyof typeof album] ? (
+                          <a key={key} href={album[key as keyof typeof album]} target="_blank" rel="noopener noreferrer">
+                            {icon}
+                          </a>
+                        ) : null
+                      )}
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
@@ -210,28 +225,12 @@ function App() {
               })}
             </div>
           </div>
-
           <div className="mb-16">
-            <h3 className="text-2xl font-light mb-2">Studio Productions</h3>
-            <p className="text-sm font-light mb-8">Hover over cover to listen</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {albums.map((album, index) => (
-                <div key={index} className="group relative aspect-square overflow-hidden rounded-lg shadow-lg">
-                  <img src={album.image} alt={`${album.title} by ${album.artist}`} className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-white opacity-0 bg-[#2F4F4F]/80 transition-opacity group-hover:opacity-100 p-4 text-center">
-                    <span className="text-xl font-light mb-2">{album.title}</span>
-                    <span className="text-sm font-light mb-1">{album.artist}</span>
-                    <span className="text-sm font-light">{album.year}</span>
-                    <div className="flex space-x-4 mt-4">
-                      {platforms.map(({ key, icon }) =>
-                        album[key as keyof typeof album] ? (
-                          <a key={key} href={album[key as keyof typeof album]} target="_blank" rel="noopener noreferrer">
-                            {icon}
-                          </a>
-                        ) : null
-                      )}
-                    </div>
-                  </div>
+            <h3 className="text-2xl font-light mb-8">Performance Shorts</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 max-w-[1400px] mx-auto">
+              {shorts.map(videoId => (
+                <div key={videoId} className="aspect-[9/16] w-full max-w-[360px] mx-auto">
+                  <div id={`short_player_${videoId}`} className="w-full h-full rounded-lg shadow-lg" ref={setPlayerRef(videoId, 'short')} />
                 </div>
               ))}
             </div>
