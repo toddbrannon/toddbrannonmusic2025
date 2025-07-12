@@ -185,7 +185,14 @@ function App() {
             <h3 className="text-2xl font-light mb-8">Live Performances</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {livePerformances.map(video => {
-                const isPlaying = players.some(p => p.id === video.id && p.player?.getPlayerState() === YT.PlayerState.PLAYING);
+                const isPlaying = typeof YT !== "undefined" && YT.PlayerState &&
+                players.some(p =>
+                  p.id === video.id &&
+                  p.player &&
+                  typeof p.player.getPlayerState === "function" &&
+                  p.player.getPlayerState() === YT.PlayerState.PLAYING
+                );
+              
                 return (
                   <div key={video.id} className="aspect-video relative rounded-lg shadow-lg overflow-hidden">
                     <div
@@ -195,7 +202,7 @@ function App() {
                     />
                     {!isPlaying && (
                       <div
-                        className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 cursor-pointer transition-opacity hover:bg-opacity-70"
+                      className="absolute inset-0 z-20 flex items-center justify-center bg-black bg-opacity-50 cursor-pointer transition-opacity hover:bg-opacity-70"
                         onClick={() => {
                           const playerObj = players.find(p => p.id === video.id);
                           if (playerObj?.player) {
