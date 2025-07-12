@@ -72,7 +72,8 @@ function App() {
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://www.youtube.com/iframe_api';
-    document.getElementsByTagName('script')[0]?.parentNode?.insertBefore(script, document.getElementsByTagName('script')[0]);
+    const firstScript = document.getElementsByTagName('script')[0];
+    firstScript?.parentNode?.insertBefore(script, firstScript);
     window.onYouTubeIframeAPIReady = () => setApiReady(true);
     return () => { delete window.onYouTubeIframeAPIReady; };
   }, []);
@@ -83,13 +84,7 @@ function App() {
     const initializePlayer = (videoId: string, elementId: string, start?: number, end?: number) => {
       const player = new YT.Player(elementId, {
         videoId,
-        playerVars: {
-          start,
-          end,
-          playsinline: 1,
-          controls: 1,
-          rel: 0,
-        },
+        playerVars: { start, end, playsinline: 1, controls: 1, rel: 0 },
         events: {
           onStateChange: (event: YT.OnStateChangeEvent) => {
             if (event.data === YT.PlayerState.PLAYING) {
@@ -101,7 +96,6 @@ function App() {
           },
         },
       });
-
       setPlayers(prev => [...prev.filter(p => p.id !== videoId), { player, id: videoId }]);
     };
 
@@ -123,8 +117,112 @@ function App() {
 
   return (
     <div className="relative">
-      {/* Keep your JSX exactly the same... */}
-      {/* (omitted here for brevity, keep your existing JSX structure unchanged) */}
+      <div className="relative h-screen">
+        <div className="absolute inset-0">
+          <img src={heroImage} alt="Hero Background" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gray-900 opacity-75"></div>
+        </div>
+        <nav className="absolute top-0 w-full p-6 flex justify-between items-center z-10">
+          <img src={brandLogo} alt="TBM Brand Logo" className="h-8 md:h-10 object-contain" />
+        </nav>
+        <div className="absolute inset-0 flex flex-col justify-center items-center text-white z-10">
+          <img src={logo} alt="TB Music Logo" className="h-[350px] md:h-[400px] lg:h-[600px] xl:h-[700px] mb-6 object-contain opacity-70" />
+          <ArrowDown className="w-8 h-8 animate-bounce mt-12" />
+        </div>
+      </div>
+
+      <section className="py-24 px-6 md:px-24 bg-gray-900 text-gray-100">
+        <div className="max-w-3xl mx-auto space-y-8">
+          <h2 className="text-4xl md:text-5xl font-light mb-12">About</h2>
+          <p className="text-lg md:text-xl font-light leading-relaxed">With over two decades...</p>
+          <p className="text-lg md:text-xl font-light leading-relaxed">My musical journey continued...</p>
+          <p className="text-lg md:text-xl font-light leading-relaxed">Recent projects include instrumental compositions...</p>
+          <p className="text-lg md:text-xl font-light leading-relaxed">I also teach guitar...</p>
+        </div>
+      </section>
+
+      <section className="py-24 px-6 md:px-24 bg-gray-300">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-light mb-12">Featured Work</h2>
+          <div className="mb-16">
+            <h3 className="text-2xl font-light mb-8">Performance Shorts</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 max-w-[1400px] mx-auto">
+              {shorts.map(videoId => (
+                <div key={videoId} className="aspect-[9/16] w-full max-w-[360px] mx-auto">
+                  <div id={`short_player_${videoId}`} className="w-full h-full rounded-lg shadow-lg" ref={setPlayerRef(videoId, 'short')} />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mb-16">
+            <h3 className="text-2xl font-light mb-8">Live Performances</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {livePerformances.map(video => (
+                <div key={video.id} className="aspect-video">
+                  <div id={`live_player_${video.id}`} className="w-full h-full rounded-lg shadow-lg" ref={setPlayerRef(video.id, 'live')} />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mb-16">
+            <h3 className="text-2xl font-light mb-2">Studio Productions</h3>
+            <p className="text-sm font-light mb-8">Hover over cover to listen</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {albums.map((album, index) => (
+                <div key={index} className="group relative aspect-square overflow-hidden rounded-lg shadow-lg">
+                  <img src={album.image} alt={`${album.title} by ${album.artist}`} className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-white opacity-0 bg-[#2F4F4F]/80 transition-opacity group-hover:opacity-100 p-4 text-center">
+                    <span className="text-xl font-light mb-2">{album.title}</span>
+                    <span className="text-sm font-light mb-1">{album.artist}</span>
+                    <span className="text-sm font-light">{album.year}</span>
+                    <div className="flex space-x-4 mt-4">
+                      {platforms.map(({ key, icon }) =>
+                        album[key as keyof typeof album] ? (
+                          <a key={key} href={album[key as keyof typeof album]} target="_blank" rel="noopener noreferrer">
+                            {icon}
+                          </a>
+                        ) : null
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-24 px-6 md:px-24 bg-gray-900 text-gray-100">
+        <div className="max-w-3xl mx-auto space-y-12">
+          <h2 className="text-4xl md:text-5xl font-light mb-12">Services</h2>
+          <div><h3 className="text-2xl font-light mb-4">Studio Engineering & Music Production</h3><p className="text-lg font-light leading-relaxed">Full-service studio production...</p></div>
+          <div><h3 className="text-2xl font-light mb-4">Guitar Instruction</h3><p className="text-lg font-light leading-relaxed">Private lessons for all skill levels...</p></div>
+          <div><h3 className="text-2xl font-light mb-4">Session Work</h3><p className="text-lg font-light leading-relaxed">Professional guitar tracks...</p></div>
+        </div>
+      </section>
+
+      <section className="py-24 px-6 md:px-24 bg-gray-250">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-4xl md:text-5xl font-light mb-12">Get in Touch</h2>
+          <p className="text-lg md:text-xl font-light mb-12">Available for production, session work, and private instruction. Let's create something extraordinary together.</p>
+          <div className="flex justify-center space-x-8">
+            <a href="https://www.instagram.com/todd_brannon_music" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 text-[#E1306C] hover:text-[#C13584] transition-colors">
+              <Instagram className="w-6 h-6 cursor-pointer" /><span>todd_brannon_music</span>
+            </a>
+            <a href="https://www.instagram.com/the_shake_band" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 text-[#E1306C] hover:text-[#C13584] transition-colors">
+              <Instagram className="w-6 h-6 cursor-pointer" /><span>the_shake_band</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <footer className="py-6 px-6 md:px-24 bg-gray-900 border-t border-gray-800">
+        <div className="max-w-6xl mx-auto text-center text-sm text-white/80">
+          © {new Date().getFullYear()} Todd Brannon. All rights reserved.
+        </div>
+      </footer>
     </div>
   );
 }
