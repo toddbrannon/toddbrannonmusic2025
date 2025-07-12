@@ -243,6 +243,12 @@ function App() {
           <h2 className="text-4xl md:text-5xl font-light mb-12">Services</h2>
           <div className="space-y-12">
             <div>
+              <h3 className="text-2xl font-light mb-4">Live Performance</h3>
+              <p className="text-lg font-light leading-relaxed">
+                Available to fill in as your electric guitarist for live gigs or worship team needs. Gear list available upon request.
+              </p>
+            </div>
+            <div>
               <h3 className="text-2xl font-light mb-4">Studio Engineering & Music Production</h3>
               <p className="text-lg font-light leading-relaxed">
                 Full-service studio production, from pre-production planning through final mastering. Specializing in guitar-driven genres and acoustic arrangements.
@@ -268,7 +274,7 @@ function App() {
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-light mb-12">Get in Touch</h2>
           <p className="text-lg md:text-xl font-light mb-12">
-            Available for production, session work, and private instruction. Let's create something extraordinary together.
+            Available for live performance, production, session work, and private instruction. Let's create something extraordinary together.
           </p>
           <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
             {/* <a href="https://www.youtube.com/CHANNEL_ID" target="_blank" rel="noopener noreferrer">
