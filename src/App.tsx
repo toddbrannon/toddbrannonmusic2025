@@ -180,68 +180,6 @@ function App() {
         </nav>
         <div className="absolute inset-0 flex flex-col justify-center items-center text-white z-10">
           <img src={logo} alt="TB Music Logo" className="h-[250px] md:h-[300px] lg:h-[400px] xl:h-[500px] mb-6 object-contain opacity-70" />
-          
-          {/* <ArrowDown className="w-8 h-8 animate-bounce mb-8" /> */}
-          
-          {/* Mobile: Single image with swipe */}
-          <div className="block md:hidden w-full px-4 relative">
-            <div 
-              className="relative overflow-hidden rounded-lg shadow-lg max-w-xs mx-auto"
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-            >
-              <img
-                src={liveShots[currentImageIndex]}
-                className="w-full h-96 object-cover"
-              />
-              
-              {/* Navigation arrows for mobile */}
-              <button
-                onClick={prevImage}
-                className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-70 transition-opacity"
-              >
-                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              <button
-                onClick={nextImage}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-70 transition-opacity"
-              >
-                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-              
-              
-            </div>
-            
-            {/* Dot indicators */}
-            <div className="flex justify-center mt-4 space-x-2">
-              {albums.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentImageIndex(index)}
-                  className={`w-2 h-2 rounded-full transition-colors ${
-                    index === currentImageIndex ? 'bg-white' : 'bg-white bg-opacity-50'
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Desktop: All images in a row */}
-          <div className="hidden md:flex w-full px-4 max-w-6xl mx-auto space-x-4">
-            {liveShots.map((image, index) => (
-              <div key={index} className="flex-1 relative group">
-                <img
-                  src={image}
-                  className="w-full h-80 object-cover rounded-lg shadow-lg"
-                />
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
@@ -255,6 +193,67 @@ function App() {
             <p className="text-lg md:text-xl font-light leading-relaxed">
               My musical journey continued in 1996 when I formed The Shake with my cousin and two friends. We recorded multiple projects, including a 3-song EP (1998), a full-length album "In This Chaos" (1999), and additional unreleased tracks in Nashville (2001). During our five years together, we performed extensively throughout the Dallas-Fort Worth area and beyond. Since 2013, I've served on the worship team at Valley Creek Church in Flower Mound, contributing to three live worship albums (2015, 2023, and 2024).
             </p>
+            {/* <ArrowDown className="w-8 h-8 animate-bounce mb-8" /> */}
+          
+            {/* Mobile: Single image with swipe */}
+            <div className="block md:hidden w-full px-4 relative">
+              <div 
+                className="relative overflow-hidden rounded-lg shadow-lg max-w-xs mx-auto"
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+              >
+                <img
+                  src={liveShots[currentImageIndex]}
+                  className="w-full h-96 object-cover"
+                />
+                
+                {/* Navigation arrows for mobile */}
+                <button
+                  onClick={prevImage}
+                  className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-70 transition-opacity"
+                >
+                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                <button
+                  onClick={nextImage}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-70 transition-opacity"
+                >
+                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+                
+                
+              </div>
+              
+              {/* Dot indicators */}
+              <div className="flex justify-center mt-4 space-x-2">
+                {albums.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentImageIndex(index)}
+                    className={`w-2 h-2 rounded-full transition-colors ${
+                      index === currentImageIndex ? 'bg-white' : 'bg-white bg-opacity-50'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Desktop: All images in a row */}
+            <div className="hidden md:flex w-full px-4 max-w-6xl mx-auto space-x-4">
+              {liveShots.map((image, index) => (
+                <div key={index} className="flex-1 relative group">
+                  <img
+                    src={image}
+                    className="w-full h-80 object-cover rounded-lg shadow-lg"
+                  />
+                </div>
+              ))}
+            </div>
             <p className="text-lg md:text-xl font-light leading-relaxed">
               Recent projects include instrumental compositions released on major streaming platforms (Spotify, Apple Music, YouTube) under the HIAUTMSKI moniker. I've also produced and released remixes of two classic Shake songs from "In This Chaos," while also releasing the complete original album on streaming platforms for a new generation to discover.
             </p>
