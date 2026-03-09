@@ -149,7 +149,7 @@ app.post('/api/inquire', async (req, res) => {
     `;
 
     const { error } = await resend.emails.send({
-      from: 'Todd Brannon Music <todd@toddbrannonmusic.com>',
+      from: 'Todd Brannon Music <todd@contact.toddbrannonmusic.com>',
       to: CONTACT_EMAIL,
       replyTo: email,
       subject: `Lesson Inquiry from ${safeName}`,
