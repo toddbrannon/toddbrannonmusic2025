@@ -239,6 +239,28 @@ function App() {
         </nav>
         <div className="absolute inset-0 flex flex-col justify-center items-center text-white z-10">
           <img src={logo} alt="TB Music Logo" className="h-[250px] md:h-[300px] lg:h-[400px] xl:h-[500px] mb-6 object-contain opacity-70" />
+          <div className="flex gap-4">
+            <button
+              data-testid="button-hero-lesson-inquiry"
+              onClick={() => {
+                setShowInquiryForm(true);
+                window.scrollTo(0, 0);
+              }}
+              className="px-6 py-3 rounded-lg text-sm font-medium transition-all border-2 border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C] hover:text-black"
+            >
+              Inquire About Lessons
+            </button>
+            <button
+              data-testid="button-hero-coaching-inquiry"
+              onClick={() => {
+                setShowCoachingForm(true);
+                window.scrollTo(0, 0);
+              }}
+              className="px-6 py-3 rounded-lg text-sm font-medium transition-all border-2 border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C] hover:text-black"
+            >
+              Inquire About Coaching
+            </button>
+          </div>
         </div>
       </div>
 
@@ -532,18 +554,54 @@ function App() {
       </section>
 
       <footer className="py-6 px-6 md:px-24 bg-gray-900 border-t border-gray-800">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-white/80">
-          <span>© {new Date().getFullYear()} Todd Brannon. All rights reserved.</span>
-          <button
-            data-testid="link-privacy-policy"
-            onClick={() => {
-              setShowPrivacyPolicy(true);
-              window.scrollTo(0, 0);
-            }}
-            className="text-white/40 hover:text-white/70 transition-colors text-xs"
-          >
-            Privacy Policy
-          </button>
+        <div className="max-w-6xl mx-auto flex flex-col items-center gap-3">
+          <div className="flex items-center gap-6 text-xs">
+            <button
+              data-testid="button-footer-lesson-inquiry"
+              onClick={() => {
+                setShowInquiryForm(true);
+                window.scrollTo(0, 0);
+              }}
+              className="text-white/50 hover:text-[#C9A84C] transition-colors"
+            >
+              Lesson Inquiry
+            </button>
+            <span className="text-white/20">·</span>
+            <button
+              data-testid="button-footer-coaching-inquiry"
+              onClick={() => {
+                setShowCoachingForm(true);
+                window.scrollTo(0, 0);
+              }}
+              className="text-white/50 hover:text-[#C9A84C] transition-colors"
+            >
+              Coaching Inquiry
+            </button>
+            <span className="text-white/20">·</span>
+            <button
+              data-testid="button-footer-contact"
+              onClick={() => {
+                setShowContactForm(true);
+                window.scrollTo(0, 0);
+              }}
+              className="text-white/50 hover:text-[#C9A84C] transition-colors"
+            >
+              Contact
+            </button>
+          </div>
+          <div className="flex items-center gap-4 text-xs text-white/40">
+            <span>© {new Date().getFullYear()} Todd Brannon. All rights reserved.</span>
+            <button
+              data-testid="link-privacy-policy"
+              onClick={() => {
+                setShowPrivacyPolicy(true);
+                window.scrollTo(0, 0);
+              }}
+              className="text-white/40 hover:text-white/70 transition-colors"
+            >
+              Privacy Policy
+            </button>
+          </div>
         </div>
       </footer>
 
