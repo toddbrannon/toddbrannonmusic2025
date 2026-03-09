@@ -10,7 +10,9 @@ A personal website for Todd Brannon Music — showcasing music, live performance
 
 ## Project Structure
 - `src/App.tsx` — Main single-page application with hero, about, featured work, services, and contact sections. Includes a lesson inquiry modal that appears 3 seconds after page load.
-- `src/InquiryForm.tsx` — Standalone inquiry form component with dark/gold aesthetic, toggle groups, and submission handling.
+- `src/InquiryForm.tsx` — Lesson inquiry form with dark/gold aesthetic, toggle groups, and submission handling.
+- `src/CoachingInquiryForm.tsx` — Coaching inquiry form (worship prep, home recording, songwriting, etc.) with toggle groups.
+- `src/GeneralContactForm.tsx` — General contact form with name, email, subject, and message fields.
 - `src/PrivacyPolicy.tsx` — Privacy policy page with site-consistent dark styling.
 - `src/index.css` — Tailwind base styles and custom animations.
 - `server.js` — Express API server with `/api/inquire` POST endpoint that sends formatted emails via Resend.
@@ -29,5 +31,6 @@ A personal website for Todd Brannon Music — showcasing music, live performance
 - Music catalog with streaming platform links
 - YouTube video integration (live performances and shorts)
 - Lesson inquiry modal with 3-second delayed appearance
-- Inquiry form with toggle groups and email notification via Resend
+- Three inquiry/contact forms: Lesson Inquiry, Coaching Inquiry, and General Contact — all routed through a single /api/inquire endpoint with inquiryType-based email subjects
+- CTA buttons in "Get in Touch" section for all three form types
 - Privacy policy page accessible from footer link

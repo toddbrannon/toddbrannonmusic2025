@@ -14,7 +14,7 @@ const CONTACT_EMAIL = process.env.CONTACT_EMAIL;
 
 const VALID_STUDENT_TYPES = ['myself', 'my-child', 'both'];
 const VALID_EXPERIENCE = ['beginner', 'some-experience', 'intermediate', 'advanced'];
-const VALID_INTERESTS = ['guitar-lessons', 'worship-prep', 'home-recording', 'songwriting'];
+const VALID_INTERESTS = ['guitar-lessons', 'worship-prep', 'home-recording', 'songwriting', 'not-sure'];
 const VALID_AVAILABILITY = ['after-school', 'daytime', 'homeschool', 'flexible', 'open'];
 
 function escapeHtml(str) {
@@ -58,6 +58,7 @@ const LABELS = {
   'worship-prep': 'Worship Team Prep',
   'home-recording': 'Home Recording (Logic Pro)',
   'songwriting': 'Songwriting Coaching',
+  'not-sure': 'Not Sure Yet',
   'after-school': 'After School',
   'daytime': 'Daytime',
   'homeschool': 'Homeschool',
@@ -153,7 +154,9 @@ app.post('/api/inquire', async (req, res) => {
       from: 'Todd Brannon Music <noreply@contact.toddbrannonmusic.com>',
       to: CONTACT_EMAIL,
       replyTo: email,
-      subject: `New ${escapeHtml(inquiryType)} — Todd Brannon Music`,
+      subject: inquiryType === 'General Contact'
+        ? 'New Message — Todd Brannon Music'
+        : `New ${escapeHtml(inquiryType)} — Todd Brannon Music`,
       html: htmlContent,
     });
 

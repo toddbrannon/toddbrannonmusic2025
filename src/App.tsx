@@ -4,6 +4,8 @@ import logo from './assets/tb_music_logo_1400.png';
 import brandLogo from './assets/tbm_brand.png';
 import toddHeadshot from './assets/ToddGuitarHeadshot.jpg';
 import InquiryForm from './InquiryForm';
+import CoachingInquiryForm from './CoachingInquiryForm';
+import GeneralContactForm from './GeneralContactForm';
 import PrivacyPolicy from './PrivacyPolicy';
 import mastersPlanImg from './assets/albums/MastersPlanStirredCover.jpg';
 import twentySixImg from './assets/albums/HIAUTMSKI_26_Cover.jpg';
@@ -40,6 +42,8 @@ function App() {
   const [touchEndX, setTouchEndX] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [showInquiryForm, setShowInquiryForm] = useState(false);
+  const [showCoachingForm, setShowCoachingForm] = useState(false);
+  const [showContactForm, setShowContactForm] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
 
   const albums = [
@@ -195,6 +199,28 @@ function App() {
       <InquiryForm
         onBack={() => {
           setShowInquiryForm(false);
+          window.scrollTo(0, 0);
+        }}
+      />
+    );
+  }
+
+  if (showCoachingForm) {
+    return (
+      <CoachingInquiryForm
+        onBack={() => {
+          setShowCoachingForm(false);
+          window.scrollTo(0, 0);
+        }}
+      />
+    );
+  }
+
+  if (showContactForm) {
+    return (
+      <GeneralContactForm
+        onBack={() => {
+          setShowContactForm(false);
           window.scrollTo(0, 0);
         }}
       />
@@ -467,6 +493,39 @@ function App() {
               <Instagram className="w-6 h-6 cursor-pointer" />
               <span>the_shake_band</span>
             </a> */}
+          </div>
+
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-12">
+            <button
+              data-testid="button-open-lesson-inquiry"
+              onClick={() => {
+                setShowInquiryForm(true);
+                window.scrollTo(0, 0);
+              }}
+              className="px-6 py-3 rounded-lg text-sm font-medium transition-colors border border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C]/10"
+            >
+              Inquire About Lessons
+            </button>
+            <button
+              data-testid="button-open-coaching-inquiry"
+              onClick={() => {
+                setShowCoachingForm(true);
+                window.scrollTo(0, 0);
+              }}
+              className="px-6 py-3 rounded-lg text-sm font-medium transition-colors border border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C]/10"
+            >
+              Coaching Inquiry
+            </button>
+            <button
+              data-testid="button-open-general-contact"
+              onClick={() => {
+                setShowContactForm(true);
+                window.scrollTo(0, 0);
+              }}
+              className="px-6 py-3 rounded-lg text-sm font-medium transition-colors border border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C]/10"
+            >
+              General Contact
+            </button>
           </div>
         </div>
       </section>
