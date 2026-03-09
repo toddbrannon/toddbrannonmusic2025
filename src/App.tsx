@@ -4,6 +4,7 @@ import logo from './assets/tb_music_logo_1400.png';
 import brandLogo from './assets/tbm_brand.png';
 import toddHeadshot from './assets/ToddGuitarHeadshot.jpg';
 import InquiryForm from './InquiryForm';
+import PrivacyPolicy from './PrivacyPolicy';
 import mastersPlanImg from './assets/albums/MastersPlanStirredCover.jpg';
 import twentySixImg from './assets/albums/HIAUTMSKI_26_Cover.jpg';
 import exWayImg from './assets/albums/TheShakeExWayCover.jpg';
@@ -39,6 +40,7 @@ function App() {
   const [touchEndX, setTouchEndX] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [showInquiryForm, setShowInquiryForm] = useState(false);
+  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
 
   const albums = [
     { title: 'Deep Calls To Deep (demo)', artist: 'Todd Brannon', image: deepImg, year: '2025',
@@ -176,6 +178,17 @@ function App() {
     setTouchStartX(0);
     setTouchEndX(0);
   };
+
+  if (showPrivacyPolicy) {
+    return (
+      <PrivacyPolicy
+        onBack={() => {
+          setShowPrivacyPolicy(false);
+          window.scrollTo(0, 0);
+        }}
+      />
+    );
+  }
 
   if (showInquiryForm) {
     return (
@@ -459,8 +472,18 @@ function App() {
       </section>
 
       <footer className="py-6 px-6 md:px-24 bg-gray-900 border-t border-gray-800">
-        <div className="max-w-6xl mx-auto text-center text-sm text-white/80">
-          © {new Date().getFullYear()} Todd Brannon. All rights reserved.
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-white/80">
+          <span>© {new Date().getFullYear()} Todd Brannon. All rights reserved.</span>
+          <button
+            data-testid="link-privacy-policy"
+            onClick={() => {
+              setShowPrivacyPolicy(true);
+              window.scrollTo(0, 0);
+            }}
+            className="text-white/40 hover:text-white/70 transition-colors text-xs"
+          >
+            Privacy Policy
+          </button>
         </div>
       </footer>
 

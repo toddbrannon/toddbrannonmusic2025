@@ -11,6 +11,7 @@ A personal website for Todd Brannon Music — showcasing music, live performance
 ## Project Structure
 - `src/App.tsx` — Main single-page application with hero, about, featured work, services, and contact sections. Includes a lesson inquiry modal that appears 3 seconds after page load.
 - `src/InquiryForm.tsx` — Standalone inquiry form component with dark/gold aesthetic, toggle groups, and submission handling.
+- `src/PrivacyPolicy.tsx` — Privacy policy page with site-consistent dark styling.
 - `src/index.css` — Tailwind base styles and custom animations.
 - `server.js` — Express API server with `/api/inquire` POST endpoint that sends formatted emails via Resend.
 - `vite.config.ts` — Vite config with proxy to backend API on port 3001.
@@ -29,3 +30,4 @@ A personal website for Todd Brannon Music — showcasing music, live performance
 - YouTube video integration (live performances and shorts)
 - Lesson inquiry modal with 3-second delayed appearance
 - Inquiry form with toggle groups and email notification via Resend
+- Privacy policy page accessible from footer link
