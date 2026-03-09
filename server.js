@@ -157,7 +157,10 @@ app.post('/api/inquire', async (req, res) => {
     });
 
     if (error) {
-      console.error('Resend error:', error);
+      console.error('Resend error:', JSON.stringify(error, null, 2));
+      if (error.statusCode === 403) {
+        return res.status(500).json({ error: 'Email delivery is not configured yet. Please contact Todd directly.' });
+      }
       return res.status(500).json({ error: 'Failed to send email. Please try again.' });
     }
 
