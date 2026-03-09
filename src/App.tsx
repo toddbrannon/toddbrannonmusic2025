@@ -434,7 +434,41 @@ function App() {
 
       <section id="contact" className="py-24 px-6 md:px-24 bg-gray-250">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-light mb-12">Get in Touch</h2>
+          <h2 className="text-4xl md:text-5xl font-light mb-8">Get in Touch</h2>
+
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-12">
+            <button
+              data-testid="button-open-lesson-inquiry"
+              onClick={() => {
+                setShowInquiryForm(true);
+                window.scrollTo(0, 0);
+              }}
+              className="px-6 py-3 rounded-lg text-sm font-medium transition-colors border border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C]/10"
+            >
+              Inquire About Lessons
+            </button>
+            <button
+              data-testid="button-open-coaching-inquiry"
+              onClick={() => {
+                setShowCoachingForm(true);
+                window.scrollTo(0, 0);
+              }}
+              className="px-6 py-3 rounded-lg text-sm font-medium transition-colors border border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C]/10"
+            >
+              Coaching Inquiry
+            </button>
+            <button
+              data-testid="button-open-general-contact"
+              onClick={() => {
+                setShowContactForm(true);
+                window.scrollTo(0, 0);
+              }}
+              className="px-6 py-3 rounded-lg text-sm font-medium transition-colors border border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C]/10"
+            >
+              General Contact
+            </button>
+          </div>
+
           <p className="text-lg md:text-xl font-light mb-12">
             Available for live performance, production, session work, and private instruction. Let's create something extraordinary together.
           </p>
@@ -493,39 +527,6 @@ function App() {
               <Instagram className="w-6 h-6 cursor-pointer" />
               <span>the_shake_band</span>
             </a> */}
-          </div>
-
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-12">
-            <button
-              data-testid="button-open-lesson-inquiry"
-              onClick={() => {
-                setShowInquiryForm(true);
-                window.scrollTo(0, 0);
-              }}
-              className="px-6 py-3 rounded-lg text-sm font-medium transition-colors border border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C]/10"
-            >
-              Inquire About Lessons
-            </button>
-            <button
-              data-testid="button-open-coaching-inquiry"
-              onClick={() => {
-                setShowCoachingForm(true);
-                window.scrollTo(0, 0);
-              }}
-              className="px-6 py-3 rounded-lg text-sm font-medium transition-colors border border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C]/10"
-            >
-              Coaching Inquiry
-            </button>
-            <button
-              data-testid="button-open-general-contact"
-              onClick={() => {
-                setShowContactForm(true);
-                window.scrollTo(0, 0);
-              }}
-              className="px-6 py-3 rounded-lg text-sm font-medium transition-colors border border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C]/10"
-            >
-              General Contact
-            </button>
           </div>
         </div>
       </section>
