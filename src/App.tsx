@@ -454,35 +454,37 @@ function App() {
       {showModal && (
         <div
           data-testid="modal-overlay"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-fadeIn"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-fadeIn p-4"
           onClick={() => setShowModal(false)}
         >
           <div
             data-testid="modal-lessons"
-            className="relative bg-gray-900 text-white rounded-2xl shadow-2xl max-w-2xl w-[90%] max-h-[90vh] overflow-y-auto mx-4 animate-slideUp"
+            className="relative bg-gray-900 text-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] flex flex-col md:flex-row overflow-hidden animate-slideUp"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               data-testid="button-close-modal"
               onClick={() => setShowModal(false)}
-              className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 transition-colors text-white text-xl leading-none"
+              className="absolute top-3 right-3 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 transition-colors text-white text-xl leading-none"
             >
               ×
             </button>
-            <img
-              src={toddHeadshot}
-              alt="Todd Brannon with guitar"
-              className="w-full max-h-[50vh] object-cover object-top rounded-t-2xl"
-            />
-            <div className="p-6 md:p-8 space-y-4">
-              <h2 className="text-2xl md:text-3xl font-semibold">Ready to Play — Really Play?</h2>
-              <p className="text-base md:text-lg font-light leading-relaxed text-gray-300">
+            <div className="md:w-2/5 flex-shrink-0 flex items-center justify-center bg-black/20 p-4 md:p-0">
+              <img
+                src={toddHeadshot}
+                alt="Todd Brannon with guitar"
+                className="w-auto h-auto max-h-[30vh] md:max-h-[80vh] object-contain rounded-xl md:rounded-none md:rounded-l-2xl md:w-full md:h-full md:object-cover"
+              />
+            </div>
+            <div className="flex-1 p-5 md:p-8 flex flex-col justify-center space-y-3 md:space-y-4 overflow-y-auto">
+              <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold">Ready to Play — Really Play?</h2>
+              <p className="text-sm md:text-base font-light leading-relaxed text-gray-300">
                 Whether you're a beginner picking up a guitar for the first time or a teen or adult looking to sharpen your skills for a worship team or band, I offer focused, personalized instruction that goes beyond technique and theory.
               </p>
-              <p className="text-base md:text-lg font-light leading-relaxed text-gray-300">
+              <p className="text-sm md:text-base font-light leading-relaxed text-gray-300">
                 With 12 years on the worship team at Valley Creek Church and experience as a songwriter and recording artist, I bring real, working musicianship into every lesson — so you're learning from someone who plays, not just teaches.
               </p>
-              <p className="text-base md:text-lg font-light leading-relaxed text-gray-300">
+              <p className="text-sm md:text-base font-light leading-relaxed text-gray-300">
                 I currently teach 25+ students at New Song School of the Arts (Argyle) and Legacy Music Studio (Lewisville), with after-school, daytime, and homeschool availability.
               </p>
               <button
@@ -491,7 +493,7 @@ function App() {
                   setShowModal(false);
                   document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="mt-4 w-full py-3 px-6 bg-[#2F4F4F] hover:bg-[#3a6363] transition-colors text-white font-medium rounded-lg text-lg"
+                className="mt-2 w-full py-3 px-6 bg-[#2F4F4F] hover:bg-[#3a6363] transition-colors text-white font-medium rounded-lg text-base md:text-lg"
               >
                 Inquire About Lessons
               </button>
