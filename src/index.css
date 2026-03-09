@@ -10,6 +10,10 @@
   body {
     @apply antialiased bg-[#1a1a1a];
   }
+
+  button, input, textarea, select {
+    font-family: inherit;
+  }
 }
 
 @keyframes fadeIn {

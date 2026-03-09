@@ -246,7 +246,7 @@ function App() {
                 setShowInquiryForm(true);
                 window.scrollTo(0, 0);
               }}
-              className="px-6 py-3 rounded-lg text-sm font-medium transition-all border-2 border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C] hover:text-black"
+              className="px-6 py-3 rounded-lg text-sm font-light tracking-wide transition-all border-2 border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C] hover:text-black"
             >
               Inquire About Lessons
             </button>
@@ -256,7 +256,7 @@ function App() {
                 setShowCoachingForm(true);
                 window.scrollTo(0, 0);
               }}
-              className="px-6 py-3 rounded-lg text-sm font-medium transition-all border-2 border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C] hover:text-black"
+              className="px-6 py-3 rounded-lg text-sm font-light tracking-wide transition-all border-2 border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C] hover:text-black"
             >
               Inquire About Coaching
             </button>
@@ -465,7 +465,7 @@ function App() {
                 setShowInquiryForm(true);
                 window.scrollTo(0, 0);
               }}
-              className="px-6 py-3 rounded-lg text-sm font-medium transition-colors border border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C]/10"
+              className="px-6 py-3 rounded-lg text-sm font-light tracking-wide transition-colors border border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C]/10"
             >
               Inquire About Lessons
             </button>
@@ -475,7 +475,7 @@ function App() {
                 setShowCoachingForm(true);
                 window.scrollTo(0, 0);
               }}
-              className="px-6 py-3 rounded-lg text-sm font-medium transition-colors border border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C]/10"
+              className="px-6 py-3 rounded-lg text-sm font-light tracking-wide transition-colors border border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C]/10"
             >
               Coaching Inquiry
             </button>
@@ -485,7 +485,7 @@ function App() {
                 setShowContactForm(true);
                 window.scrollTo(0, 0);
               }}
-              className="px-6 py-3 rounded-lg text-sm font-medium transition-colors border border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C]/10"
+              className="px-6 py-3 rounded-lg text-sm font-light tracking-wide transition-colors border border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C]/10"
             >
               General Contact
             </button>
@@ -648,7 +648,7 @@ function App() {
                   setShowInquiryForm(true);
                   window.scrollTo(0, 0);
                 }}
-                className="mt-2 w-full py-3 px-6 bg-[#2F4F4F] hover:bg-[#3a6363] transition-colors text-white font-medium rounded-lg text-base md:text-lg"
+                className="mt-2 w-full py-3 px-6 bg-[#2F4F4F] hover:bg-[#3a6363] transition-colors text-white font-light tracking-wide rounded-lg text-base md:text-lg"
               >
                 Inquire About Lessons
               </button>
