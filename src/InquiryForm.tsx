@@ -104,6 +104,7 @@ export default function InquiryForm({ onBack }: { onBack: () => void }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          inquiryType: 'Lesson Inquiry',
           name,
           email,
           phone,

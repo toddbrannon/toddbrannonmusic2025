@@ -77,6 +77,7 @@ function formatList(items) {
 
 app.post('/api/inquire', async (req, res) => {
   try {
+    const inquiryType = sanitizeString(req.body.inquiryType, 100) || 'Inquiry';
     const name = sanitizeString(req.body.name, 200);
     const email = sanitizeString(req.body.email, 320);
     const phone = sanitizeString(req.body.phone, 30);
@@ -152,7 +153,7 @@ app.post('/api/inquire', async (req, res) => {
       from: 'Todd Brannon Music <noreply@contact.toddbrannonmusic.com>',
       to: CONTACT_EMAIL,
       replyTo: email,
-      subject: `Lesson Inquiry from ${safeName}`,
+      subject: `New ${escapeHtml(inquiryType)} — Todd Brannon Music`,
       html: htmlContent,
     });
 
