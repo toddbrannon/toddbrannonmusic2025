@@ -469,11 +469,11 @@ function App() {
             >
               ×
             </button>
-            <div className="md:w-2/5 flex-shrink-0 flex items-center justify-center bg-black/20 p-4 md:p-0">
+            <div className="md:w-2/5 flex-shrink-0 flex items-center justify-center bg-gray-950 p-4 md:p-3 md:rounded-l-2xl">
               <img
                 src={toddHeadshot}
                 alt="Todd Brannon with guitar"
-                className="w-auto h-auto max-h-[30vh] md:max-h-[80vh] object-contain rounded-xl md:rounded-none md:rounded-l-2xl md:w-full md:h-full md:object-cover"
+                className="max-h-[30vh] md:max-h-[80vh] w-auto h-auto object-contain rounded-xl"
               />
             </div>
             <div className="flex-1 p-5 md:p-8 flex flex-col justify-center space-y-3 md:space-y-4 overflow-y-auto">
