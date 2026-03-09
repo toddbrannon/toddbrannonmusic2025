@@ -55,6 +55,8 @@ function ToggleGroup({
 
 export default function InquiryForm({ onBack }: { onBack: () => void }) {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -92,9 +94,40 @@ export default function InquiryForm({ onBack }: { onBack: () => void }) {
     { label: 'Open', value: 'open' },
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+    setError('');
+
+    try {
+      const res = await fetch('/api/inquire', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          studentType,
+          experience,
+          interests,
+          availability,
+          message,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || 'Something went wrong. Please try again.');
+        return;
+      }
+
+      setSubmitted(true);
+    } catch {
+      setError('Unable to send your inquiry. Please check your connection and try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -259,19 +292,26 @@ export default function InquiryForm({ onBack }: { onBack: () => void }) {
             />
           </div>
 
+          {error && (
+            <div data-testid="text-error" className="p-4 rounded-lg bg-red-900/30 border border-red-800 text-red-300 text-sm">
+              {error}
+            </div>
+          )}
+
           <button
             data-testid="button-submit-inquiry"
             type="submit"
-            className="w-full py-3 px-6 rounded-lg text-lg font-medium transition-colors text-white"
+            disabled={submitting}
+            className="w-full py-3 px-6 rounded-lg text-lg font-medium transition-colors text-white disabled:opacity-60 disabled:cursor-not-allowed"
             style={{ backgroundColor: GOLD }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = GOLD_HOVER)
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = GOLD)
-            }
+            onMouseEnter={(e) => {
+              if (!submitting) e.currentTarget.style.backgroundColor = GOLD_HOVER;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = GOLD;
+            }}
           >
-            Send Inquiry
+            {submitting ? 'Sending...' : 'Send Inquiry'}
           </button>
         </form>
       </div>
