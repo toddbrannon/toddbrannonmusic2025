@@ -472,7 +472,7 @@ function App() {
             <img
               src={toddHeadshot}
               alt="Todd Brannon with guitar"
-              className="w-full h-64 md:h-80 object-cover object-top rounded-t-2xl"
+              className="w-full max-h-[50vh] object-cover object-top rounded-t-2xl"
             />
             <div className="p-6 md:p-8 space-y-4">
               <h2 className="text-2xl md:text-3xl font-semibold">Ready to Play — Really Play?</h2>
