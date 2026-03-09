@@ -3,6 +3,7 @@ import heroImage from './assets/RivoltaLive.jpg';
 import logo from './assets/tb_music_logo_1400.png';
 import brandLogo from './assets/tbm_brand.png';
 import toddHeadshot from './assets/ToddGuitarHeadshot.jpg';
+import InquiryForm from './InquiryForm';
 import mastersPlanImg from './assets/albums/MastersPlanStirredCover.jpg';
 import twentySixImg from './assets/albums/HIAUTMSKI_26_Cover.jpg';
 import exWayImg from './assets/albums/TheShakeExWayCover.jpg';
@@ -37,6 +38,7 @@ function App() {
   const [touchStartX, setTouchStartX] = useState(0);
   const [touchEndX, setTouchEndX] = useState(0);
   const [showModal, setShowModal] = useState(false);
+  const [showInquiryForm, setShowInquiryForm] = useState(false);
 
   const albums = [
     { title: 'Deep Calls To Deep (demo)', artist: 'Todd Brannon', image: deepImg, year: '2025',
@@ -174,6 +176,17 @@ function App() {
     setTouchStartX(0);
     setTouchEndX(0);
   };
+
+  if (showInquiryForm) {
+    return (
+      <InquiryForm
+        onBack={() => {
+          setShowInquiryForm(false);
+          window.scrollTo(0, 0);
+        }}
+      />
+    );
+  }
 
   return (
     <div className="relative">
@@ -491,7 +504,8 @@ function App() {
                 data-testid="button-inquire-lessons"
                 onClick={() => {
                   setShowModal(false);
-                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                  setShowInquiryForm(true);
+                  window.scrollTo(0, 0);
                 }}
                 className="mt-2 w-full py-3 px-6 bg-[#2F4F4F] hover:bg-[#3a6363] transition-colors text-white font-medium rounded-lg text-base md:text-lg"
               >
