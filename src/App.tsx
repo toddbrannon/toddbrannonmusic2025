@@ -454,7 +454,7 @@ function App() {
         </div>
       </section>
 
-      <section id="contact" className="py-24 px-6 md:px-24 bg-gray-250">
+      <section id="contact" className="py-24 px-6 md:px-24 bg-gray-300">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-light mb-8">Get in Touch</h2>
 
