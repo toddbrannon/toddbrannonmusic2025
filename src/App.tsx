@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import heroImage from './assets/RivoltaLive.jpg';
 import logo from './assets/tb_music_logo_1400.png';
 import brandLogo from './assets/tbm_brand.png';
+import toddHeadshot from './assets/ToddGuitarHeadshot.jpg';
 import mastersPlanImg from './assets/albums/MastersPlanStirredCover.jpg';
 import twentySixImg from './assets/albums/HIAUTMSKI_26_Cover.jpg';
 import exWayImg from './assets/albums/TheShakeExWayCover.jpg';
@@ -35,6 +36,7 @@ function App() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [touchStartX, setTouchStartX] = useState(0);
   const [touchEndX, setTouchEndX] = useState(0);
+  const [showModal, setShowModal] = useState(false);
 
   const albums = [
     { title: 'Deep Calls To Deep (demo)', artist: 'Todd Brannon', image: deepImg, year: '2025',
@@ -92,6 +94,11 @@ function App() {
     firstScript?.parentNode?.insertBefore(script, firstScript);
     window.onYouTubeIframeAPIReady = () => setApiReady(true);
     return () => { delete window.onYouTubeIframeAPIReady; };
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowModal(true), 3000);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -373,7 +380,7 @@ function App() {
         </div>
       </section>
 
-      <section className="py-24 px-6 md:px-24 bg-gray-250">
+      <section id="contact" className="py-24 px-6 md:px-24 bg-gray-250">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-light mb-12">Get in Touch</h2>
           <p className="text-lg md:text-xl font-light mb-12">
@@ -443,6 +450,55 @@ function App() {
           © {new Date().getFullYear()} Todd Brannon. All rights reserved.
         </div>
       </footer>
+
+      {showModal && (
+        <div
+          data-testid="modal-overlay"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-fadeIn"
+          onClick={() => setShowModal(false)}
+        >
+          <div
+            data-testid="modal-lessons"
+            className="relative bg-gray-900 text-white rounded-2xl shadow-2xl max-w-2xl w-[90%] max-h-[90vh] overflow-y-auto mx-4 animate-slideUp"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              data-testid="button-close-modal"
+              onClick={() => setShowModal(false)}
+              className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 transition-colors text-white text-xl leading-none"
+            >
+              ×
+            </button>
+            <img
+              src={toddHeadshot}
+              alt="Todd Brannon with guitar"
+              className="w-full h-64 md:h-80 object-cover object-top rounded-t-2xl"
+            />
+            <div className="p-6 md:p-8 space-y-4">
+              <h2 className="text-2xl md:text-3xl font-semibold">Ready to Play — Really Play?</h2>
+              <p className="text-base md:text-lg font-light leading-relaxed text-gray-300">
+                Whether you're a beginner picking up a guitar for the first time or a teen or adult looking to sharpen your skills for a worship team or band, I offer focused, personalized instruction that goes beyond technique and theory.
+              </p>
+              <p className="text-base md:text-lg font-light leading-relaxed text-gray-300">
+                With 12 years on the worship team at Valley Creek Church and experience as a songwriter and recording artist, I bring real, working musicianship into every lesson — so you're learning from someone who plays, not just teaches.
+              </p>
+              <p className="text-base md:text-lg font-light leading-relaxed text-gray-300">
+                I currently teach 25+ students at New Song School of the Arts (Argyle) and Legacy Music Studio (Lewisville), with after-school, daytime, and homeschool availability.
+              </p>
+              <button
+                data-testid="button-inquire-lessons"
+                onClick={() => {
+                  setShowModal(false);
+                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="mt-4 w-full py-3 px-6 bg-[#2F4F4F] hover:bg-[#3a6363] transition-colors text-white font-medium rounded-lg text-lg"
+              >
+                Inquire About Lessons
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
