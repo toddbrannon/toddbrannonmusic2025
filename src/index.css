@@ -8,7 +8,7 @@
   }
   
   body {
-    @apply antialiased;
+    @apply antialiased bg-[#1a1a1a];
   }
 }
 
