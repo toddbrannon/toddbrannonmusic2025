@@ -1,5 +1,8 @@
 import express from 'express';
 import { Resend } from 'resend';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import fs from 'fs';
 
 const app = express();
 app.use(express.json({ limit: '100kb' }));
@@ -174,6 +177,17 @@ app.post('/api/inquire', async (req, res) => {
     return res.status(500).json({ error: 'Something went wrong. Please try again.' });
   }
 });
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const distPath = join(__dirname, 'dist');
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+  app.get('*', (req, res) => {
+    res.sendFile(join(distPath, 'index.html'));
+  });
+}
 
 const PORT = 3001;
 app.listen(PORT, '0.0.0.0', () => {
