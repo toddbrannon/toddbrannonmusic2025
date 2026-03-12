@@ -37,9 +37,6 @@ function App() {
   const currentPlayerRef = useRef<YT.Player | null>(null);
   const playerRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const [videoStates, setVideoStates] = useState<Record<string, boolean>>({});
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [touchStartX, setTouchStartX] = useState(0);
-  const [touchEndX, setTouchEndX] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [showInquiryForm, setShowInquiryForm] = useState(false);
   const [showCoachingForm, setShowCoachingForm] = useState(false);
@@ -150,38 +147,6 @@ function App() {
     }
   };
 
-  const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % liveShots.length);
-  };
-  
-  const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + liveShots.length) % liveShots.length);
-  };
-  
-  const handleTouchStart = (e) => {
-    setTouchStartX(e.targetTouches[0].clientX);
-  };
-  
-  const handleTouchMove = (e) => {
-    setTouchEndX(e.targetTouches[0].clientX);
-  };
-  
-  const handleTouchEnd = () => {
-    if (!touchStartX || !touchEndX) return;
-    
-    const distance = touchStartX - touchEndX;
-    const isLeftSwipe = distance > 50;
-    const isRightSwipe = distance < -50;
-  
-    if (isLeftSwipe) {
-      nextImage();
-    } else if (isRightSwipe) {
-      prevImage();
-    }
-  
-    setTouchStartX(0);
-    setTouchEndX(0);
-  };
 
   if (showPrivacyPolicy) {
     return (
@@ -264,84 +229,99 @@ function App() {
         </div>
       </div>
 
-      <section className="py-24 px-6 md:px-24 bg-gray-900 text-gray-100">
-        <div className="max-w-3xl mx-auto space-y-8">
-          <h2 className="text-4xl md:text-5xl font-light mb-12">About</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed">
-              With over two decades of experience in music production and performance, I've dedicated my life to crafting authentic sounds and helping others discover their musical voice.
-              My musical roots run deep — the son of a southern gospel singer, I was placed in piano lessons at a young age, training steadily until I was 14. That early foundation shaped my ear for melody and harmony and continues to influence my work today.
-            </p>
-            <p className="text-lg md:text-xl font-light leading-relaxed">
-              My musical journey continued in 1996 when I formed The Shake with my cousin and two friends. We recorded multiple projects, including a 3-song EP (1998), a full-length album "In This Chaos" (1999), and additional unreleased tracks in Nashville (2001). During our five years together, we performed extensively throughout the Dallas-Fort Worth area and beyond. Since 2013, I've served on the worship team at Valley Creek Church in Flower Mound, contributing to three live worship albums (2015, 2023, and 2024).
-            </p>
-            {/* <ArrowDown className="w-8 h-8 animate-bounce mb-8" /> */}
-          
-            {/* Mobile: Single image with swipe */}
-            <div className="block md:hidden w-full px-4 relative">
-              <div 
-                className="relative overflow-hidden rounded-lg shadow-lg max-w-xs mx-auto"
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
-              >
-                <img
-                  src={liveShots[currentImageIndex]}
-                  className="w-full h-96 object-cover"
-                />
-                
-                {/* Navigation arrows for mobile */}
-                <button
-                  onClick={prevImage}
-                  className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-70 transition-opacity"
-                >
-                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
-                <button
-                  onClick={nextImage}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-70 transition-opacity"
-                >
-                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
-                
-                
-              </div>
-              
-              {/* Dot indicators */}
-              <div className="flex justify-center mt-4 space-x-2">
-                {albums.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentImageIndex(index)}
-                    className={`w-2 h-2 rounded-full transition-colors ${
-                      index === currentImageIndex ? 'bg-white' : 'bg-white bg-opacity-50'
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
+      <section className="py-24 bg-gray-900 text-gray-100 overflow-hidden">
 
-            {/* Desktop: All images in a row */}
-            <div className="hidden md:flex w-full px-4 max-w-6xl mx-auto space-x-4">
-              {liveShots.map((image, index) => (
-                <div key={index} className="flex-1 relative group">
-                  <img
-                    src={image}
-                    className="w-full h-80 object-cover rounded-lg shadow-lg"
-                  />
+        {/* Stat callouts */}
+        <div className="px-6 md:px-24 mb-20">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-light mb-16">About</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+              {[
+                { value: '20+', label: 'Years in Music' },
+                { value: '3', label: 'Live Worship Albums' },
+                { value: 'Nashville', label: 'Recording Sessions' },
+                { value: '2', label: 'Teaching Studios' },
+              ].map((stat) => (
+                <div key={stat.label} className="border-t border-[#C9A84C] pt-5">
+                  <div className="text-4xl md:text-5xl font-light text-white mb-1">{stat.value}</div>
+                  <div className="text-sm font-light tracking-wide text-gray-400 uppercase">{stat.label}</div>
                 </div>
               ))}
             </div>
-            <p className="text-lg md:text-xl font-light leading-relaxed">
-              Recent projects include instrumental compositions released on major streaming platforms (Spotify, Apple Music, YouTube) under the HIAUTMSKI moniker. I've also produced and released remixes of two classic Shake songs from "In This Chaos," while also releasing the complete original album on streaming platforms for a new generation to discover.
-            </p>
-            <p className="text-lg md:text-xl font-light leading-relaxed">
-              I also teach guitar at two local studios serving the north Dallas Fort Worth and Denton areas specializing in beginner to intermediate instruction with a focus on rock, pop, and worship music. As an instructor, I focus on developing each student's unique style while building a strong foundation in music theory and technique. I'm always open to inquiries from potential new students, offering personalized guidance to help them achieve their musical goals.
-            </p>
           </div>
+        </div>
+
+        {/* Pull quote */}
+        <div className="px-6 md:px-24 mb-20">
+          <div className="max-w-6xl mx-auto">
+            <blockquote className="border-l-4 border-[#C9A84C] pl-8 md:pl-12">
+              <p className="text-2xl md:text-3xl font-light leading-relaxed text-white italic">
+                "Son of a southern gospel singer — music has always been the foundation."
+              </p>
+            </blockquote>
+          </div>
+        </div>
+
+        {/* Timeline */}
+        <div className="px-6 md:px-24 mb-20">
+          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 md:gap-16">
+            <div>
+              <div className="text-xs font-light tracking-widest text-[#C9A84C] uppercase mb-3">Early Roots</div>
+              <h3 className="text-xl font-light text-white mb-4">Before the Stage</h3>
+              <p className="text-base font-light leading-relaxed text-gray-400">
+                The son of a southern gospel singer, I started piano lessons young and trained steadily until age 14. That early foundation — melody, harmony, discipline — shaped everything that followed.
+              </p>
+            </div>
+            <div>
+              <div className="text-xs font-light tracking-widest text-[#C9A84C] uppercase mb-3">The Shake Years · 1996–2001</div>
+              <h3 className="text-xl font-light text-white mb-4">Building the Band</h3>
+              <p className="text-base font-light leading-relaxed text-gray-400">
+                In 1996, I formed The Shake with my cousin and two friends. Over five years we recorded a 3-song EP (1998), the full-length album <em>In This Chaos</em> (1999), and additional sessions in Nashville (2001). We performed extensively throughout Dallas-Fort Worth and beyond.
+              </p>
+            </div>
+            <div>
+              <div className="text-xs font-light tracking-widest text-[#C9A84C] uppercase mb-3">Valley Creek · 2013–Present</div>
+              <h3 className="text-xl font-light text-white mb-4">Worship & Community</h3>
+              <p className="text-base font-light leading-relaxed text-gray-400">
+                Since 2013, I've served as a worship team guitarist at Valley Creek Church in Flower Mound — contributing to three live worship albums in 2015, 2023, and 2024.
+              </p>
+            </div>
+            <div>
+              <div className="text-xs font-light tracking-widest text-[#C9A84C] uppercase mb-3">Current Projects</div>
+              <h3 className="text-xl font-light text-white mb-4">Recording, Remixes & Teaching</h3>
+              <p className="text-base font-light leading-relaxed text-gray-400">
+                Original instrumental releases live on Spotify, Apple Music, and YouTube under the moniker HIAUTMSKI. I've also produced remixes of classic Shake songs from <em>In This Chaos</em>. On the teaching side, I instruct at two local studios serving north Dallas-Fort Worth and Denton, focusing on rock, pop, and worship — beginner to intermediate.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Full-width staggered photo strip */}
+        <div className="w-full overflow-hidden">
+          <div className="flex items-end gap-1 md:gap-2" style={{ height: '340px' }}>
+            {liveShots.map((image, index) => {
+              const offsets = [0, -24, 12, -16, 8];
+              return (
+                <div
+                  key={index}
+                  className="flex-1 relative overflow-hidden"
+                  style={{
+                    height: `${300 + offsets[index % offsets.length]}px`,
+                    transform: `translateY(${offsets[index % offsets.length] > 0 ? offsets[index % offsets.length] : 0}px)`,
+                  }}
+                >
+                  <img
+                    src={image}
+                    className="w-full h-full object-cover"
+                    style={{ filter: 'brightness(0.85)' }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
       </section>
 
       <section className="py-24 px-6 md:px-24 bg-gray-300">
