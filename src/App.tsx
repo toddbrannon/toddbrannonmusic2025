@@ -430,7 +430,7 @@ function App() {
                 <button
                   data-testid="cta-live-performance"
                   onClick={() => { setShowContactForm(true); window.scrollTo(0, 0); }}
-                  className="w-full py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#2F4F4F] hover:bg-[#3a6363] text-white"
+                  className="w-full py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42]"
                 >
                   Request gear list →
                 </button>
@@ -452,7 +452,7 @@ function App() {
                 <button
                   data-testid="cta-studio"
                   onClick={() => { setShowCoachingForm(true); window.scrollTo(0, 0); }}
-                  className="w-full py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#2F4F4F] hover:bg-[#3a6363] text-white"
+                  className="w-full py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42]"
                 >
                   Start a project →
                 </button>
@@ -474,7 +474,7 @@ function App() {
                 <button
                   data-testid="cta-lessons"
                   onClick={() => { setShowInquiryForm(true); window.scrollTo(0, 0); }}
-                  className="w-full py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#2F4F4F] hover:bg-[#3a6363] text-white"
+                  className="w-full py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42]"
                 >
                   Inquire about lessons →
                 </button>
@@ -496,7 +496,7 @@ function App() {
                 <button
                   data-testid="cta-session"
                   onClick={() => { setShowContactForm(true); window.scrollTo(0, 0); }}
-                  className="w-full py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#2F4F4F] hover:bg-[#3a6363] text-white"
+                  className="w-full py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42]"
                 >
                   Book a session →
                 </button>
