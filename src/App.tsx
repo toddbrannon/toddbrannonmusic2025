@@ -211,7 +211,7 @@ function App() {
                 setShowInquiryForm(true);
                 window.scrollTo(0, 0);
               }}
-              className="px-6 py-3 rounded-lg text-sm font-light tracking-wide transition-all border-2 border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C] hover:text-black"
+              className="py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#2F4F4F] hover:bg-[#3a6363] text-white"
             >
               Inquire About Lessons
             </button>
@@ -221,7 +221,7 @@ function App() {
                 setShowCoachingForm(true);
                 window.scrollTo(0, 0);
               }}
-              className="px-6 py-3 rounded-lg text-sm font-light tracking-wide transition-all border-2 border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C] hover:text-black"
+              className="py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#2F4F4F] hover:bg-[#3a6363] text-white"
             >
               Inquire About Coaching
             </button>
@@ -430,8 +430,7 @@ function App() {
                 <button
                   data-testid="cta-live-performance"
                   onClick={() => { setShowContactForm(true); window.scrollTo(0, 0); }}
-                  className="text-sm font-light tracking-wide transition-colors"
-                  style={{ color: '#2D7DD2' }}
+                  className="w-full py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#2F4F4F] hover:bg-[#3a6363] text-white"
                 >
                   Request gear list →
                 </button>
@@ -453,8 +452,7 @@ function App() {
                 <button
                   data-testid="cta-studio"
                   onClick={() => { setShowCoachingForm(true); window.scrollTo(0, 0); }}
-                  className="text-sm font-light tracking-wide transition-colors"
-                  style={{ color: '#2D7DD2' }}
+                  className="w-full py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#2F4F4F] hover:bg-[#3a6363] text-white"
                 >
                   Start a project →
                 </button>
@@ -476,8 +474,7 @@ function App() {
                 <button
                   data-testid="cta-lessons"
                   onClick={() => { setShowInquiryForm(true); window.scrollTo(0, 0); }}
-                  className="text-sm font-light tracking-wide transition-colors"
-                  style={{ color: '#2D7DD2' }}
+                  className="w-full py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#2F4F4F] hover:bg-[#3a6363] text-white"
                 >
                   Inquire about lessons →
                 </button>
@@ -499,8 +496,7 @@ function App() {
                 <button
                   data-testid="cta-session"
                   onClick={() => { setShowContactForm(true); window.scrollTo(0, 0); }}
-                  className="text-sm font-light tracking-wide transition-colors"
-                  style={{ color: '#2D7DD2' }}
+                  className="w-full py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#2F4F4F] hover:bg-[#3a6363] text-white"
                 >
                   Book a session →
                 </button>
@@ -522,7 +518,7 @@ function App() {
                 setShowInquiryForm(true);
                 window.scrollTo(0, 0);
               }}
-              className="px-6 py-3 rounded-lg text-sm font-light tracking-wide transition-colors border border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C]/10"
+              className="py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#2F4F4F] hover:bg-[#3a6363] text-white"
             >
               Inquire About Lessons
             </button>
@@ -532,7 +528,7 @@ function App() {
                 setShowCoachingForm(true);
                 window.scrollTo(0, 0);
               }}
-              className="px-6 py-3 rounded-lg text-sm font-light tracking-wide transition-colors border border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C]/10"
+              className="py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#2F4F4F] hover:bg-[#3a6363] text-white"
             >
               Coaching Inquiry
             </button>
@@ -542,7 +538,7 @@ function App() {
                 setShowContactForm(true);
                 window.scrollTo(0, 0);
               }}
-              className="px-6 py-3 rounded-lg text-sm font-light tracking-wide transition-colors border border-[#C9A84C] text-[#C9A84C] hover:bg-[#C9A84C]/10"
+              className="py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#2F4F4F] hover:bg-[#3a6363] text-white"
             >
               General Contact
             </button>
