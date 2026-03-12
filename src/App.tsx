@@ -24,7 +24,7 @@ import toddLive10 from './assets/live/ToddLive22.png';
 import toddLive14 from './assets/live/ToddLive24.png';
 
 import { SiSpotify, SiApplemusic, SiYoutubemusic, SiSoundcloud, SiBandcamp, SiYoutube } from 'react-icons/si';
-import { ArrowDown, Instagram } from 'lucide-react';
+import { ArrowDown, Instagram, Mic, Sliders, Music, Headphones } from 'lucide-react';
 
 interface VideoPlayer {
   player: YT.Player | null;
@@ -403,33 +403,110 @@ function App() {
       </section>
 
       <section className="py-24 px-6 md:px-24 bg-gray-900 text-gray-100">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-light mb-12">Services</h2>
-          <div className="space-y-12">
-            <div>
-              <h3 className="text-2xl font-light mb-4">Live Performance</h3>
-              <p className="text-lg font-light leading-relaxed">
-                Available to fill in as your electric guitarist for live gigs or worship team needs. Gear list available upon request.
-              </p>
+        <div className="max-w-6xl mx-auto">
+
+          {/* Section header */}
+          <div className="mb-16">
+            <div className="text-xs font-light tracking-widest text-[#C9A84C] uppercase mb-3">What I Do</div>
+            <h2 className="text-4xl md:text-5xl font-light mb-4">Services</h2>
+            <p className="text-base font-light text-gray-400">From the stage to the studio to your living room.</p>
+          </div>
+
+          {/* 2x2 card grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            {/* Live Performance */}
+            <div className="bg-[#141414] border border-gray-800 rounded-xl p-8 flex flex-col group hover:border-[#C9A84C]/40 transition-colors">
+              <div className="mb-6">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-6" style={{ backgroundColor: 'rgba(201,168,76,0.12)' }}>
+                  <Mic className="w-5 h-5" style={{ color: '#C9A84C' }} />
+                </div>
+                <h3 className="text-xl font-light text-white mb-3">Live Performance</h3>
+                <p className="text-sm font-light leading-relaxed text-gray-400">
+                  Available to fill in as your electric guitarist for live gigs or worship team needs. Gear list available upon request.
+                </p>
+              </div>
+              <div className="mt-auto pt-6 border-t border-gray-800">
+                <button
+                  data-testid="cta-live-performance"
+                  onClick={() => { setShowContactForm(true); window.scrollTo(0, 0); }}
+                  className="text-sm font-light tracking-wide transition-colors group-hover:text-[#C9A84C]"
+                  style={{ color: '#C9A84C' }}
+                >
+                  Request gear list →
+                </button>
+              </div>
             </div>
-            <div>
-              <h3 className="text-2xl font-light mb-4">Studio Engineering & Music Production</h3>
-              <p className="text-lg font-light leading-relaxed">
-                Full-service studio production, from pre-production planning through final mastering. Specializing in guitar-driven genres and acoustic arrangements.
-              </p>
+
+            {/* Studio Engineering */}
+            <div className="bg-[#141414] border border-gray-800 rounded-xl p-8 flex flex-col group hover:border-[#C9A84C]/40 transition-colors">
+              <div className="mb-6">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-6" style={{ backgroundColor: 'rgba(201,168,76,0.12)' }}>
+                  <Sliders className="w-5 h-5" style={{ color: '#C9A84C' }} />
+                </div>
+                <h3 className="text-xl font-light text-white mb-3">Studio Engineering & Music Production</h3>
+                <p className="text-sm font-light leading-relaxed text-gray-400">
+                  Full-service studio production, from pre-production planning through final mastering. Specializing in guitar-driven genres and acoustic arrangements.
+                </p>
+              </div>
+              <div className="mt-auto pt-6 border-t border-gray-800">
+                <button
+                  data-testid="cta-studio"
+                  onClick={() => { setShowCoachingForm(true); window.scrollTo(0, 0); }}
+                  className="text-sm font-light tracking-wide transition-colors"
+                  style={{ color: '#C9A84C' }}
+                >
+                  Start a project →
+                </button>
+              </div>
             </div>
-            <div>
-              <h3 className="text-2xl font-light mb-4">Guitar Instruction</h3>
-              <p className="text-lg font-light leading-relaxed">
-                Private lessons for all skill levels. Customized curriculum focusing on technique, theory, and personal style development.
-              </p>
+
+            {/* Guitar Instruction */}
+            <div className="bg-[#141414] border border-gray-800 rounded-xl p-8 flex flex-col group hover:border-[#C9A84C]/40 transition-colors">
+              <div className="mb-6">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-6" style={{ backgroundColor: 'rgba(201,168,76,0.12)' }}>
+                  <Music className="w-5 h-5" style={{ color: '#C9A84C' }} />
+                </div>
+                <h3 className="text-xl font-light text-white mb-3">Guitar Instruction</h3>
+                <p className="text-sm font-light leading-relaxed text-gray-400">
+                  Private lessons for all skill levels. Customized curriculum focusing on technique, theory, and personal style development.
+                </p>
+              </div>
+              <div className="mt-auto pt-6 border-t border-gray-800">
+                <button
+                  data-testid="cta-lessons"
+                  onClick={() => { setShowInquiryForm(true); window.scrollTo(0, 0); }}
+                  className="text-sm font-light tracking-wide transition-colors"
+                  style={{ color: '#C9A84C' }}
+                >
+                  Inquire about lessons →
+                </button>
+              </div>
             </div>
-            <div>
-              <h3 className="text-2xl font-light mb-4">Session Work</h3>
-              <p className="text-lg font-light leading-relaxed">
-                Professional guitar tracks for your recordings. Remote sessions available with quick turnaround times.
-              </p>
+
+            {/* Session Work */}
+            <div className="bg-[#141414] border border-gray-800 rounded-xl p-8 flex flex-col group hover:border-[#C9A84C]/40 transition-colors">
+              <div className="mb-6">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-6" style={{ backgroundColor: 'rgba(201,168,76,0.12)' }}>
+                  <Headphones className="w-5 h-5" style={{ color: '#C9A84C' }} />
+                </div>
+                <h3 className="text-xl font-light text-white mb-3">Session Work</h3>
+                <p className="text-sm font-light leading-relaxed text-gray-400">
+                  Professional guitar tracks for your recordings. Remote sessions available with quick turnaround times.
+                </p>
+              </div>
+              <div className="mt-auto pt-6 border-t border-gray-800">
+                <button
+                  data-testid="cta-session"
+                  onClick={() => { setShowContactForm(true); window.scrollTo(0, 0); }}
+                  className="text-sm font-light tracking-wide transition-colors"
+                  style={{ color: '#C9A84C' }}
+                >
+                  Book a session →
+                </button>
+              </div>
             </div>
+
           </div>
         </div>
       </section>
