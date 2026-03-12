@@ -34,6 +34,8 @@ interface VideoPlayer {
 function App() {
   const [players, setPlayers] = useState<VideoPlayer[]>([]);
   const [apiReady, setApiReady] = useState(false);
+  // Mirror apiReady in a ref so ref callbacks can read it without stale closures
+  const apiReadyRef = useRef(false);
   const currentPlayerRef = useRef<YT.Player | null>(null);
   const playerRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const [videoStates, setVideoStates] = useState<Record<string, boolean>>({});
@@ -93,10 +95,11 @@ function App() {
     { id: 'jK0PgX6k6k8', title: 'Praise God - Valley Creek Worship', image: thumbJK0Pg, start: 900, end: 1006}
   ];
 
+  // Load the YouTube IFrame API once. If already loaded (e.g. after HMR),
+  // set ready immediately via the ref so no callback is needed.
   useEffect(() => {
-    // If the YouTube API is already loaded (e.g. after HMR / hot-reload),
-    // onYouTubeIframeAPIReady will never fire again — set ready immediately.
     if ((window as any).YT?.Player) {
+      apiReadyRef.current = true;
       setApiReady(true);
       return;
     }
@@ -104,7 +107,10 @@ function App() {
     script.src = 'https://www.youtube.com/iframe_api';
     const firstScript = document.getElementsByTagName('script')[0];
     firstScript?.parentNode?.insertBefore(script, firstScript);
-    window.onYouTubeIframeAPIReady = () => setApiReady(true);
+    window.onYouTubeIframeAPIReady = () => {
+      apiReadyRef.current = true;
+      setApiReady(true);
+    };
     return () => { delete window.onYouTubeIframeAPIReady; };
   }, []);
 
@@ -113,10 +119,14 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
+  // Initialize live performance players when the API is ready.
+  // Shorts use plain <iframe> tags and don't need the YT API.
   useEffect(() => {
     if (!apiReady) return;
 
     const initializePlayer = (videoId: string, elementId: string, start?: number, end?: number) => {
+      const el = document.getElementById(elementId);
+      if (!el || el.querySelector('iframe')) return;
       const player = new YT.Player(elementId, {
         videoId,
         playerVars: { start, end, playsinline: 1, controls: 1, rel: 0 },
@@ -141,18 +151,14 @@ function App() {
     playerRefs.current.forEach((_element, key) => {
       const [type, ...idParts] = key.split('_');
       const videoId = idParts.join('_');
-      const elementId = `${type}_player_${videoId}`;
-      // Only initialize if no iframe has been injected yet for this slot
-      const alreadyMounted = !!document.getElementById(elementId)?.querySelector('iframe');
-      if (!alreadyMounted) {
-        const found = livePerformances.find(l => l.id === videoId);
-        initializePlayer(videoId, elementId, found?.start, found?.end);
-      }
+      const found = livePerformances.find(l => l.id === videoId);
+      initializePlayer(videoId, `${type}_player_${videoId}`, found?.start, found?.end);
     });
-  // Re-run when showAllShorts toggles so newly-mounted short divs get players
-  }, [apiReady, showAllShorts]);
+  }, [apiReady]);
 
-  const setPlayerRef = (videoId: string, type: 'short' | 'live') => (element: HTMLDivElement | null) => {
+  // Ref callback for live performance players only.
+  // If API is already ready (e.g. after HMR), initialize immediately.
+  const setPlayerRef = (videoId: string, type: 'live') => (element: HTMLDivElement | null) => {
     if (element) {
       playerRefs.current.set(`${type}_${videoId}`, element);
     }
@@ -427,7 +433,12 @@ function App() {
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
               {(showAllShorts ? shorts : shorts.slice(0, 6)).map(videoId => (
                 <div key={videoId} className="aspect-[9/16] w-full max-w-[360px] mx-auto">
-                  <div id={`short_player_${videoId}`} className="w-full h-full rounded-xl shadow-lg" ref={setPlayerRef(videoId, 'short')} />
+                  <iframe
+                    src={`https://www.youtube.com/embed/${videoId}?playsinline=1&controls=1&rel=0`}
+                    className="w-full h-full rounded-xl shadow-lg"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
                 </div>
               ))}
             </div>
