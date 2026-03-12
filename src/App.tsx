@@ -238,8 +238,8 @@ function App() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
               {[
                 { value: '20+', label: 'Years in Music' },
+                { value: '3', label: 'Studio Recording Projects' },
                 { value: '3', label: 'Live Worship Albums' },
-                { value: 'Nashville', label: 'Recording Sessions' },
                 { value: '2', label: 'Teaching Studios' },
               ].map((stat) => (
                 <div key={stat.label} className="border-t border-[#C9A84C] pt-5">
