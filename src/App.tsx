@@ -424,7 +424,7 @@ function App() {
           <div className="mb-16">
             <h3 className="text-2xl font-light text-white mb-2">Performance Shorts</h3>
             <p className="text-sm font-light text-gray-400 mb-8">Quick clips from the home studio and beyond.</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
               {(showAllShorts ? shorts : shorts.slice(0, 6)).map(videoId => (
                 <div key={videoId} className="aspect-[9/16] w-full max-w-[360px] mx-auto">
                   <div id={`short_player_${videoId}`} className="w-full h-full rounded-xl shadow-lg" ref={setPlayerRef(videoId, 'short')} />
