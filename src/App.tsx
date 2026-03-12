@@ -349,9 +349,9 @@ function App() {
             <h3 className="text-2xl font-light text-white mb-2">Studio Productions</h3>
             <p className="text-sm font-light text-gray-400 mb-2">Original releases, remixes, and studio projects spanning two decades.</p>
             <p className="text-xs font-light italic text-gray-500 mb-8">Hover over cover to listen</p>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:flex lg:overflow-x-auto lg:gap-6 lg:pb-4">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
               {albums.map((album, index) => (
-                <div key={index} className="group relative aspect-square overflow-hidden rounded-xl shadow-lg border border-white/10 lg:flex-none lg:w-52 lg:h-52">
+                <div key={index} className="group relative aspect-square overflow-hidden rounded-xl shadow-lg border border-white/10">
                   <img
                     src={album.image}
                     alt={`${album.title} by ${album.artist}`}
