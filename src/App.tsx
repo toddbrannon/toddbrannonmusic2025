@@ -94,6 +94,12 @@ function App() {
   ];
 
   useEffect(() => {
+    // If the YouTube API is already loaded (e.g. after HMR / hot-reload),
+    // onYouTubeIframeAPIReady will never fire again — set ready immediately.
+    if ((window as any).YT?.Player) {
+      setApiReady(true);
+      return;
+    }
     const script = document.createElement('script');
     script.src = 'https://www.youtube.com/iframe_api';
     const firstScript = document.getElementsByTagName('script')[0];
@@ -132,15 +138,19 @@ function App() {
       setPlayers(prev => [...prev.filter(p => p.id !== videoId), { player, id: videoId }]);
     };
 
-    playerRefs.current.forEach((element, key) => {
+    playerRefs.current.forEach((_element, key) => {
       const [type, ...idParts] = key.split('_');
       const videoId = idParts.join('_');
-      const found = livePerformances.find(l => l.id === videoId);
-      if (!players.some(p => p.id === videoId)) {
-        initializePlayer(videoId, `${type}_player_${videoId}`, found?.start, found?.end);
+      const elementId = `${type}_player_${videoId}`;
+      // Only initialize if no iframe has been injected yet for this slot
+      const alreadyMounted = !!document.getElementById(elementId)?.querySelector('iframe');
+      if (!alreadyMounted) {
+        const found = livePerformances.find(l => l.id === videoId);
+        initializePlayer(videoId, elementId, found?.start, found?.end);
       }
     });
-  }, [apiReady]);
+  // Re-run when showAllShorts toggles so newly-mounted short divs get players
+  }, [apiReady, showAllShorts]);
 
   const setPlayerRef = (videoId: string, type: 'short' | 'live') => (element: HTMLDivElement | null) => {
     if (element) {
