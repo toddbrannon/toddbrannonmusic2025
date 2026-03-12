@@ -416,7 +416,7 @@ function App() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
             {/* Live Performance */}
-            <div className="bg-[#141414] border border-gray-800 rounded-xl p-8 flex flex-col group hover:border-[#C9A84C]/40 transition-colors">
+            <div className="rounded-xl p-8 flex flex-col transition-colors" style={{ backgroundColor: '#1A2E42', border: '1px solid rgba(45, 125, 210, 0.6)' }}>
               <div className="mb-6">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-6" style={{ backgroundColor: 'rgba(201,168,76,0.12)' }}>
                   <Mic className="w-5 h-5" style={{ color: '#C9A84C' }} />
@@ -430,8 +430,8 @@ function App() {
                 <button
                   data-testid="cta-live-performance"
                   onClick={() => { setShowContactForm(true); window.scrollTo(0, 0); }}
-                  className="text-sm font-light tracking-wide transition-colors group-hover:text-[#C9A84C]"
-                  style={{ color: '#C9A84C' }}
+                  className="text-sm font-light tracking-wide transition-colors"
+                  style={{ color: '#2D7DD2' }}
                 >
                   Request gear list →
                 </button>
@@ -439,7 +439,7 @@ function App() {
             </div>
 
             {/* Studio Engineering */}
-            <div className="bg-[#141414] border border-gray-800 rounded-xl p-8 flex flex-col group hover:border-[#C9A84C]/40 transition-colors">
+            <div className="rounded-xl p-8 flex flex-col transition-colors" style={{ backgroundColor: '#1A2E42', border: '1px solid rgba(45, 125, 210, 0.6)' }}>
               <div className="mb-6">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-6" style={{ backgroundColor: 'rgba(201,168,76,0.12)' }}>
                   <Sliders className="w-5 h-5" style={{ color: '#C9A84C' }} />
@@ -454,7 +454,7 @@ function App() {
                   data-testid="cta-studio"
                   onClick={() => { setShowCoachingForm(true); window.scrollTo(0, 0); }}
                   className="text-sm font-light tracking-wide transition-colors"
-                  style={{ color: '#C9A84C' }}
+                  style={{ color: '#2D7DD2' }}
                 >
                   Start a project →
                 </button>
@@ -462,7 +462,7 @@ function App() {
             </div>
 
             {/* Guitar Instruction */}
-            <div className="bg-[#141414] border border-gray-800 rounded-xl p-8 flex flex-col group hover:border-[#C9A84C]/40 transition-colors">
+            <div className="rounded-xl p-8 flex flex-col transition-colors" style={{ backgroundColor: '#1A2E42', border: '1px solid rgba(45, 125, 210, 0.6)' }}>
               <div className="mb-6">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-6" style={{ backgroundColor: 'rgba(201,168,76,0.12)' }}>
                   <Music className="w-5 h-5" style={{ color: '#C9A84C' }} />
@@ -477,7 +477,7 @@ function App() {
                   data-testid="cta-lessons"
                   onClick={() => { setShowInquiryForm(true); window.scrollTo(0, 0); }}
                   className="text-sm font-light tracking-wide transition-colors"
-                  style={{ color: '#C9A84C' }}
+                  style={{ color: '#2D7DD2' }}
                 >
                   Inquire about lessons →
                 </button>
@@ -485,7 +485,7 @@ function App() {
             </div>
 
             {/* Session Work */}
-            <div className="bg-[#141414] border border-gray-800 rounded-xl p-8 flex flex-col group hover:border-[#C9A84C]/40 transition-colors">
+            <div className="rounded-xl p-8 flex flex-col transition-colors" style={{ backgroundColor: '#1A2E42', border: '1px solid rgba(45, 125, 210, 0.6)' }}>
               <div className="mb-6">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-6" style={{ backgroundColor: 'rgba(201,168,76,0.12)' }}>
                   <Headphones className="w-5 h-5" style={{ color: '#C9A84C' }} />
@@ -500,7 +500,7 @@ function App() {
                   data-testid="cta-session"
                   onClick={() => { setShowContactForm(true); window.scrollTo(0, 0); }}
                   className="text-sm font-light tracking-wide transition-colors"
-                  style={{ color: '#C9A84C' }}
+                  style={{ color: '#2D7DD2' }}
                 >
                   Book a session →
                 </button>
