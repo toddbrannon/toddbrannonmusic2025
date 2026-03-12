@@ -1,0 +1,48 @@
+Redesign the Featured Work section to match the dark navy aesthetic of the rest of the site and elevate it into a proper showcase. Apply all of the following changes:
+
+OVERALL SECTION
+
+Change the section background from light gray to the same dark navy used throughout the rest of the site — this section should feel continuous with everything above it, not like a separate page
+Add a one-line intro subheading directly below the "Featured Work" title: "Two decades of work across studios, stages, and screens." Style it smaller and lighter than the title — descriptive, not loud
+The "Featured Work" heading itself should have the same visual weight and style as the other major section headings on the page (About, Services, etc.)
+
+
+STUDIO PRODUCTIONS
+
+Add a one-line description beneath the "Studio Productions" subheading: "Original releases, remixes, and studio projects spanning two decades."
+Keep the "Hover over cover to listen" instruction but style it as a small italic label, not body text
+Make the album art larger — increase the size of each cover and give them more breathing room between them
+If all six can't fit comfortably at a larger size, implement a horizontal scroll row so they stay on one line without being cramped
+On hover, add a subtle scale-up effect (e.g. transform: scale(1.05)) in addition to whatever listen interaction is already there
+Make sure all album art has consistent border-radius and a faint border or shadow to lift them off the dark background
+
+
+LIVE PERFORMANCES
+
+Add a one-line description beneath the "Live Performances" subheading: "Selected clips from the Valley Creek Worship stage."
+Increase the size of the video thumbnails — they should feel cinematic, not like small previews
+Arrange the four videos in a 2x2 grid if not already — consistent sizing, generous gap between them
+Add a subtle hover state on each thumbnail: a slight brightness increase and a smooth play button reveal if one isn't already visible
+Make sure the play button icon is clearly visible and centered on each thumbnail at rest, not just on hover
+
+
+PERFORMANCE SHORTS
+
+Add a one-line description beneath the subheading: "Quick clips from the home studio and beyond."
+Display the shorts in a 3-column grid — these are naturally smaller/vertical format so three across works well
+Add consistent border-radius to all thumbnails
+If there are many shorts, show the first 6 and add a "View more →" link below the grid rather than showing them all at once
+
+
+TYPOGRAPHY & SPACING
+
+All three subsection headings (Studio Productions, Live Performances, Performance Shorts) should be styled consistently — same font size, same weight, same spacing above and below
+Increase the vertical spacing between the three subsections so each one has room to breathe — they should feel like distinct chapters, not one continuous scroll
+All text (headings, descriptions, labels) should use the light text colors already established elsewhere on the site — nothing should appear in dark text on the dark background
+
+
+Do not change:
+
+The actual media — all audio links, video embeds, and thumbnail images stay as-is
+The hover-to-listen functionality on the album art
+Any existing play button functionality on the videos

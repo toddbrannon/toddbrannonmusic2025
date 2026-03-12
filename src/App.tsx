@@ -42,6 +42,7 @@ function App() {
   const [showCoachingForm, setShowCoachingForm] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
+  const [showAllShorts, setShowAllShorts] = useState(false);
 
   const albums = [
     { title: 'Deep Calls To Deep (demo)', artist: 'Todd Brannon', image: deepImg, year: '2025',
@@ -324,22 +325,33 @@ function App() {
 
       </section>
 
-      <section className="py-24 px-6 md:px-24 bg-gray-300">
+      <section className="py-24 px-6 md:px-24 bg-gray-900">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-light mb-12">Featured Work</h2>
 
-          <div className="mb-16">
-            <h3 className="text-2xl font-light mb-2">Studio Productions</h3>
-            <p className="text-sm font-light mb-8">Hover over cover to listen</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-4">
+          {/* Section header */}
+          <div className="mb-20">
+            <h2 className="text-4xl md:text-5xl font-light text-white mb-3">Featured Work</h2>
+            <p className="text-base font-light text-gray-400">Two decades of work across studios, stages, and screens.</p>
+          </div>
+
+          {/* Studio Productions */}
+          <div className="mb-24">
+            <h3 className="text-2xl font-light text-white mb-2">Studio Productions</h3>
+            <p className="text-sm font-light text-gray-400 mb-2">Original releases, remixes, and studio projects spanning two decades.</p>
+            <p className="text-xs font-light italic text-gray-500 mb-8">Hover over cover to listen</p>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:flex lg:overflow-x-auto lg:gap-6 lg:pb-4">
               {albums.map((album, index) => (
-                <div key={index} className="group relative aspect-square overflow-hidden rounded-lg shadow-lg">
-                  <img src={album.image} alt={`${album.title} by ${album.artist}`} className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-white opacity-0 bg-[#2F4F4F]/80 transition-opacity group-hover:opacity-100 p-4 text-center">
-                    <span className="text-xl font-light mb-2">{album.title}</span>
-                    <span className="text-sm font-light mb-1">{album.artist}</span>
-                    <span className="text-sm font-light">{album.year}</span>
-                    <div className="flex space-x-4 mt-4">
+                <div key={index} className="group relative aspect-square overflow-hidden rounded-xl shadow-lg border border-white/10 lg:flex-none lg:w-52 lg:h-52">
+                  <img
+                    src={album.image}
+                    alt={`${album.title} by ${album.artist}`}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-white opacity-0 bg-[#2F4F4F]/85 transition-opacity duration-300 group-hover:opacity-100 p-4 text-center">
+                    <span className="text-base font-light mb-1 leading-snug">{album.title}</span>
+                    <span className="text-xs font-light mb-1 text-gray-300">{album.artist}</span>
+                    <span className="text-xs font-light text-gray-400">{album.year}</span>
+                    <div className="flex space-x-3 mt-3">
                       {platforms.map(({ key, icon }) =>
                         album[key as keyof typeof album] ? (
                           <a key={key} href={album[key as keyof typeof album]} target="_blank" rel="noopener noreferrer">
@@ -354,13 +366,15 @@ function App() {
             </div>
           </div>
 
-          <div className="mb-16">
-            <h3 className="text-2xl font-light mb-8">Live Performances</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Live Performances */}
+          <div className="mb-24">
+            <h3 className="text-2xl font-light text-white mb-2">Live Performances</h3>
+            <p className="text-sm font-light text-gray-400 mb-8">Selected clips from the Valley Creek Worship stage.</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
               {livePerformances.map(video => {
                 const isOverlayVisible = !videoStates[video.id];
                 return (
-                  <div key={video.id} className="aspect-video relative rounded-lg shadow-lg overflow-hidden">
+                  <div key={video.id} className="aspect-video relative rounded-xl shadow-lg overflow-hidden">
                     <div
                       id={`live_player_${video.id}`}
                       className="w-full h-full"
@@ -368,7 +382,7 @@ function App() {
                     />
                     {isOverlayVisible && (
                       <div
-                        className="absolute inset-0 z-20 flex items-center justify-center bg-black bg-opacity-50 cursor-pointer transition-opacity hover:bg-opacity-70"
+                        className="absolute inset-0 z-20 flex items-center justify-center cursor-pointer group/play"
                         onClick={() => {
                           const playerObj = players.find(p => p.id === video.id);
                           if (playerObj?.player && typeof playerObj.player.playVideo === "function") {
@@ -376,11 +390,17 @@ function App() {
                           }
                         }}
                       >
-                        <img src={video.image} alt="Video thumbnail" className="absolute inset-0 w-full h-full object-cover" />
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <svg className="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M8 5v14l11-7z" />
-                          </svg>
+                        <img
+                          src={video.image}
+                          alt="Video thumbnail"
+                          className="absolute inset-0 w-full h-full object-cover transition-all duration-300 group-hover/play:brightness-110"
+                        />
+                        <div className="absolute inset-0 bg-black/40 group-hover/play:bg-black/25 transition-colors duration-300 flex items-center justify-center">
+                          <div className="w-16 h-16 rounded-full bg-white/20 group-hover/play:bg-white/30 transition-colors duration-300 flex items-center justify-center backdrop-blur-sm">
+                            <svg className="w-7 h-7 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M8 5v14l11-7z" />
+                            </svg>
+                          </div>
                         </div>
                       </div>
                     )}
@@ -389,16 +409,31 @@ function App() {
               })}
             </div>
           </div>
+
+          {/* Performance Shorts */}
           <div className="mb-16">
-            <h3 className="text-2xl font-light mb-8">Performance Shorts</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 max-w-[1400px] mx-auto">
-              {shorts.map(videoId => (
+            <h3 className="text-2xl font-light text-white mb-2">Performance Shorts</h3>
+            <p className="text-sm font-light text-gray-400 mb-8">Quick clips from the home studio and beyond.</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {(showAllShorts ? shorts : shorts.slice(0, 6)).map(videoId => (
                 <div key={videoId} className="aspect-[9/16] w-full max-w-[360px] mx-auto">
-                  <div id={`short_player_${videoId}`} className="w-full h-full rounded-lg shadow-lg" ref={setPlayerRef(videoId, 'short')} />
+                  <div id={`short_player_${videoId}`} className="w-full h-full rounded-xl shadow-lg" ref={setPlayerRef(videoId, 'short')} />
                 </div>
               ))}
             </div>
+            {shorts.length > 6 && (
+              <div className="mt-10 text-center">
+                <button
+                  data-testid="button-toggle-shorts"
+                  onClick={() => setShowAllShorts(prev => !prev)}
+                  className="text-sm font-light text-gray-400 hover:text-[#C9A84C] transition-colors tracking-wide"
+                >
+                  {showAllShorts ? '← View less' : 'View more →'}
+                </button>
+              </div>
+            )}
           </div>
+
         </div>
       </section>
 
