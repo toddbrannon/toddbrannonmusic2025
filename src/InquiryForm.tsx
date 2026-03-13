@@ -89,9 +89,6 @@ export default function InquiryForm({ onBack }: { onBack: () => void }) {
   const availabilityOptions: ToggleOption[] = [
     { label: 'After School', value: 'after-school' },
     { label: 'Daytime', value: 'daytime' },
-    { label: 'Homeschool', value: 'homeschool' },
-    { label: 'Flexible', value: 'flexible' },
-    { label: 'Open', value: 'open' },
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {

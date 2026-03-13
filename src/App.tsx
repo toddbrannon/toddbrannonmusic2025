@@ -26,25 +26,16 @@ import toddLive14 from './assets/live/ToddLive24.png';
 import { SiSpotify, SiApplemusic, SiYoutubemusic, SiSoundcloud, SiBandcamp, SiYoutube } from 'react-icons/si';
 import { ArrowDown, Instagram, Mic, Sliders, Music, Headphones } from 'lucide-react';
 
-interface VideoPlayer {
-  player: YT.Player | null;
-  id: string;
-}
-
 function App() {
-  const [players, setPlayers] = useState<VideoPlayer[]>([]);
   const [apiReady, setApiReady] = useState(false);
-  // Mirror apiReady in a ref so ref callbacks can read it without stale closures
   const apiReadyRef = useRef(false);
-  const currentPlayerRef = useRef<YT.Player | null>(null);
-  const playerRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+  const allPlayersRef = useRef<YT.Player[]>([]);
   const [videoStates, setVideoStates] = useState<Record<string, boolean>>({});
   const [showModal, setShowModal] = useState(false);
   const [showInquiryForm, setShowInquiryForm] = useState(false);
   const [showCoachingForm, setShowCoachingForm] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
-  const [showAllShorts, setShowAllShorts] = useState(false);
 
   const albums = [
     { title: 'Deep Calls To Deep (demo)', artist: 'Todd Brannon', image: deepImg, year: '2025',
@@ -87,7 +78,7 @@ function App() {
     { key: 'soundcloud', icon: <SiSoundcloud className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
   ];
 
-  const shorts = ['h8Hluai8bks', 'ff3Qf6akxQw', 'uZzbosx7CsU', 'txoq8QpRBnA'];
+  const shorts = ['h8Hluai8bks', 'ff3Qf6akxQw'];
   const livePerformances = [
     { id: 'HJlMHuzPDKY', title: 'All I Can Say - Valley Creek Worship', image: thumbHJlMHuzPDKY },
     { id: 'M5SHz--FuVg', title: 'This Is Love - Valley Creek Worship', image: thumbM5SHzFuVg },
@@ -119,50 +110,33 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Initialize live performance players when the API is ready.
-  // Shorts use plain <iframe> tags and don't need the YT API.
+  // Initialize all YouTube iframes as YT.Player instances when the API is ready.
+  // A single shared array (allPlayersRef) holds every player across both sections.
   useEffect(() => {
     if (!apiReady) return;
 
-    const initializePlayer = (videoId: string, elementId: string, start?: number, end?: number) => {
-      const el = document.getElementById(elementId);
-      if (!el || el.querySelector('iframe')) return;
-      const player = new YT.Player(elementId, {
-        videoId,
-        playerVars: { start, end, playsinline: 1, controls: 1, rel: 0 },
+    const iframes = document.querySelectorAll<HTMLIFrameElement>('iframe[src*="youtube.com/embed"]');
+    allPlayersRef.current = new Array(iframes.length);
+
+    iframes.forEach((iframe, index) => {
+      if (!iframe.id) return;
+      allPlayersRef.current[index] = new YT.Player(iframe.id, {
         events: {
           onStateChange: (event: YT.OnStateChangeEvent) => {
-            const playerId = event.target.getVideoData().video_id;
+            const videoId = event.target.getVideoData().video_id;
             if (event.data === YT.PlayerState.PLAYING) {
-              setVideoStates(prev => ({ ...prev, [playerId]: true }));
-              if (currentPlayerRef.current && currentPlayerRef.current !== event.target) {
-                currentPlayerRef.current.pauseVideo();
-              }
-              currentPlayerRef.current = event.target;
+              setVideoStates(prev => ({ ...prev, [videoId]: true }));
+              allPlayersRef.current.forEach((p, i) => {
+                if (i !== index && p && typeof p.pauseVideo === 'function') p.pauseVideo();
+              });
             } else {
-              setVideoStates(prev => ({ ...prev, [playerId]: false }));
+              setVideoStates(prev => ({ ...prev, [videoId]: false }));
             }
           },
         },
       });
-      setPlayers(prev => [...prev.filter(p => p.id !== videoId), { player, id: videoId }]);
-    };
-
-    playerRefs.current.forEach((_element, key) => {
-      const [type, ...idParts] = key.split('_');
-      const videoId = idParts.join('_');
-      const found = livePerformances.find(l => l.id === videoId);
-      initializePlayer(videoId, `${type}_player_${videoId}`, found?.start, found?.end);
     });
   }, [apiReady]);
-
-  // Ref callback for live performance players only.
-  // If API is already ready (e.g. after HMR), initialize immediately.
-  const setPlayerRef = (videoId: string, type: 'live') => (element: HTMLDivElement | null) => {
-    if (element) {
-      playerRefs.current.set(`${type}_${videoId}`, element);
-    }
-  };
 
 
   if (showPrivacyPolicy) {
@@ -228,7 +202,7 @@ function App() {
                 setShowInquiryForm(true);
                 window.scrollTo(0, 0);
               }}
-              className="py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#2F4F4F] hover:bg-[#3a6363] text-white"
+              className="py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42]"
             >
               Inquire About Lessons
             </button>
@@ -238,7 +212,7 @@ function App() {
                 setShowCoachingForm(true);
                 window.scrollTo(0, 0);
               }}
-              className="py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#2F4F4F] hover:bg-[#3a6363] text-white"
+              className="py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42]"
             >
               Inquire About Coaching
             </button>
@@ -273,7 +247,7 @@ function App() {
           <div className="max-w-6xl mx-auto">
             <blockquote className="border-l-4 border-[#C9A84C] pl-8 md:pl-12">
               <p className="text-2xl md:text-3xl font-light leading-relaxed text-white italic">
-                "Son of a southern gospel singer — music has always been the foundation."
+                Son of a gospel singer — music has always been the foundation.
               </p>
             </blockquote>
           </div>
@@ -286,7 +260,7 @@ function App() {
               <div className="text-xs font-light tracking-widest text-[#C9A84C] uppercase mb-3">Early Roots</div>
               <h3 className="text-xl font-light text-white mb-4">Before the Stage</h3>
               <p className="text-base font-light leading-relaxed text-gray-400">
-                The son of a southern gospel singer, I started piano lessons young and trained steadily until age 14. That early foundation — melody, harmony, discipline — shaped everything that followed.
+                The son of a gospel singer, I started piano lessons young and trained steadily until age 14. That early foundation — melody, harmony, discipline — shaped everything that followed.
               </p>
             </div>
             <div>
@@ -313,29 +287,17 @@ function App() {
           </div>
         </div>
 
-        {/* Full-width staggered photo strip */}
-        <div className="w-full overflow-hidden">
-          <div className="flex items-end gap-1 md:gap-2" style={{ height: '340px' }}>
-            {liveShots.map((image, index) => {
-              const offsets = [0, -24, 12, -16, 8];
-              return (
-                <div
-                  key={index}
-                  className="flex-1 relative overflow-hidden"
-                  style={{
-                    height: `${300 + offsets[index % offsets.length]}px`,
-                    transform: `translateY(${offsets[index % offsets.length] > 0 ? offsets[index % offsets.length] : 0}px)`,
-                  }}
-                >
-                  <img
-                    src={image}
-                    className="w-full h-full object-cover"
-                    style={{ filter: 'brightness(0.85)' }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                </div>
-              );
-            })}
+        {/* Photo grid */}
+        <div className="px-6 md:px-24 mt-12 mb-8">
+          <div className="max-w-6xl mx-auto grid grid-cols-5 gap-2.5">
+            {liveShots.map((image, index) => (
+              <div key={index} className="overflow-hidden rounded-xl" style={{ height: '240px' }}>
+                <img
+                  src={image}
+                  className="w-full h-full object-cover object-center"
+                />
+              </div>
+            ))}
           </div>
         </div>
 
@@ -385,24 +347,35 @@ function App() {
           {/* Live Performances */}
           <div className="mb-24">
             <h3 className="text-2xl font-light text-white mb-2">Live Performances</h3>
-            <p className="text-sm font-light text-gray-400 mb-8">Selected clips from the Valley Creek Worship stage.</p>
+            <p className="text-sm font-light text-gray-400 mb-8">Clips from Valley Creek Worship</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
               {livePerformances.map(video => {
                 const isOverlayVisible = !videoStates[video.id];
+                const params = new URLSearchParams({ enablejsapi: '1', playsinline: '1', controls: '1', rel: '0' });
+                if (video.start != null) params.set('start', String(video.start));
+                if (video.end != null) params.set('end', String(video.end));
                 return (
                   <div key={video.id} className="aspect-video relative rounded-xl shadow-lg overflow-hidden">
-                    <div
+                    <iframe
                       id={`live_player_${video.id}`}
+                      src={`https://www.youtube.com/embed/${video.id}?${params.toString()}`}
                       className="w-full h-full"
-                      ref={setPlayerRef(video.id, 'live')}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
                     />
                     {isOverlayVisible && (
                       <div
                         className="absolute inset-0 z-20 flex items-center justify-center cursor-pointer group/play"
                         onClick={() => {
-                          const playerObj = players.find(p => p.id === video.id);
-                          if (playerObj?.player && typeof playerObj.player.playVideo === "function") {
-                            playerObj.player.playVideo();
+                          const player = allPlayersRef.current.find(p =>
+                            p && typeof p.getVideoData === 'function' && p.getVideoData().video_id === video.id
+                          );
+                          if (player && typeof player.playVideo === 'function') {
+                            const playerIndex = allPlayersRef.current.indexOf(player);
+                            allPlayersRef.current.forEach((p, i) => {
+                              if (i !== playerIndex && p && typeof p.pauseVideo === 'function') p.pauseVideo();
+                            });
+                            player.playVideo();
                           }
                         }}
                       >
@@ -427,14 +400,15 @@ function App() {
           </div>
 
           {/* Performance Shorts */}
-          <div className="mb-16">
+          <div>
             <h3 className="text-2xl font-light text-white mb-2">Performance Shorts</h3>
             <p className="text-sm font-light text-gray-400 mb-8">Quick clips from the home studio and beyond.</p>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-              {(showAllShorts ? shorts : shorts.slice(0, 6)).map(videoId => (
+            <div className="grid grid-cols-2 gap-6">
+              {shorts.map(videoId => (
                 <div key={videoId} className="aspect-[9/16] w-full max-w-[360px] mx-auto">
                   <iframe
-                    src={`https://www.youtube.com/embed/${videoId}?playsinline=1&controls=1&rel=0`}
+                    id={`shorts_player_${videoId}`}
+                    src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1&playsinline=1&controls=1&rel=0`}
                     className="w-full h-full rounded-xl shadow-lg"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
@@ -442,23 +416,23 @@ function App() {
                 </div>
               ))}
             </div>
-            {shorts.length > 6 && (
-              <div className="mt-10 text-center">
-                <button
-                  data-testid="button-toggle-shorts"
-                  onClick={() => setShowAllShorts(prev => !prev)}
-                  className="text-sm font-light text-gray-400 hover:text-[#C9A84C] transition-colors tracking-wide"
-                >
-                  {showAllShorts ? '← View less' : 'View more →'}
-                </button>
-              </div>
-            )}
+            <div className="mt-10 text-center">
+              <a
+                href="https://youtube.com/@toddbrannonmusic?si=H3_Ao1IBbC_OuXO3"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-testid="link-youtube-shorts-more"
+                className="inline-block py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42]"
+              >
+                View more on YouTube →
+              </a>
+            </div>
           </div>
 
         </div>
       </section>
 
-      <section className="py-24 px-6 md:px-24 bg-gray-900 text-gray-100">
+      <section className="pt-12 pb-24 px-6 md:px-24 bg-gray-900 text-gray-100">
         <div className="max-w-6xl mx-auto">
 
           {/* Section header */}
@@ -563,7 +537,7 @@ function App() {
         </div>
       </section>
 
-      <section id="contact" className="py-24 px-6 md:px-24 bg-gray-300">
+      <section id="contact" className="py-24 px-6 md:px-24 bg-gray-900 text-gray-100">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-light mb-8">Get in Touch</h2>
 
@@ -574,7 +548,7 @@ function App() {
                 setShowInquiryForm(true);
                 window.scrollTo(0, 0);
               }}
-              className="py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#2F4F4F] hover:bg-[#3a6363] text-white"
+              className="py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42]"
             >
               Inquire About Lessons
             </button>
@@ -584,7 +558,7 @@ function App() {
                 setShowCoachingForm(true);
                 window.scrollTo(0, 0);
               }}
-              className="py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#2F4F4F] hover:bg-[#3a6363] text-white"
+              className="py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42]"
             >
               Coaching Inquiry
             </button>
@@ -594,7 +568,7 @@ function App() {
                 setShowContactForm(true);
                 window.scrollTo(0, 0);
               }}
-              className="py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#2F4F4F] hover:bg-[#3a6363] text-white"
+              className="py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42]"
             >
               General Contact
             </button>
