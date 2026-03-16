@@ -42,10 +42,32 @@ function ToggleGroup({
   );
 }
 
+function RequiredMark() {
+  return (
+    <>
+      <span aria-hidden="true" style={{ color: GOLD }}> *</span>
+      <span className="sr-only"> (required)</span>
+    </>
+  );
+}
+
+function FieldError({ id, message }: { id: string; message: string }) {
+  return (
+    <p id={id} role="alert" className="mt-1.5 text-sm text-red-400">
+      {message}
+    </p>
+  );
+}
+
+const INPUT_BASE = 'w-full bg-[#252525] rounded-lg px-4 py-2.5 text-white placeholder-gray-400 focus:border-[#C9A84C] transition-colors border';
+const INPUT_NORMAL = `${INPUT_BASE} border-[#777777]`;
+const INPUT_ERROR = `${INPUT_BASE} border-red-500`;
+
 export default function CoachingInquiryForm({ onBack }: { onBack: () => void }) {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState('');
+  const [submitError, setSubmitError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -53,10 +75,17 @@ export default function CoachingInquiryForm({ onBack }: { onBack: () => void }) 
   const [experience, setExperience] = useState('');
   const [message, setMessage] = useState('');
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const successRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
     headingRef.current?.focus();
   }, []);
+
+  useEffect(() => {
+    if (submitted) {
+      successRef.current?.focus();
+    }
+  }, [submitted]);
 
   const topicOptions: ToggleOption[] = [
     { label: 'Worship Team Prep', value: 'worship-prep' },
@@ -71,10 +100,43 @@ export default function CoachingInquiryForm({ onBack }: { onBack: () => void }) 
     { label: 'Advanced', value: 'advanced' },
   ];
 
+  const validateField = (field: string, value: string): string => {
+    switch (field) {
+      case 'name':
+        return value.trim() ? '' : 'Please enter your full name.';
+      case 'email':
+        if (!value.trim()) return 'Please enter your email address.';
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())
+          ? ''
+          : 'Please enter a valid email address (e.g. you@example.com).';
+      default:
+        return '';
+    }
+  };
+
+  const handleBlur = (field: string, value: string) => {
+    const err = validateField(field, value);
+    setFieldErrors(prev => ({ ...prev, [field]: err }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const nameErr = validateField('name', name);
+    const emailErr = validateField('email', email);
+    const newErrors: Record<string, string> = {};
+    if (nameErr) newErrors.name = nameErr;
+    if (emailErr) newErrors.email = emailErr;
+
+    if (Object.keys(newErrors).length > 0) {
+      setFieldErrors(newErrors);
+      if (nameErr) document.getElementById('coaching-name')?.focus();
+      else if (emailErr) document.getElementById('coaching-email')?.focus();
+      return;
+    }
+
     setSubmitting(true);
-    setError('');
+    setSubmitError('');
 
     try {
       const res = await fetch('/api/inquire', {
@@ -94,13 +156,13 @@ export default function CoachingInquiryForm({ onBack }: { onBack: () => void }) 
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || 'Something went wrong. Please try again.');
+        setSubmitError(data.error || 'Something went wrong. Please try again.');
         return;
       }
 
       setSubmitted(true);
     } catch {
-      setError('Unable to send your inquiry. Please check your connection and try again.');
+      setSubmitError('Unable to send your inquiry. Please check your connection and try again.');
     } finally {
       setSubmitting(false);
     }
@@ -113,10 +175,15 @@ export default function CoachingInquiryForm({ onBack }: { onBack: () => void }) 
           <div
             className="w-20 h-20 mx-auto rounded-full border-2 flex items-center justify-center"
             style={{ borderColor: GOLD }}
+            aria-hidden="true"
           >
             <Check aria-hidden="true" className="w-10 h-10" style={{ color: GOLD }} />
           </div>
-          <h2 className="text-3xl md:text-4xl font-semibold text-white">
+          <h2
+            ref={successRef}
+            tabIndex={-1}
+            className="text-3xl md:text-4xl font-semibold text-white focus:outline-none"
+          >
             You're on my radar.
           </h2>
           <p className="text-gray-400 text-lg font-light leading-relaxed">
@@ -162,61 +229,83 @@ export default function CoachingInquiryForm({ onBack }: { onBack: () => void }) 
         >
           Coaching Inquiry
         </h1>
-        <p className="text-gray-400 font-light mb-10">
+        <p className="text-gray-400 font-light mb-2">
           Tell me what you're looking to work on and I'll be in touch.
         </p>
+        <p className="text-xs text-gray-400 mb-8">
+          Fields marked <span aria-hidden="true" style={{ color: GOLD }}>*</span>
+          <span className="sr-only">with an asterisk</span> are required.
+        </p>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <form onSubmit={handleSubmit} noValidate className="space-y-8">
+
+          <fieldset className="border-0 p-0 m-0 min-w-0 space-y-4">
+            <legend className="sr-only">Contact details</legend>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="coaching-name" className="block text-sm text-gray-400 mb-1.5">
+                  Name<RequiredMark />
+                </label>
+                <input
+                  id="coaching-name"
+                  data-testid="input-coaching-name"
+                  type="text"
+                  required
+                  aria-required="true"
+                  aria-invalid={!!fieldErrors.name}
+                  aria-describedby={fieldErrors.name ? 'coaching-name-error' : undefined}
+                  autoComplete="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  onBlur={(e) => handleBlur('name', e.target.value)}
+                  className={fieldErrors.name ? INPUT_ERROR : INPUT_NORMAL}
+                  placeholder="Your name"
+                />
+                {fieldErrors.name && (
+                  <FieldError id="coaching-name-error" message={fieldErrors.name} />
+                )}
+              </div>
+              <div>
+                <label htmlFor="coaching-email" className="block text-sm text-gray-400 mb-1.5">
+                  Email<RequiredMark />
+                </label>
+                <input
+                  id="coaching-email"
+                  data-testid="input-coaching-email"
+                  type="email"
+                  required
+                  aria-required="true"
+                  aria-invalid={!!fieldErrors.email}
+                  aria-describedby={fieldErrors.email ? 'coaching-email-error' : undefined}
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onBlur={(e) => handleBlur('email', e.target.value)}
+                  className={fieldErrors.email ? INPUT_ERROR : INPUT_NORMAL}
+                  placeholder="you@email.com"
+                />
+                {fieldErrors.email && (
+                  <FieldError id="coaching-email-error" message={fieldErrors.email} />
+                )}
+              </div>
+            </div>
+
             <div>
-              <label htmlFor="coaching-name" className="block text-sm text-gray-400 mb-1.5">
-                Name <span style={{ color: GOLD }}>*</span>
+              <label htmlFor="coaching-phone" className="block text-sm text-gray-400 mb-1.5">
+                Phone <span className="text-gray-400">(optional)</span>
               </label>
               <input
-                id="coaching-name"
-                data-testid="input-coaching-name"
-                type="text"
-                required
-                autoComplete="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full bg-[#252525] border border-[#777777] rounded-lg px-4 py-2.5 text-white placeholder-gray-400 focus:border-[#C9A84C] transition-colors"
-                placeholder="Your name"
+                id="coaching-phone"
+                data-testid="input-coaching-phone"
+                type="tel"
+                autoComplete="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className={INPUT_NORMAL}
+                placeholder="(555) 123-4567"
               />
             </div>
-            <div>
-              <label htmlFor="coaching-email" className="block text-sm text-gray-400 mb-1.5">
-                Email <span style={{ color: GOLD }}>*</span>
-              </label>
-              <input
-                id="coaching-email"
-                data-testid="input-coaching-email"
-                type="email"
-                required
-                autoComplete="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-[#252525] border border-[#777777] rounded-lg px-4 py-2.5 text-white placeholder-gray-400 focus:border-[#C9A84C] transition-colors"
-                placeholder="you@email.com"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label htmlFor="coaching-phone" className="block text-sm text-gray-400 mb-1.5">
-              Phone <span className="text-gray-400">(optional)</span>
-            </label>
-            <input
-              id="coaching-phone"
-              data-testid="input-coaching-phone"
-              type="tel"
-              autoComplete="tel"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="w-full bg-[#252525] border border-[#777777] rounded-lg px-4 py-2.5 text-white placeholder-gray-400 focus:border-[#C9A84C] transition-colors"
-              placeholder="(555) 123-4567"
-            />
-          </div>
+          </fieldset>
 
           <div>
             <span id="label-coaching-topic" className="block text-sm text-gray-400 mb-3">
@@ -252,18 +341,18 @@ export default function CoachingInquiryForm({ onBack }: { onBack: () => void }) 
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               rows={4}
-              className="w-full bg-[#252525] border border-[#777777] rounded-lg px-4 py-2.5 text-white placeholder-gray-400 focus:border-[#C9A84C] transition-colors resize-none"
+              className={`${INPUT_NORMAL} resize-none`}
               placeholder="Goals, questions, schedule details..."
             />
           </div>
 
-          {error && (
+          {submitError && (
             <div
               role="alert"
               data-testid="text-coaching-error"
               className="p-4 rounded-lg bg-red-900/30 border border-red-800 text-red-300 text-sm"
             >
-              {error}
+              {submitError}
             </div>
           )}
 
