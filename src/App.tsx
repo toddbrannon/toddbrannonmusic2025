@@ -25,6 +25,8 @@ import { Instagram, Mic, Sliders, Music, Headphones } from 'lucide-react';
 function App() {
   const modalRef = useRef<HTMLDivElement>(null);
   const modalTriggerRef = useRef<HTMLElement | null>(null);
+  const wasAutoTriggeredRef = useRef(false);
+  const mainContentRef = useRef<HTMLElement>(null);
   const [showModal, setShowModal] = useState(false);
   const [showInquiryForm, setShowInquiryForm] = useState(false);
   const [showCoachingForm, setShowCoachingForm] = useState(false);
@@ -83,26 +85,44 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowModal(true), 3000);
+    if (sessionStorage.getItem('modal-dismissed')) return;
+    const timer = setTimeout(() => {
+      wasAutoTriggeredRef.current = true;
+      setShowModal(true);
+    }, 5000);
     return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
     if (showModal && modalRef.current) {
-      modalTriggerRef.current = document.activeElement as HTMLElement;
-      const focusable = modalRef.current.querySelectorAll<HTMLElement>(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-      );
-      if (focusable.length) focusable[0].focus();
+      if (!wasAutoTriggeredRef.current) {
+        modalTriggerRef.current = document.activeElement as HTMLElement;
+      }
+      const closeBtn = modalRef.current.querySelector<HTMLElement>('button[aria-label="Close dialog"]');
+      if (closeBtn) {
+        closeBtn.focus();
+      } else {
+        const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length) focusable[0].focus();
+      }
     }
   }, [showModal]);
 
   const closeModal = useCallback(() => {
+    sessionStorage.setItem('modal-dismissed', '1');
+    const autoTriggered = wasAutoTriggeredRef.current;
+    wasAutoTriggeredRef.current = false;
     setShowModal(false);
     setTimeout(() => {
-      const trigger = modalTriggerRef.current;
-      if (trigger && trigger !== document.body && typeof trigger.focus === 'function') {
-        trigger.focus();
+      if (autoTriggered) {
+        mainContentRef.current?.focus();
+      } else {
+        const trigger = modalTriggerRef.current;
+        if (trigger && trigger !== document.body && typeof trigger.focus === 'function') {
+          trigger.focus();
+        }
       }
     }, 0);
   }, []);
@@ -211,7 +231,7 @@ function App() {
         </div>
       </header>
 
-      <main id="main-content">
+      <main id="main-content" ref={mainContentRef} tabIndex={-1} className="focus:outline-none">
 
       <section aria-labelledby="about-heading" className="py-24 bg-gray-900 text-gray-100 overflow-hidden">
 
