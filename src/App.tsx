@@ -305,7 +305,7 @@ function App() {
         <div className="px-6 md:px-24 mt-12 mb-8">
           <div className="max-w-6xl mx-auto grid grid-cols-5 gap-2.5">
             {liveShots.map((image, index) => (
-              <div key={index} className="overflow-hidden rounded-xl" style={{ height: '240px' }}>
+              <div key={index} className="overflow-hidden rounded-xl" style={{ height: '360px' }}>
                 <img
                   src={image}
                   alt=""
