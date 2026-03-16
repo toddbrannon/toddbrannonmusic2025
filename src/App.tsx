@@ -13,10 +13,6 @@ import exWayImg from './assets/albums/TheShakeExWayCover.jpg';
 import chaosImg from './assets/albums/TheShakeChaosCover.jpg';
 import deepImg from './assets/albums/DeepCallsToDeepDemoCover.png';
 import winsImg from './assets/albums/WinsAndScarsDemoCover.png';
-import thumbHJlMHuzPDKY from './assets/thumbnails/HJlMHuzPDKY.png';
-import thumbM5SHzFuVg from './assets/thumbnails/M5SHz--FuVg.png';
-import thumbGusVP from './assets/thumbnails/gusVP-y0vfE.png';
-import thumbJK0Pg from './assets/thumbnails/jK0PgX6k6k8.png';
 import toddLive2 from './assets/live/ToddLive2.jpeg';
 import toddLive3 from './assets/live/ToddLive10.png';
 import toddLive5 from './assets/live/ToddLive30.png';
@@ -24,15 +20,11 @@ import toddLive10 from './assets/live/ToddLive22.png';
 import toddLive14 from './assets/live/ToddLive24.png';
 
 import { SiSpotify, SiApplemusic, SiYoutubemusic, SiSoundcloud, SiBandcamp, SiYoutube } from 'react-icons/si';
-import { ArrowDown, Instagram, Mic, Sliders, Music, Headphones } from 'lucide-react';
+import { Instagram, Mic, Sliders, Music, Headphones } from 'lucide-react';
 
 function App() {
-  const [apiReady, setApiReady] = useState(false);
-  const apiReadyRef = useRef(false);
-  const allPlayersRef = useRef<YT.Player[]>([]);
   const modalRef = useRef<HTMLDivElement>(null);
   const modalTriggerRef = useRef<HTMLElement | null>(null);
-  const [videoStates, setVideoStates] = useState<Record<string, boolean>>({});
   const [showModal, setShowModal] = useState(false);
   const [showInquiryForm, setShowInquiryForm] = useState(false);
   const [showCoachingForm, setShowCoachingForm] = useState(false);
@@ -84,34 +76,9 @@ function App() {
     { id: 'h8Hluai8bks', title: 'Home Studio Guitar – Performance Short' },
     { id: 'ff3Qf6akxQw', title: 'Live Worship Guitar – Performance Short' },
   ];
-  const livePerformances = [
-    { id: 'HJlMHuzPDKY', title: 'All I Can Say - Valley Creek Worship', image: thumbHJlMHuzPDKY },
-    { id: 'M5SHz--FuVg', title: 'This Is Love - Valley Creek Worship', image: thumbM5SHzFuVg },
-    { id: 'gusVP-y0vfE', title: 'Christmas 2024 - Valley Creek Worship', image: thumbGusVP, start: 3277, end: 3401 },
-    { id: 'jK0PgX6k6k8', title: 'Praise God - Valley Creek Worship', image: thumbJK0Pg, start: 900, end: 1006}
-  ];
 
-  // Load the YouTube IFrame API once. If already loaded (e.g. after HMR),
-  // set ready immediately via the ref so no callback is needed.
   useEffect(() => {
     document.title = 'Todd Brannon Music';
-  }, []);
-
-  useEffect(() => {
-    if ((window as any).YT?.Player) {
-      apiReadyRef.current = true;
-      setApiReady(true);
-      return;
-    }
-    const script = document.createElement('script');
-    script.src = 'https://www.youtube.com/iframe_api';
-    const firstScript = document.getElementsByTagName('script')[0];
-    firstScript?.parentNode?.insertBefore(script, firstScript);
-    window.onYouTubeIframeAPIReady = () => {
-      apiReadyRef.current = true;
-      setApiReady(true);
-    };
-    return () => { delete window.onYouTubeIframeAPIReady; };
   }, []);
 
   useEffect(() => {
@@ -154,35 +121,6 @@ function App() {
       if (document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
   };
-
-  // Initialize all YouTube iframes as YT.Player instances when the API is ready.
-  // A single shared array (allPlayersRef) holds every player across both sections.
-  useEffect(() => {
-    if (!apiReady) return;
-
-    const iframes = document.querySelectorAll<HTMLIFrameElement>('iframe[src*="youtube.com/embed"]');
-    allPlayersRef.current = new Array(iframes.length);
-
-    iframes.forEach((iframe, index) => {
-      if (!iframe.id) return;
-      allPlayersRef.current[index] = new YT.Player(iframe.id, {
-        events: {
-          onStateChange: (event: YT.OnStateChangeEvent) => {
-            const videoId = event.target.getVideoData().video_id;
-            if (event.data === YT.PlayerState.PLAYING) {
-              setVideoStates(prev => ({ ...prev, [videoId]: true }));
-              allPlayersRef.current.forEach((p, i) => {
-                if (i !== index && p && typeof p.pauseVideo === 'function') p.pauseVideo();
-              });
-            } else {
-              setVideoStates(prev => ({ ...prev, [videoId]: false }));
-            }
-          },
-        },
-      });
-    });
-  }, [apiReady]);
-
 
   if (showPrivacyPolicy) {
     return (
@@ -397,71 +335,6 @@ function App() {
                   </div>
                 </div>
               ))}
-            </div>
-          </div>
-
-          {/* Live Performances */}
-          <div className="mb-24">
-            <h3 className="text-2xl font-light text-white mb-2">Live Performances</h3>
-            <p className="text-sm font-light text-gray-400 mb-1">Clips from Valley Creek Worship</p>
-            <p className="text-xs font-light text-gray-400 mb-8">
-              Captions available — use the CC button in each video player, or press <kbd className="px-1 py-0.5 rounded bg-white/10 text-xs font-mono">c</kbd> while the video is focused.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
-              {livePerformances.map(video => {
-                const isOverlayVisible = !videoStates[video.id];
-                const params = new URLSearchParams({ enablejsapi: '1', playsinline: '1', controls: '1', rel: '0', cc_load_policy: '1' });
-                if (video.start != null) params.set('start', String(video.start));
-                if (video.end != null) params.set('end', String(video.end));
-                return (
-                  <div key={video.id} className="aspect-video relative rounded-xl shadow-lg overflow-hidden">
-                    <iframe
-                      id={`live_player_${video.id}`}
-                      title={video.title}
-                      src={`https://www.youtube.com/embed/${video.id}?${params.toString()}`}
-                      className="w-full h-full"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
-                    {isOverlayVisible && (
-                      <button
-                        type="button"
-                        aria-label={`Play ${video.title}`}
-                        className="absolute inset-0 z-20 flex items-center justify-center cursor-pointer group/play border-0 p-0 bg-transparent"
-                        onClick={() => {
-                          const player = allPlayersRef.current.find(p =>
-                            p && typeof p.getVideoData === 'function' && p.getVideoData().video_id === video.id
-                          );
-                          if (player && typeof player.playVideo === 'function') {
-                            const playerIndex = allPlayersRef.current.indexOf(player);
-                            allPlayersRef.current.forEach((p, i) => {
-                              if (i !== playerIndex && p && typeof p.pauseVideo === 'function') p.pauseVideo();
-                            });
-                            player.playVideo();
-                            setTimeout(() => {
-                              const iframeEl = document.getElementById(`live_player_${video.id}`) as HTMLElement | null;
-                              iframeEl?.focus();
-                            }, 150);
-                          }
-                        }}
-                      >
-                        <img
-                          src={video.image}
-                          alt={`${video.title} – thumbnail`}
-                          className="absolute inset-0 w-full h-full object-cover transition-all duration-300 group-hover/play:brightness-110"
-                        />
-                        <div className="absolute inset-0 bg-black/40 group-hover/play:bg-black/25 transition-colors duration-300 flex items-center justify-center">
-                          <div className="w-16 h-16 rounded-full bg-white/20 group-hover/play:bg-white/30 transition-colors duration-300 flex items-center justify-center backdrop-blur-sm">
-                            <svg aria-hidden="true" className="w-7 h-7 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M8 5v14l11-7z" />
-                            </svg>
-                          </div>
-                        </div>
-                      </button>
-                    )}
-                  </div>
-                );
-              })}
             </div>
           </div>
 
