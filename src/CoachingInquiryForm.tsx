@@ -180,7 +180,7 @@ export default function CoachingInquiryForm({ onBack }: { onBack: () => void }) 
                 autoComplete="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full bg-[#252525] border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C] transition-colors"
+                className="w-full bg-[#252525] border border-[#777777] rounded-lg px-4 py-2.5 text-white placeholder-gray-400 focus:outline-none focus:border-[#C9A84C] transition-colors"
                 placeholder="Your name"
               />
             </div>
@@ -196,7 +196,7 @@ export default function CoachingInquiryForm({ onBack }: { onBack: () => void }) 
                 autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-[#252525] border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C] transition-colors"
+                className="w-full bg-[#252525] border border-[#777777] rounded-lg px-4 py-2.5 text-white placeholder-gray-400 focus:outline-none focus:border-[#C9A84C] transition-colors"
                 placeholder="you@email.com"
               />
             </div>
@@ -204,7 +204,7 @@ export default function CoachingInquiryForm({ onBack }: { onBack: () => void }) 
 
           <div>
             <label htmlFor="coaching-phone" className="block text-sm text-gray-400 mb-1.5">
-              Phone <span className="text-gray-600">(optional)</span>
+              Phone <span className="text-gray-400">(optional)</span>
             </label>
             <input
               id="coaching-phone"
@@ -213,7 +213,7 @@ export default function CoachingInquiryForm({ onBack }: { onBack: () => void }) 
               autoComplete="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="w-full bg-[#252525] border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C] transition-colors"
+              className="w-full bg-[#252525] border border-[#777777] rounded-lg px-4 py-2.5 text-white placeholder-gray-400 focus:outline-none focus:border-[#C9A84C] transition-colors"
               placeholder="(555) 123-4567"
             />
           </div>
@@ -244,7 +244,7 @@ export default function CoachingInquiryForm({ onBack }: { onBack: () => void }) 
 
           <div>
             <label htmlFor="coaching-message" className="block text-sm text-gray-400 mb-1.5">
-              Message <span className="text-gray-600">(optional)</span>
+              Message <span className="text-gray-400">(optional)</span>
             </label>
             <textarea
               id="coaching-message"
@@ -252,7 +252,7 @@ export default function CoachingInquiryForm({ onBack }: { onBack: () => void }) 
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               rows={4}
-              className="w-full bg-[#252525] border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C] transition-colors resize-none"
+              className="w-full bg-[#252525] border border-[#777777] rounded-lg px-4 py-2.5 text-white placeholder-gray-400 focus:outline-none focus:border-[#C9A84C] transition-colors resize-none"
               placeholder="Goals, questions, schedule details..."
             />
           </div>

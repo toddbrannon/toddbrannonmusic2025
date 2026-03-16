@@ -365,7 +365,7 @@ function App() {
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-white opacity-0 bg-[#2F4F4F]/85 transition-opacity duration-300 group-hover:opacity-100 p-4 text-center">
                     <span className="text-base font-light mb-1 leading-snug">{album.title}</span>
                     <span className="text-xs font-light mb-1 text-gray-300">{album.artist}</span>
-                    <span className="text-xs font-light text-gray-400">{album.year}</span>
+                    <span className="text-xs font-light text-gray-300">{album.year}</span>
                     <div className="flex space-x-3 mt-3">
                       {platforms.map(({ key, label, icon }) =>
                         album[key as keyof typeof album] ? (
@@ -629,7 +629,7 @@ function App() {
               href="https://www.instagram.com/todd_brannon_music"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center space-x-2 text-[#E1306C] hover:text-[#C13584] transition-colors"
+              className="flex items-center space-x-2 text-[#FF3D7F] hover:text-[#FF69A0] transition-colors"
             >
               <Instagram className="w-6 h-6 cursor-pointer" />
               <span>Instagram</span>
@@ -639,7 +639,7 @@ function App() {
               href="https://youtube.com/@toddbrannonmusic?si=H3_Ao1IBbC_OuXO3"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center space-x-2 text-[#FF0000] hover:text-[#CC0000] transition-colors"
+              className="flex items-center space-x-2 text-[#FF4040] hover:text-[#FF6666] transition-colors"
             >
               <SiYoutube className="w-6 h-6 cursor-pointer" />
               <span>YouTube</span>
@@ -649,7 +649,7 @@ function App() {
               href="https://toddbrannon.bandcamp.com/track/deep-calls-to-deep-demo"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center space-x-2 text-[#629AA9] hover:text-[#517e8d] transition-colors"
+              className="flex items-center space-x-2 text-[#629AA9] hover:text-[#7EB5C3] transition-colors"
             >
               <SiBandcamp className="w-6 h-6 cursor-pointer" />
               <span>Bandcamp</span>
@@ -659,7 +659,7 @@ function App() {
               href="https://soundcloud.com/todd-437268405"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center space-x-2 text-[#FF5500] hover:text-[#e94f00] transition-colors"
+              className="flex items-center space-x-2 text-[#FF5500] hover:text-[#FF7733] transition-colors"
             >
               <SiSoundcloud className="w-6 h-6 cursor-pointer" />
               <span>SoundCloud</span>
@@ -671,7 +671,7 @@ function App() {
               href="https://www.instagram.com/the_shake_band"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center space-x-2 text-[#E1306C] hover:text-[#C13584] transition-colors"
+              className="flex items-center space-x-2 text-[#FF3D7F] hover:text-[#FF69A0] transition-colors"
             >
               <Instagram className="w-6 h-6 cursor-pointer" />
               <span>the_shake_band</span>
