@@ -323,9 +323,8 @@ function App() {
         <div className="max-w-6xl mx-auto">
 
           {/* Section header */}
-          <div className="mb-20">
-            <h2 id="featured-work-heading" className="text-4xl md:text-5xl font-light text-white mb-3">Featured Work</h2>
-            <p className="text-base font-light text-gray-400">Two decades of work across studios, stages, and screens.</p>
+          <div className="mb-12">
+            <h2 id="featured-work-heading" className="text-4xl md:text-5xl font-light text-white">Featured Work</h2>
           </div>
 
           {/* Studio Productions */}
