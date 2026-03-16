@@ -1,6 +1,11 @@
+import { useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
 
 export default function PrivacyPolicy({ onBack }: { onBack: () => void }) {
+  useEffect(() => {
+    document.title = 'Privacy Policy | Todd Brannon Music';
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#1a1a1a] py-12 px-4 md:px-6 animate-fadeIn">
       <main className="max-w-[720px] mx-auto">

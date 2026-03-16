@@ -94,6 +94,7 @@ export default function InquiryForm({ onBack }: { onBack: () => void }) {
   const successRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
+    document.title = 'Inquire About Lessons | Todd Brannon Music';
     headingRef.current?.focus();
   }, []);
 

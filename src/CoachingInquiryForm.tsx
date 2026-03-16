@@ -78,6 +78,7 @@ export default function CoachingInquiryForm({ onBack }: { onBack: () => void }) 
   const successRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
+    document.title = 'Coaching Inquiry | Todd Brannon Music';
     headingRef.current?.focus();
   }, []);
 

@@ -39,3 +39,12 @@
 .animate-slideUp {
   animation: slideUp 0.4s ease-out forwards;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fadeIn,
+  .animate-slideUp {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}

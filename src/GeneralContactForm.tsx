@@ -38,6 +38,7 @@ export default function GeneralContactForm({ onBack }: { onBack: () => void }) {
   const successRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
+    document.title = 'Get in Touch | Todd Brannon Music';
     headingRef.current?.focus();
   }, []);
 

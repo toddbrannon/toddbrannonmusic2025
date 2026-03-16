@@ -80,7 +80,10 @@ function App() {
     { key: 'soundcloud', label: 'SoundCloud', icon: <SiSoundcloud aria-hidden="true" className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
   ];
 
-  const shorts = ['h8Hluai8bks', 'ff3Qf6akxQw'];
+  const shorts = [
+    { id: 'h8Hluai8bks', title: 'Home Studio Guitar – Performance Short' },
+    { id: 'ff3Qf6akxQw', title: 'Live Worship Guitar – Performance Short' },
+  ];
   const livePerformances = [
     { id: 'HJlMHuzPDKY', title: 'All I Can Say - Valley Creek Worship', image: thumbHJlMHuzPDKY },
     { id: 'M5SHz--FuVg', title: 'This Is Love - Valley Creek Worship', image: thumbM5SHzFuVg },
@@ -90,6 +93,10 @@ function App() {
 
   // Load the YouTube IFrame API once. If already loaded (e.g. after HMR),
   // set ready immediately via the ref so no callback is needed.
+  useEffect(() => {
+    document.title = 'Todd Brannon Music';
+  }, []);
+
   useEffect(() => {
     if ((window as any).YT?.Player) {
       apiReadyRef.current = true;
@@ -466,12 +473,12 @@ function App() {
               Captions available — use the CC button in each video player, or press <kbd className="px-1 py-0.5 rounded bg-white/10 text-xs font-mono">c</kbd> while the video is focused.
             </p>
             <div className="grid grid-cols-2 gap-6">
-              {shorts.map(videoId => (
-                <div key={videoId} className="aspect-[9/16] w-full max-w-[360px] mx-auto">
+              {shorts.map(short => (
+                <div key={short.id} className="aspect-[9/16] w-full max-w-[360px] mx-auto">
                   <iframe
-                    id={`shorts_player_${videoId}`}
-                    title={`Performance short – ${videoId}`}
-                    src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1&playsinline=1&controls=1&rel=0&cc_load_policy=1`}
+                    id={`shorts_player_${short.id}`}
+                    title={short.title}
+                    src={`https://www.youtube.com/embed/${short.id}?enablejsapi=1&playsinline=1&controls=1&rel=0&cc_load_policy=1`}
                     className="w-full h-full rounded-xl shadow-lg"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
@@ -703,14 +710,14 @@ function App() {
 
       <footer className="py-6 px-6 md:px-24 bg-gray-900 border-t border-gray-800">
         <div className="max-w-6xl mx-auto flex flex-col items-center gap-3">
-          <nav aria-label="Footer navigation" className="flex items-center gap-6 text-xs">
+          <nav aria-label="Footer navigation" className="flex items-center gap-2 text-xs">
             <button
               data-testid="button-footer-lesson-inquiry"
               onClick={() => {
                 setShowInquiryForm(true);
                 window.scrollTo(0, 0);
               }}
-              className="text-white/50 hover:text-[#C9A84C] transition-colors"
+              className="min-h-[44px] px-3 flex items-center text-white/50 hover:text-[#C9A84C] transition-colors"
             >
               Lesson Inquiry
             </button>
@@ -721,7 +728,7 @@ function App() {
                 setShowCoachingForm(true);
                 window.scrollTo(0, 0);
               }}
-              className="text-white/50 hover:text-[#C9A84C] transition-colors"
+              className="min-h-[44px] px-3 flex items-center text-white/50 hover:text-[#C9A84C] transition-colors"
             >
               Coaching Inquiry
             </button>
@@ -732,12 +739,12 @@ function App() {
                 setShowContactForm(true);
                 window.scrollTo(0, 0);
               }}
-              className="text-white/50 hover:text-[#C9A84C] transition-colors"
+              className="min-h-[44px] px-3 flex items-center text-white/50 hover:text-[#C9A84C] transition-colors"
             >
               Contact
             </button>
           </nav>
-          <div className="flex items-center gap-4 text-xs text-white/60">
+          <div className="flex items-center gap-2 text-xs text-white/60">
             <span>© {new Date().getFullYear()} Todd Brannon. All rights reserved.</span>
             <button
               data-testid="link-privacy-policy"
@@ -745,7 +752,7 @@ function App() {
                 setShowPrivacyPolicy(true);
                 window.scrollTo(0, 0);
               }}
-              className="text-white/60 hover:text-white/90 transition-colors"
+              className="min-h-[44px] px-3 flex items-center text-white/60 hover:text-white/90 transition-colors"
             >
               Privacy Policy
             </button>
