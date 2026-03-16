@@ -78,6 +78,7 @@ function App() {
     { id: 'h8Hluai8bks', title: 'Home Studio Guitar – Performance Short' },
     { id: 'ff3Qf6akxQw', title: 'Live Worship Guitar – Performance Short' },
     { id: 'uZzbosx7CsU', title: 'Worship Guitar – Performance Short' },
+    { id: 'rgtTCIE7i0k', title: 'Guitar Performance Short' },
   ];
 
   useEffect(() => {
@@ -366,7 +367,7 @@ function App() {
             <p className="text-xs font-light text-gray-400 mb-8">
               Captions available — use the CC button in each video player, or press <kbd className="px-1 py-0.5 rounded bg-white/10 text-xs font-mono">c</kbd> while the video is focused.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {shorts.map(short => (
                 <div key={short.id} className="aspect-[9/16] w-full max-w-[360px] mx-auto">
                   <iframe
