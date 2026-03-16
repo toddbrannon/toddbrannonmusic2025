@@ -222,7 +222,7 @@ function App() {
           <img src={heroImage} alt="Hero Background" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gray-900 opacity-75"></div>
         </div>
-        <nav className="absolute top-0 w-full p-6 flex justify-between items-center z-10">
+        <nav aria-label="Main navigation" className="absolute top-0 w-full p-6 flex justify-between items-center z-10">
           <img src={brandLogo} alt="TBM Brand Logo" className="h-8 md:h-10 object-contain" />
         </nav>
         <div className="absolute inset-0 flex flex-col justify-center items-center text-white z-10">
@@ -382,11 +382,14 @@ function App() {
           {/* Live Performances */}
           <div className="mb-24">
             <h3 className="text-2xl font-light text-white mb-2">Live Performances</h3>
-            <p className="text-sm font-light text-gray-400 mb-8">Clips from Valley Creek Worship</p>
+            <p className="text-sm font-light text-gray-400 mb-1">Clips from Valley Creek Worship</p>
+            <p className="text-xs font-light text-gray-400 mb-8">
+              Captions available — use the CC button in each video player, or press <kbd className="px-1 py-0.5 rounded bg-white/10 text-xs font-mono">c</kbd> while the video is focused.
+            </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
               {livePerformances.map(video => {
                 const isOverlayVisible = !videoStates[video.id];
-                const params = new URLSearchParams({ enablejsapi: '1', playsinline: '1', controls: '1', rel: '0' });
+                const params = new URLSearchParams({ enablejsapi: '1', playsinline: '1', controls: '1', rel: '0', cc_load_policy: '1' });
                 if (video.start != null) params.set('start', String(video.start));
                 if (video.end != null) params.set('end', String(video.end));
                 return (
@@ -762,7 +765,7 @@ function App() {
               data-testid="button-close-modal"
               onClick={() => setShowModal(false)}
               aria-label="Close dialog"
-              className="absolute top-3 right-3 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 transition-colors text-white text-xl leading-none"
+              className="absolute top-3 right-3 z-10 w-11 h-11 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 transition-colors text-white text-xl leading-none"
             >
               ×
             </button>
