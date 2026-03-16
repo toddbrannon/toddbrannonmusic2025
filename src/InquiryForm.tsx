@@ -46,7 +46,7 @@ function ToggleGroup({
           className={`px-4 py-2 rounded-lg text-sm font-medium transition-all border ${
             isActive(opt.value)
               ? 'border-[#C9A84C] text-[#C9A84C] bg-[#C9A84C]/10'
-              : 'border-gray-600 text-gray-400 bg-transparent hover:border-gray-500 hover:text-gray-300'
+              : 'border-gray-500 text-gray-400 bg-transparent hover:border-gray-400 hover:text-gray-300'
           }`}
         >
           {opt.label}

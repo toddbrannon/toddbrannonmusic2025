@@ -75,7 +75,7 @@ function App() {
   const shorts = [
     { id: 'h8Hluai8bks', title: 'Home Studio Guitar – Performance Short' },
     { id: 'ff3Qf6akxQw', title: 'Live Worship Guitar – Performance Short' },
-    { id: 'uZzbosx7CsU', title: 'Performance Short' },
+    { id: 'uZzbosx7CsU', title: 'Worship Guitar – Performance Short' },
   ];
 
   useEffect(() => {
@@ -311,7 +311,7 @@ function App() {
           <div className="mb-24">
             <h3 className="text-2xl font-light text-white mb-2">Studio Productions</h3>
             <p className="text-sm font-light text-gray-400 mb-2">Original releases, remixes, and studio projects spanning two decades.</p>
-            <p className="text-xs font-light italic text-gray-400 mb-8">Hover over cover to listen</p>
+            <p className="text-xs font-light italic text-gray-400 mb-8">Hover or focus a cover to listen</p>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
               {albums.map((album, index) => (
                 <div key={index} className="group relative aspect-square overflow-hidden rounded-xl shadow-lg border border-white/10">

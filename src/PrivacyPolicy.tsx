@@ -1,9 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { ArrowLeft } from 'lucide-react';
 
 export default function PrivacyPolicy({ onBack }: { onBack: () => void }) {
+  const headingRef = useRef<HTMLHeadingElement>(null);
+
   useEffect(() => {
     document.title = 'Privacy Policy | Todd Brannon Music';
+    headingRef.current?.focus();
   }, []);
 
   return (
@@ -18,7 +21,11 @@ export default function PrivacyPolicy({ onBack }: { onBack: () => void }) {
           Back
         </button>
 
-        <h1 className="text-3xl md:text-4xl font-semibold text-white mb-2">Privacy Policy</h1>
+        <h1
+          ref={headingRef}
+          tabIndex={-1}
+          className="text-3xl md:text-4xl font-semibold text-white mb-2 focus:outline-none"
+        >Privacy Policy</h1>
         <p className="text-sm text-gray-400 mb-10">Last updated: March 9, 2026</p>
 
         <div className="space-y-8 text-gray-300 font-light leading-relaxed">
