@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, Check } from 'lucide-react';
 
 const GOLD = '#C9A84C';
@@ -12,6 +12,11 @@ export default function GeneralContactForm({ onBack }: { onBack: () => void }) {
   const [email, setEmail] = useState('');
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
+  const headingRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    headingRef.current?.focus();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,7 +98,11 @@ export default function GeneralContactForm({ onBack }: { onBack: () => void }) {
           className="w-12 h-[2px] mb-4"
           style={{ backgroundColor: GOLD }}
         />
-        <h1 className="text-3xl md:text-4xl font-semibold text-white mb-2">
+        <h1
+          ref={headingRef}
+          tabIndex={-1}
+          className="text-3xl md:text-4xl font-semibold text-white mb-2 focus:outline-none"
+        >
           Get in Touch
         </h1>
         <p className="text-gray-400 font-light mb-10">
@@ -103,13 +112,15 @@ export default function GeneralContactForm({ onBack }: { onBack: () => void }) {
         <form onSubmit={handleSubmit} className="space-y-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm text-gray-400 mb-1.5">
+              <label htmlFor="contact-name" className="block text-sm text-gray-400 mb-1.5">
                 Name <span style={{ color: GOLD }}>*</span>
               </label>
               <input
+                id="contact-name"
                 data-testid="input-contact-name"
                 type="text"
                 required
+                autoComplete="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="w-full bg-[#252525] border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C] transition-colors"
@@ -117,13 +128,15 @@ export default function GeneralContactForm({ onBack }: { onBack: () => void }) {
               />
             </div>
             <div>
-              <label className="block text-sm text-gray-400 mb-1.5">
+              <label htmlFor="contact-email" className="block text-sm text-gray-400 mb-1.5">
                 Email <span style={{ color: GOLD }}>*</span>
               </label>
               <input
+                id="contact-email"
                 data-testid="input-contact-email"
                 type="email"
                 required
+                autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full bg-[#252525] border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C] transition-colors"
@@ -133,10 +146,11 @@ export default function GeneralContactForm({ onBack }: { onBack: () => void }) {
           </div>
 
           <div>
-            <label className="block text-sm text-gray-400 mb-1.5">
+            <label htmlFor="contact-subject" className="block text-sm text-gray-400 mb-1.5">
               Subject
             </label>
             <input
+              id="contact-subject"
               data-testid="input-contact-subject"
               type="text"
               value={subject}
@@ -147,10 +161,11 @@ export default function GeneralContactForm({ onBack }: { onBack: () => void }) {
           </div>
 
           <div>
-            <label className="block text-sm text-gray-400 mb-1.5">
+            <label htmlFor="contact-message" className="block text-sm text-gray-400 mb-1.5">
               Message <span style={{ color: GOLD }}>*</span>
             </label>
             <textarea
+              id="contact-message"
               data-testid="input-contact-message"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
@@ -162,7 +177,11 @@ export default function GeneralContactForm({ onBack }: { onBack: () => void }) {
           </div>
 
           {error && (
-            <div data-testid="text-contact-error" className="p-4 rounded-lg bg-red-900/30 border border-red-800 text-red-300 text-sm">
+            <div
+              role="alert"
+              data-testid="text-contact-error"
+              className="p-4 rounded-lg bg-red-900/30 border border-red-800 text-red-300 text-sm"
+            >
               {error}
             </div>
           )}
@@ -171,7 +190,7 @@ export default function GeneralContactForm({ onBack }: { onBack: () => void }) {
             data-testid="button-submit-contact"
             type="submit"
             disabled={submitting}
-            className="w-full py-3 px-6 rounded-lg text-lg font-medium transition-colors text-white disabled:opacity-60 disabled:cursor-not-allowed"
+            className="w-full py-3 px-6 rounded-lg text-lg font-medium transition-colors text-[#1A2E42] disabled:opacity-60 disabled:cursor-not-allowed"
             style={{ backgroundColor: GOLD }}
             onMouseEnter={(e) => {
               if (!submitting) e.currentTarget.style.backgroundColor = GOLD_HOVER;

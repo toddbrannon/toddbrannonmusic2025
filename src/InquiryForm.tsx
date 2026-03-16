@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, Check } from 'lucide-react';
 
 const GOLD = '#C9A84C';
@@ -14,11 +14,13 @@ function ToggleGroup({
   selected,
   onSelect,
   multi = false,
+  ariaLabelledBy,
 }: {
   options: ToggleOption[];
   selected: string | string[];
   onSelect: (val: string | string[]) => void;
   multi?: boolean;
+  ariaLabelledBy?: string;
 }) {
   const isActive = (val: string) =>
     multi ? (selected as string[]).includes(val) : selected === val;
@@ -33,12 +35,13 @@ function ToggleGroup({
   };
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-2" role="group" aria-labelledby={ariaLabelledBy}>
       {options.map((opt) => (
         <button
           key={opt.value}
           type="button"
           data-testid={`toggle-${opt.value}`}
+          aria-pressed={isActive(opt.value)}
           onClick={() => handleClick(opt.value)}
           className={`px-4 py-2 rounded-lg text-sm font-medium transition-all border ${
             isActive(opt.value)
@@ -65,6 +68,11 @@ export default function InquiryForm({ onBack }: { onBack: () => void }) {
   const [interests, setInterests] = useState<string[]>([]);
   const [availability, setAvailability] = useState<string[]>([]);
   const [message, setMessage] = useState('');
+  const headingRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    headingRef.current?.focus();
+  }, []);
 
   const studentOptions: ToggleOption[] = [
     { label: 'Myself', value: 'myself' },
@@ -177,7 +185,11 @@ export default function InquiryForm({ onBack }: { onBack: () => void }) {
           className="w-12 h-[2px] mb-4"
           style={{ backgroundColor: GOLD }}
         />
-        <h1 className="text-3xl md:text-4xl font-semibold text-white mb-2">
+        <h1
+          ref={headingRef}
+          tabIndex={-1}
+          className="text-3xl md:text-4xl font-semibold text-white mb-2 focus:outline-none"
+        >
           Inquire About Lessons
         </h1>
         <p className="text-gray-400 font-light mb-10">
@@ -187,13 +199,15 @@ export default function InquiryForm({ onBack }: { onBack: () => void }) {
         <form onSubmit={handleSubmit} className="space-y-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm text-gray-400 mb-1.5">
+              <label htmlFor="inquiry-name" className="block text-sm text-gray-400 mb-1.5">
                 Name <span style={{ color: GOLD }}>*</span>
               </label>
               <input
+                id="inquiry-name"
                 data-testid="input-name"
                 type="text"
                 required
+                autoComplete="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="w-full bg-[#252525] border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C] transition-colors"
@@ -201,13 +215,15 @@ export default function InquiryForm({ onBack }: { onBack: () => void }) {
               />
             </div>
             <div>
-              <label className="block text-sm text-gray-400 mb-1.5">
+              <label htmlFor="inquiry-email" className="block text-sm text-gray-400 mb-1.5">
                 Email <span style={{ color: GOLD }}>*</span>
               </label>
               <input
+                id="inquiry-email"
                 data-testid="input-email"
                 type="email"
                 required
+                autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full bg-[#252525] border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C] transition-colors"
@@ -217,12 +233,14 @@ export default function InquiryForm({ onBack }: { onBack: () => void }) {
           </div>
 
           <div>
-            <label className="block text-sm text-gray-400 mb-1.5">
+            <label htmlFor="inquiry-phone" className="block text-sm text-gray-400 mb-1.5">
               Phone <span className="text-gray-600">(optional)</span>
             </label>
             <input
+              id="inquiry-phone"
               data-testid="input-phone"
               type="tel"
+              autoComplete="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               className="w-full bg-[#252525] border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A84C] transition-colors"
@@ -231,56 +249,61 @@ export default function InquiryForm({ onBack }: { onBack: () => void }) {
           </div>
 
           <div>
-            <label className="block text-sm text-gray-400 mb-3">
+            <span id="label-student-type" className="block text-sm text-gray-400 mb-3">
               Who's taking lessons?
-            </label>
+            </span>
             <ToggleGroup
               options={studentOptions}
               selected={studentType}
               onSelect={(val) => setStudentType(val as string)}
+              ariaLabelledBy="label-student-type"
             />
           </div>
 
           <div>
-            <label className="block text-sm text-gray-400 mb-3">
+            <span id="label-experience" className="block text-sm text-gray-400 mb-3">
               Experience level
-            </label>
+            </span>
             <ToggleGroup
               options={experienceOptions}
               selected={experience}
               onSelect={(val) => setExperience(val as string)}
+              ariaLabelledBy="label-experience"
             />
           </div>
 
           <div>
-            <label className="block text-sm text-gray-400 mb-3">
+            <span id="label-interests" className="block text-sm text-gray-400 mb-3">
               Interested in
-            </label>
+            </span>
             <ToggleGroup
               options={interestOptions}
               selected={interests}
               onSelect={(val) => setInterests(val as string[])}
               multi
+              ariaLabelledBy="label-interests"
             />
           </div>
 
           <div>
-            <label className="block text-sm text-gray-400 mb-3">
+            <span id="label-availability" className="block text-sm text-gray-400 mb-3">
               Preferred availability
-            </label>
+            </span>
             <ToggleGroup
               options={availabilityOptions}
               selected={availability}
               onSelect={(val) => setAvailability(val as string[])}
               multi
+              ariaLabelledBy="label-availability"
             />
           </div>
 
           <div>
-            <label className="block text-sm text-gray-400 mb-1.5">
+            <label htmlFor="inquiry-message" className="block text-sm text-gray-400 mb-1.5">
               Message <span className="text-gray-600">(optional)</span>
             </label>
             <textarea
+              id="inquiry-message"
               data-testid="input-message"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
@@ -291,7 +314,11 @@ export default function InquiryForm({ onBack }: { onBack: () => void }) {
           </div>
 
           {error && (
-            <div data-testid="text-error" className="p-4 rounded-lg bg-red-900/30 border border-red-800 text-red-300 text-sm">
+            <div
+              role="alert"
+              data-testid="text-error"
+              className="p-4 rounded-lg bg-red-900/30 border border-red-800 text-red-300 text-sm"
+            >
               {error}
             </div>
           )}
@@ -300,7 +327,7 @@ export default function InquiryForm({ onBack }: { onBack: () => void }) {
             data-testid="button-submit-inquiry"
             type="submit"
             disabled={submitting}
-            className="w-full py-3 px-6 rounded-lg text-lg font-medium transition-colors text-white disabled:opacity-60 disabled:cursor-not-allowed"
+            className="w-full py-3 px-6 rounded-lg text-lg font-medium transition-colors text-[#1A2E42] disabled:opacity-60 disabled:cursor-not-allowed"
             style={{ backgroundColor: GOLD }}
             onMouseEnter={(e) => {
               if (!submitting) e.currentTarget.style.backgroundColor = GOLD_HOVER;

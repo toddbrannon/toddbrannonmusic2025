@@ -30,6 +30,7 @@ function App() {
   const [apiReady, setApiReady] = useState(false);
   const apiReadyRef = useRef(false);
   const allPlayersRef = useRef<YT.Player[]>([]);
+  const modalRef = useRef<HTMLDivElement>(null);
   const [videoStates, setVideoStates] = useState<Record<string, boolean>>({});
   const [showModal, setShowModal] = useState(false);
   const [showInquiryForm, setShowInquiryForm] = useState(false);
@@ -71,11 +72,11 @@ function App() {
   const liveShots = [toddLive2, toddLive3, toddLive5, toddLive10, toddLive14]
 
   const platforms = [
-    { key: 'appleMusic', icon: <SiApplemusic className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
-    { key: 'spotify', icon: <SiSpotify className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
-    { key: 'youtubeMusic', icon: <SiYoutubemusic className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
-    { key: 'bandcamp', icon: <SiBandcamp className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
-    { key: 'soundcloud', icon: <SiSoundcloud className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
+    { key: 'appleMusic', label: 'Apple Music', icon: <SiApplemusic className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
+    { key: 'spotify', label: 'Spotify', icon: <SiSpotify className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
+    { key: 'youtubeMusic', label: 'YouTube Music', icon: <SiYoutubemusic className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
+    { key: 'bandcamp', label: 'Bandcamp', icon: <SiBandcamp className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
+    { key: 'soundcloud', label: 'SoundCloud', icon: <SiSoundcloud className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
   ];
 
   const shorts = ['h8Hluai8bks', 'ff3Qf6akxQw'];
@@ -109,6 +110,31 @@ function App() {
     const timer = setTimeout(() => setShowModal(true), 3000);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (showModal && modalRef.current) {
+      const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length) focusable[0].focus();
+    }
+  }, [showModal]);
+
+  const handleModalKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Escape') { setShowModal(false); return; }
+    if (e.key !== 'Tab' || !modalRef.current) return;
+    const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+    } else {
+      if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  };
 
   // Initialize all YouTube iframes as YT.Player instances when the API is ready.
   // A single shared array (allPlayersRef) holds every player across both sections.
@@ -185,6 +211,12 @@ function App() {
 
   return (
     <div className="relative">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#C9A84C] focus:text-[#1A2E42] focus:rounded-lg focus:font-medium focus:text-sm"
+      >
+        Skip to main content
+      </a>
       <div className="relative h-screen">
         <div className="absolute inset-0">
           <img src={heroImage} alt="Hero Background" className="w-full h-full object-cover" />
@@ -194,7 +226,8 @@ function App() {
           <img src={brandLogo} alt="TBM Brand Logo" className="h-8 md:h-10 object-contain" />
         </nav>
         <div className="absolute inset-0 flex flex-col justify-center items-center text-white z-10">
-          <img src={logo} alt="TB Music Logo" className="h-[250px] md:h-[300px] lg:h-[400px] xl:h-[500px] mb-6 object-contain opacity-70" />
+          <h1 className="sr-only">Todd Brannon Music</h1>
+          <img src={logo} alt="" aria-hidden="true" className="h-[250px] md:h-[300px] lg:h-[400px] xl:h-[500px] mb-6 object-contain opacity-70" />
           <div className="flex gap-4">
             <button
               data-testid="button-hero-lesson-inquiry"
@@ -220,7 +253,7 @@ function App() {
         </div>
       </div>
 
-      <section className="py-24 bg-gray-900 text-gray-100 overflow-hidden">
+      <section id="main-content" className="py-24 bg-gray-900 text-gray-100 overflow-hidden">
 
         {/* Stat callouts */}
         <div className="px-6 md:px-24 mb-20">
@@ -294,6 +327,8 @@ function App() {
               <div key={index} className="overflow-hidden rounded-xl" style={{ height: '240px' }}>
                 <img
                   src={image}
+                  alt=""
+                  aria-hidden="true"
                   className="w-full h-full object-cover object-center"
                 />
               </div>
@@ -330,9 +365,9 @@ function App() {
                     <span className="text-xs font-light mb-1 text-gray-300">{album.artist}</span>
                     <span className="text-xs font-light text-gray-400">{album.year}</span>
                     <div className="flex space-x-3 mt-3">
-                      {platforms.map(({ key, icon }) =>
+                      {platforms.map(({ key, label, icon }) =>
                         album[key as keyof typeof album] ? (
-                          <a key={key} href={album[key as keyof typeof album]} target="_blank" rel="noopener noreferrer">
+                          <a key={key} href={album[key as keyof typeof album]} target="_blank" rel="noopener noreferrer" aria-label={`Listen on ${label}`}>
                             {icon}
                           </a>
                         ) : null
@@ -358,6 +393,7 @@ function App() {
                   <div key={video.id} className="aspect-video relative rounded-xl shadow-lg overflow-hidden">
                     <iframe
                       id={`live_player_${video.id}`}
+                      title={video.title}
                       src={`https://www.youtube.com/embed/${video.id}?${params.toString()}`}
                       className="w-full h-full"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -365,8 +401,25 @@ function App() {
                     />
                     {isOverlayVisible && (
                       <div
+                        role="button"
+                        tabIndex={0}
+                        aria-label={`Play ${video.title}`}
                         className="absolute inset-0 z-20 flex items-center justify-center cursor-pointer group/play"
                         onClick={() => {
+                          const player = allPlayersRef.current.find(p =>
+                            p && typeof p.getVideoData === 'function' && p.getVideoData().video_id === video.id
+                          );
+                          if (player && typeof player.playVideo === 'function') {
+                            const playerIndex = allPlayersRef.current.indexOf(player);
+                            allPlayersRef.current.forEach((p, i) => {
+                              if (i !== playerIndex && p && typeof p.pauseVideo === 'function') p.pauseVideo();
+                            });
+                            player.playVideo();
+                          }
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key !== 'Enter' && e.key !== ' ') return;
+                          e.preventDefault();
                           const player = allPlayersRef.current.find(p =>
                             p && typeof p.getVideoData === 'function' && p.getVideoData().video_id === video.id
                           );
@@ -381,7 +434,7 @@ function App() {
                       >
                         <img
                           src={video.image}
-                          alt="Video thumbnail"
+                          alt={`${video.title} – thumbnail`}
                           className="absolute inset-0 w-full h-full object-cover transition-all duration-300 group-hover/play:brightness-110"
                         />
                         <div className="absolute inset-0 bg-black/40 group-hover/play:bg-black/25 transition-colors duration-300 flex items-center justify-center">
@@ -408,6 +461,7 @@ function App() {
                 <div key={videoId} className="aspect-[9/16] w-full max-w-[360px] mx-auto">
                   <iframe
                     id={`shorts_player_${videoId}`}
+                    title={`Performance short – ${videoId}`}
                     src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1&playsinline=1&controls=1&rel=0`}
                     className="w-full h-full rounded-xl shadow-lg"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -695,13 +749,19 @@ function App() {
           onClick={() => setShowModal(false)}
         >
           <div
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-title"
             data-testid="modal-lessons"
             className="relative bg-gray-900 text-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] flex flex-col md:flex-row overflow-hidden animate-slideUp"
             onClick={(e) => e.stopPropagation()}
+            onKeyDown={handleModalKeyDown}
           >
             <button
               data-testid="button-close-modal"
               onClick={() => setShowModal(false)}
+              aria-label="Close dialog"
               className="absolute top-3 right-3 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 transition-colors text-white text-xl leading-none"
             >
               ×
@@ -714,7 +774,7 @@ function App() {
               />
             </div>
             <div className="flex-1 p-5 md:p-8 flex flex-col justify-center space-y-3 md:space-y-4 overflow-y-auto">
-              <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold">Ready to Play — Really Play?</h2>
+              <h2 id="modal-title" className="text-xl md:text-2xl lg:text-3xl font-semibold">Ready to Play — Really Play?</h2>
               <p className="text-sm md:text-base font-light leading-relaxed text-gray-300">
                 Whether you're a beginner picking up a guitar for the first time or a teen or adult looking to sharpen your skills for a worship team or band, I offer focused, personalized instruction that goes beyond technique and theory.
               </p>
