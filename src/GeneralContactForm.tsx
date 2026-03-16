@@ -123,7 +123,7 @@ export default function GeneralContactForm({ onBack }: { onBack: () => void }) {
                 autoComplete="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full bg-[#252525] border border-[#777777] rounded-lg px-4 py-2.5 text-white placeholder-gray-400 focus:outline-none focus:border-[#C9A84C] transition-colors"
+                className="w-full bg-[#252525] border border-[#777777] rounded-lg px-4 py-2.5 text-white placeholder-gray-400 focus:border-[#C9A84C] transition-colors"
                 placeholder="Your name"
               />
             </div>
@@ -139,7 +139,7 @@ export default function GeneralContactForm({ onBack }: { onBack: () => void }) {
                 autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-[#252525] border border-[#777777] rounded-lg px-4 py-2.5 text-white placeholder-gray-400 focus:outline-none focus:border-[#C9A84C] transition-colors"
+                className="w-full bg-[#252525] border border-[#777777] rounded-lg px-4 py-2.5 text-white placeholder-gray-400 focus:border-[#C9A84C] transition-colors"
                 placeholder="you@email.com"
               />
             </div>
@@ -155,7 +155,7 @@ export default function GeneralContactForm({ onBack }: { onBack: () => void }) {
               type="text"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
-              className="w-full bg-[#252525] border border-[#777777] rounded-lg px-4 py-2.5 text-white placeholder-gray-400 focus:outline-none focus:border-[#C9A84C] transition-colors"
+              className="w-full bg-[#252525] border border-[#777777] rounded-lg px-4 py-2.5 text-white placeholder-gray-400 focus:border-[#C9A84C] transition-colors"
               placeholder="What's this about?"
             />
           </div>
@@ -171,7 +171,7 @@ export default function GeneralContactForm({ onBack }: { onBack: () => void }) {
               onChange={(e) => setMessage(e.target.value)}
               required
               rows={5}
-              className="w-full bg-[#252525] border border-[#777777] rounded-lg px-4 py-2.5 text-white placeholder-gray-400 focus:outline-none focus:border-[#C9A84C] transition-colors resize-none"
+              className="w-full bg-[#252525] border border-[#777777] rounded-lg px-4 py-2.5 text-white placeholder-gray-400 focus:border-[#C9A84C] transition-colors resize-none"
               placeholder="Your message..."
             />
           </div>

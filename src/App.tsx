@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import heroImage from './assets/RivoltaLive.jpg';
 import logo from './assets/tb_music_logo_1400.png';
 import brandLogo from './assets/tbm_brand.png';
@@ -31,6 +31,7 @@ function App() {
   const apiReadyRef = useRef(false);
   const allPlayersRef = useRef<YT.Player[]>([]);
   const modalRef = useRef<HTMLDivElement>(null);
+  const modalTriggerRef = useRef<HTMLElement | null>(null);
   const [videoStates, setVideoStates] = useState<Record<string, boolean>>({});
   const [showModal, setShowModal] = useState(false);
   const [showInquiryForm, setShowInquiryForm] = useState(false);
@@ -113,6 +114,7 @@ function App() {
 
   useEffect(() => {
     if (showModal && modalRef.current) {
+      modalTriggerRef.current = document.activeElement as HTMLElement;
       const focusable = modalRef.current.querySelectorAll<HTMLElement>(
         'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
       );
@@ -120,8 +122,18 @@ function App() {
     }
   }, [showModal]);
 
+  const closeModal = useCallback(() => {
+    setShowModal(false);
+    setTimeout(() => {
+      const trigger = modalTriggerRef.current;
+      if (trigger && trigger !== document.body && typeof trigger.focus === 'function') {
+        trigger.focus();
+      }
+    }, 0);
+  }, []);
+
   const handleModalKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'Escape') { setShowModal(false); return; }
+    if (e.key === 'Escape') { closeModal(); return; }
     if (e.key !== 'Tab' || !modalRef.current) return;
     const focusable = modalRef.current.querySelectorAll<HTMLElement>(
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
@@ -362,7 +374,7 @@ function App() {
                     alt={`${album.title} by ${album.artist}`}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-white opacity-0 bg-[#2F4F4F]/85 transition-opacity duration-300 group-hover:opacity-100 p-4 text-center">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-white opacity-0 bg-[#2F4F4F]/85 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100 p-4 text-center">
                     <span className="text-base font-light mb-1 leading-snug">{album.title}</span>
                     <span className="text-xs font-light mb-1 text-gray-300">{album.artist}</span>
                     <span className="text-xs font-light text-gray-300">{album.year}</span>
@@ -419,6 +431,10 @@ function App() {
                               if (i !== playerIndex && p && typeof p.pauseVideo === 'function') p.pauseVideo();
                             });
                             player.playVideo();
+                            setTimeout(() => {
+                              const iframeEl = document.getElementById(`live_player_${video.id}`) as HTMLElement | null;
+                              iframeEl?.focus();
+                            }, 150);
                           }
                         }}
                       >
@@ -738,7 +754,7 @@ function App() {
         <div
           data-testid="modal-overlay"
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-fadeIn p-4"
-          onClick={() => setShowModal(false)}
+          onClick={closeModal}
         >
           <div
             ref={modalRef}
@@ -752,7 +768,7 @@ function App() {
           >
             <button
               data-testid="button-close-modal"
-              onClick={() => setShowModal(false)}
+              onClick={closeModal}
               aria-label="Close dialog"
               className="absolute top-3 right-3 z-10 w-11 h-11 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 transition-colors text-white text-xl leading-none"
             >
@@ -779,7 +795,7 @@ function App() {
               <button
                 data-testid="button-inquire-lessons"
                 onClick={() => {
-                  setShowModal(false);
+                  closeModal();
                   setShowInquiryForm(true);
                   window.scrollTo(0, 0);
                 }}
