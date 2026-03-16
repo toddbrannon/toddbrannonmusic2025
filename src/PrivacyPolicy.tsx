@@ -9,7 +9,7 @@ export default function PrivacyPolicy({ onBack }: { onBack: () => void }) {
           onClick={onBack}
           className="mb-8 inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft aria-hidden="true" className="w-4 h-4" />
           Back
         </button>
 

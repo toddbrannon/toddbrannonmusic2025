@@ -73,11 +73,11 @@ function App() {
   const liveShots = [toddLive2, toddLive3, toddLive5, toddLive10, toddLive14]
 
   const platforms = [
-    { key: 'appleMusic', label: 'Apple Music', icon: <SiApplemusic className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
-    { key: 'spotify', label: 'Spotify', icon: <SiSpotify className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
-    { key: 'youtubeMusic', label: 'YouTube Music', icon: <SiYoutubemusic className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
-    { key: 'bandcamp', label: 'Bandcamp', icon: <SiBandcamp className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
-    { key: 'soundcloud', label: 'SoundCloud', icon: <SiSoundcloud className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
+    { key: 'appleMusic', label: 'Apple Music', icon: <SiApplemusic aria-hidden="true" className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
+    { key: 'spotify', label: 'Spotify', icon: <SiSpotify aria-hidden="true" className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
+    { key: 'youtubeMusic', label: 'YouTube Music', icon: <SiYoutubemusic aria-hidden="true" className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
+    { key: 'bandcamp', label: 'Bandcamp', icon: <SiBandcamp aria-hidden="true" className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
+    { key: 'soundcloud', label: 'SoundCloud', icon: <SiSoundcloud aria-hidden="true" className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
   ];
 
   const shorts = ['h8Hluai8bks', 'ff3Qf6akxQw'];
@@ -235,7 +235,7 @@ function App() {
           <div className="absolute inset-0 bg-gray-900 opacity-75"></div>
         </div>
         <nav aria-label="Main navigation" className="absolute top-0 w-full p-6 flex justify-between items-center z-10">
-          <img src={brandLogo} alt="TBM Brand Logo" className="h-8 md:h-10 object-contain" />
+          <img src={brandLogo} alt="Todd Brannon Music" className="h-8 md:h-10 object-contain" />
         </nav>
         <div className="absolute inset-0 flex flex-col justify-center items-center text-white z-10">
           <h1 className="sr-only">Todd Brannon Music</h1>
@@ -445,7 +445,7 @@ function App() {
                         />
                         <div className="absolute inset-0 bg-black/40 group-hover/play:bg-black/25 transition-colors duration-300 flex items-center justify-center">
                           <div className="w-16 h-16 rounded-full bg-white/20 group-hover/play:bg-white/30 transition-colors duration-300 flex items-center justify-center backdrop-blur-sm">
-                            <svg className="w-7 h-7 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                            <svg aria-hidden="true" className="w-7 h-7 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
                               <path d="M8 5v14l11-7z" />
                             </svg>
                           </div>
@@ -461,14 +461,17 @@ function App() {
           {/* Performance Shorts */}
           <div>
             <h3 className="text-2xl font-light text-white mb-2">Performance Shorts</h3>
-            <p className="text-sm font-light text-gray-400 mb-8">Quick clips from the home studio and beyond.</p>
+            <p className="text-sm font-light text-gray-400 mb-1">Quick clips from the home studio and beyond.</p>
+            <p className="text-xs font-light text-gray-400 mb-8">
+              Captions available — use the CC button in each video player, or press <kbd className="px-1 py-0.5 rounded bg-white/10 text-xs font-mono">c</kbd> while the video is focused.
+            </p>
             <div className="grid grid-cols-2 gap-6">
               {shorts.map(videoId => (
                 <div key={videoId} className="aspect-[9/16] w-full max-w-[360px] mx-auto">
                   <iframe
                     id={`shorts_player_${videoId}`}
                     title={`Performance short – ${videoId}`}
-                    src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1&playsinline=1&controls=1&rel=0`}
+                    src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1&playsinline=1&controls=1&rel=0&cc_load_policy=1`}
                     className="w-full h-full rounded-xl shadow-lg"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
@@ -509,7 +512,7 @@ function App() {
             <div className="rounded-xl p-8 flex flex-col transition-colors" style={{ backgroundColor: '#1A2E42', border: '1px solid rgba(45, 125, 210, 0.6)' }}>
               <div className="mb-6">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-6" style={{ backgroundColor: 'rgba(201,168,76,0.12)' }}>
-                  <Mic className="w-5 h-5" style={{ color: '#C9A84C' }} />
+                  <Mic aria-hidden="true" className="w-5 h-5" style={{ color: '#C9A84C' }} />
                 </div>
                 <h3 className="text-xl font-light text-white mb-3">Live Performance</h3>
                 <p className="text-sm font-light leading-relaxed text-gray-400">
@@ -531,7 +534,7 @@ function App() {
             <div className="rounded-xl p-8 flex flex-col transition-colors" style={{ backgroundColor: '#1A2E42', border: '1px solid rgba(45, 125, 210, 0.6)' }}>
               <div className="mb-6">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-6" style={{ backgroundColor: 'rgba(201,168,76,0.12)' }}>
-                  <Sliders className="w-5 h-5" style={{ color: '#C9A84C' }} />
+                  <Sliders aria-hidden="true" className="w-5 h-5" style={{ color: '#C9A84C' }} />
                 </div>
                 <h3 className="text-xl font-light text-white mb-3">Studio Engineering & Music Production</h3>
                 <p className="text-sm font-light leading-relaxed text-gray-400">
@@ -553,7 +556,7 @@ function App() {
             <div className="rounded-xl p-8 flex flex-col transition-colors" style={{ backgroundColor: '#1A2E42', border: '1px solid rgba(45, 125, 210, 0.6)' }}>
               <div className="mb-6">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-6" style={{ backgroundColor: 'rgba(201,168,76,0.12)' }}>
-                  <Music className="w-5 h-5" style={{ color: '#C9A84C' }} />
+                  <Music aria-hidden="true" className="w-5 h-5" style={{ color: '#C9A84C' }} />
                 </div>
                 <h3 className="text-xl font-light text-white mb-3">Guitar Instruction</h3>
                 <p className="text-sm font-light leading-relaxed text-gray-400">
@@ -575,7 +578,7 @@ function App() {
             <div className="rounded-xl p-8 flex flex-col transition-colors" style={{ backgroundColor: '#1A2E42', border: '1px solid rgba(45, 125, 210, 0.6)' }}>
               <div className="mb-6">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-6" style={{ backgroundColor: 'rgba(201,168,76,0.12)' }}>
-                  <Headphones className="w-5 h-5" style={{ color: '#C9A84C' }} />
+                  <Headphones aria-hidden="true" className="w-5 h-5" style={{ color: '#C9A84C' }} />
                 </div>
                 <h3 className="text-xl font-light text-white mb-3">Session Work</h3>
                 <p className="text-sm font-light leading-relaxed text-gray-400">
@@ -647,7 +650,7 @@ function App() {
               rel="noopener noreferrer"
               className="flex items-center space-x-2 text-[#FF3D7F] hover:text-[#FF69A0] transition-colors"
             >
-              <Instagram className="w-6 h-6 cursor-pointer" />
+              <Instagram aria-hidden="true" className="w-6 h-6" />
               <span>Instagram</span>
             </a>
 
@@ -657,7 +660,7 @@ function App() {
               rel="noopener noreferrer"
               className="flex items-center space-x-2 text-[#FF4040] hover:text-[#FF6666] transition-colors"
             >
-              <SiYoutube className="w-6 h-6 cursor-pointer" />
+              <SiYoutube aria-hidden="true" className="w-6 h-6" />
               <span>YouTube</span>
             </a>
 
@@ -667,7 +670,7 @@ function App() {
               rel="noopener noreferrer"
               className="flex items-center space-x-2 text-[#629AA9] hover:text-[#7EB5C3] transition-colors"
             >
-              <SiBandcamp className="w-6 h-6 cursor-pointer" />
+              <SiBandcamp aria-hidden="true" className="w-6 h-6" />
               <span>Bandcamp</span>
             </a>
 
@@ -677,7 +680,7 @@ function App() {
               rel="noopener noreferrer"
               className="flex items-center space-x-2 text-[#FF5500] hover:text-[#FF7733] transition-colors"
             >
-              <SiSoundcloud className="w-6 h-6 cursor-pointer" />
+              <SiSoundcloud aria-hidden="true" className="w-6 h-6" />
               <span>SoundCloud</span>
             </a>
             
@@ -777,7 +780,7 @@ function App() {
             <div className="md:w-2/5 flex-shrink-0 flex items-center justify-center bg-gray-950 p-4 md:p-3 md:rounded-l-2xl">
               <img
                 src={toddHeadshot}
-                alt="Todd Brannon with guitar"
+                alt="Todd Brannon, guitarist and music instructor"
                 className="max-h-[30vh] md:max-h-[80vh] w-auto h-auto object-contain rounded-xl"
               />
             </div>

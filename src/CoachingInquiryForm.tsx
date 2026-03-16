@@ -114,7 +114,7 @@ export default function CoachingInquiryForm({ onBack }: { onBack: () => void }) 
             className="w-20 h-20 mx-auto rounded-full border-2 flex items-center justify-center"
             style={{ borderColor: GOLD }}
           >
-            <Check className="w-10 h-10" style={{ color: GOLD }} />
+            <Check aria-hidden="true" className="w-10 h-10" style={{ color: GOLD }} />
           </div>
           <h2 className="text-3xl md:text-4xl font-semibold text-white">
             You're on my radar.
@@ -131,7 +131,7 @@ export default function CoachingInquiryForm({ onBack }: { onBack: () => void }) 
             className="mt-6 inline-flex items-center gap-2 text-sm font-medium transition-colors hover:opacity-80"
             style={{ color: GOLD }}
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft aria-hidden="true" className="w-4 h-4" />
             Back to site
           </button>
         </main>
@@ -147,7 +147,7 @@ export default function CoachingInquiryForm({ onBack }: { onBack: () => void }) 
           onClick={onBack}
           className="mb-8 inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft aria-hidden="true" className="w-4 h-4" />
           Back
         </button>
 
