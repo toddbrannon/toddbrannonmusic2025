@@ -67,7 +67,7 @@ export default function GeneralContactForm({ onBack }: { onBack: () => void }) {
             Thanks for reaching out — I'll review your message and get back to
             you soon.
           </p>
-          <p className="text-gray-500 italic text-base mt-4">— Todd Brannon</p>
+          <p className="text-gray-400 italic text-base mt-4">— Todd Brannon</p>
           <button
             data-testid="button-back-to-site-contact"
             onClick={onBack}

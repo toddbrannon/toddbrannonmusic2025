@@ -351,7 +351,7 @@ function App() {
           <div className="mb-24">
             <h3 className="text-2xl font-light text-white mb-2">Studio Productions</h3>
             <p className="text-sm font-light text-gray-400 mb-2">Original releases, remixes, and studio projects spanning two decades.</p>
-            <p className="text-xs font-light italic text-gray-500 mb-8">Hover over cover to listen</p>
+            <p className="text-xs font-light italic text-gray-400 mb-8">Hover over cover to listen</p>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
               {albums.map((album, index) => (
                 <div key={index} className="group relative aspect-square overflow-hidden rounded-xl shadow-lg border border-white/10">
@@ -703,7 +703,7 @@ function App() {
             >
               Lesson Inquiry
             </button>
-            <span className="text-white/20">·</span>
+            <span className="text-white/50" aria-hidden="true">·</span>
             <button
               data-testid="button-footer-coaching-inquiry"
               onClick={() => {
@@ -714,7 +714,7 @@ function App() {
             >
               Coaching Inquiry
             </button>
-            <span className="text-white/20">·</span>
+            <span className="text-white/50" aria-hidden="true">·</span>
             <button
               data-testid="button-footer-contact"
               onClick={() => {
@@ -726,7 +726,7 @@ function App() {
               Contact
             </button>
           </div>
-          <div className="flex items-center gap-4 text-xs text-white/40">
+          <div className="flex items-center gap-4 text-xs text-white/60">
             <span>© {new Date().getFullYear()} Todd Brannon. All rights reserved.</span>
             <button
               data-testid="link-privacy-policy"
@@ -734,7 +734,7 @@ function App() {
                 setShowPrivacyPolicy(true);
                 window.scrollTo(0, 0);
               }}
-              className="text-white/40 hover:text-white/70 transition-colors"
+              className="text-white/60 hover:text-white/90 transition-colors"
             >
               Privacy Policy
             </button>

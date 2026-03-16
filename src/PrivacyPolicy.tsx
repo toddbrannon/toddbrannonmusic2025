@@ -14,7 +14,7 @@ export default function PrivacyPolicy({ onBack }: { onBack: () => void }) {
         </button>
 
         <h1 className="text-3xl md:text-4xl font-semibold text-white mb-2">Privacy Policy</h1>
-        <p className="text-sm text-gray-500 mb-10">Last updated: March 9, 2026</p>
+        <p className="text-sm text-gray-400 mb-10">Last updated: March 9, 2026</p>
 
         <div className="space-y-8 text-gray-300 font-light leading-relaxed">
           <p>

@@ -154,7 +154,7 @@ export default function InquiryForm({ onBack }: { onBack: () => void }) {
             soon. Looking forward to helping you take your playing to the next
             level.
           </p>
-          <p className="text-gray-500 italic text-base mt-4">— Todd Brannon</p>
+          <p className="text-gray-400 italic text-base mt-4">— Todd Brannon</p>
           <button
             data-testid="button-back-to-site"
             onClick={onBack}
