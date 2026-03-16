@@ -53,7 +53,7 @@ export default function GeneralContactForm({ onBack }: { onBack: () => void }) {
   if (submitted) {
     return (
       <div className="min-h-screen bg-[#1a1a1a] flex items-center justify-center px-4 animate-fadeIn">
-        <div className="max-w-md w-full text-center space-y-6">
+        <main className="max-w-md w-full text-center space-y-6">
           <div
             className="w-20 h-20 mx-auto rounded-full border-2 flex items-center justify-center"
             style={{ borderColor: GOLD }}
@@ -77,14 +77,14 @@ export default function GeneralContactForm({ onBack }: { onBack: () => void }) {
             <ArrowLeft className="w-4 h-4" />
             Back to site
           </button>
-        </div>
+        </main>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-[#1a1a1a] py-12 px-4 md:px-6 animate-fadeIn">
-      <div className="max-w-[620px] mx-auto">
+      <main className="max-w-[620px] mx-auto">
         <button
           data-testid="button-back-contact"
           onClick={onBack}
@@ -202,7 +202,7 @@ export default function GeneralContactForm({ onBack }: { onBack: () => void }) {
             {submitting ? 'Sending...' : 'Send Message'}
           </button>
         </form>
-      </div>
+      </main>
     </div>
   );
 }

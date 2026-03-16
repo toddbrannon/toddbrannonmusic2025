@@ -217,9 +217,9 @@ function App() {
       >
         Skip to main content
       </a>
-      <div className="relative h-screen">
+      <header className="relative h-screen">
         <div className="absolute inset-0">
-          <img src={heroImage} alt="Hero Background" className="w-full h-full object-cover" />
+          <img src={heroImage} alt="" aria-hidden="true" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gray-900 opacity-75"></div>
         </div>
         <nav aria-label="Main navigation" className="absolute top-0 w-full p-6 flex justify-between items-center z-10">
@@ -251,14 +251,16 @@ function App() {
             </button>
           </div>
         </div>
-      </div>
+      </header>
 
-      <section id="main-content" className="py-24 bg-gray-900 text-gray-100 overflow-hidden">
+      <main id="main-content">
+
+      <section aria-labelledby="about-heading" className="py-24 bg-gray-900 text-gray-100 overflow-hidden">
 
         {/* Stat callouts */}
         <div className="px-6 md:px-24 mb-20">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-light mb-16">About</h2>
+            <h2 id="about-heading" className="text-4xl md:text-5xl font-light mb-16">About</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
               {[
                 { value: '20+', label: 'Years in Music' },
@@ -338,12 +340,12 @@ function App() {
 
       </section>
 
-      <section className="py-24 px-6 md:px-24 bg-gray-900">
+      <section aria-labelledby="featured-work-heading" className="py-24 px-6 md:px-24 bg-gray-900">
         <div className="max-w-6xl mx-auto">
 
           {/* Section header */}
           <div className="mb-20">
-            <h2 className="text-4xl md:text-5xl font-light text-white mb-3">Featured Work</h2>
+            <h2 id="featured-work-heading" className="text-4xl md:text-5xl font-light text-white mb-3">Featured Work</h2>
             <p className="text-base font-light text-gray-400">Two decades of work across studios, stages, and screens.</p>
           </div>
 
@@ -403,26 +405,11 @@ function App() {
                       allowFullScreen
                     />
                     {isOverlayVisible && (
-                      <div
-                        role="button"
-                        tabIndex={0}
+                      <button
+                        type="button"
                         aria-label={`Play ${video.title}`}
-                        className="absolute inset-0 z-20 flex items-center justify-center cursor-pointer group/play"
+                        className="absolute inset-0 z-20 flex items-center justify-center cursor-pointer group/play border-0 p-0 bg-transparent"
                         onClick={() => {
-                          const player = allPlayersRef.current.find(p =>
-                            p && typeof p.getVideoData === 'function' && p.getVideoData().video_id === video.id
-                          );
-                          if (player && typeof player.playVideo === 'function') {
-                            const playerIndex = allPlayersRef.current.indexOf(player);
-                            allPlayersRef.current.forEach((p, i) => {
-                              if (i !== playerIndex && p && typeof p.pauseVideo === 'function') p.pauseVideo();
-                            });
-                            player.playVideo();
-                          }
-                        }}
-                        onKeyDown={(e) => {
-                          if (e.key !== 'Enter' && e.key !== ' ') return;
-                          e.preventDefault();
                           const player = allPlayersRef.current.find(p =>
                             p && typeof p.getVideoData === 'function' && p.getVideoData().video_id === video.id
                           );
@@ -447,7 +434,7 @@ function App() {
                             </svg>
                           </div>
                         </div>
-                      </div>
+                      </button>
                     )}
                   </div>
                 );
@@ -489,13 +476,13 @@ function App() {
         </div>
       </section>
 
-      <section className="pt-12 pb-24 px-6 md:px-24 bg-gray-900 text-gray-100">
+      <section aria-labelledby="services-heading" className="pt-12 pb-24 px-6 md:px-24 bg-gray-900 text-gray-100">
         <div className="max-w-6xl mx-auto">
 
           {/* Section header */}
           <div className="mb-16">
             <div className="text-xs font-light tracking-widest text-[#C9A84C] uppercase mb-3">What I Do</div>
-            <h2 className="text-4xl md:text-5xl font-light mb-4">Services</h2>
+            <h2 id="services-heading" className="text-4xl md:text-5xl font-light mb-4">Services</h2>
             <p className="text-base font-light text-gray-400">From the stage to the studio to your living room.</p>
           </div>
 
@@ -594,9 +581,9 @@ function App() {
         </div>
       </section>
 
-      <section id="contact" className="py-24 px-6 md:px-24 bg-gray-900 text-gray-100">
+      <section id="contact" aria-labelledby="contact-heading" className="py-24 px-6 md:px-24 bg-gray-900 text-gray-100">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-light mb-8">Get in Touch</h2>
+          <h2 id="contact-heading" className="text-4xl md:text-5xl font-light mb-8">Get in Touch</h2>
 
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-12">
             <button
@@ -693,9 +680,11 @@ function App() {
         </div>
       </section>
 
+      </main>
+
       <footer className="py-6 px-6 md:px-24 bg-gray-900 border-t border-gray-800">
         <div className="max-w-6xl mx-auto flex flex-col items-center gap-3">
-          <div className="flex items-center gap-6 text-xs">
+          <nav aria-label="Footer navigation" className="flex items-center gap-6 text-xs">
             <button
               data-testid="button-footer-lesson-inquiry"
               onClick={() => {
@@ -728,7 +717,7 @@ function App() {
             >
               Contact
             </button>
-          </div>
+          </nav>
           <div className="flex items-center gap-4 text-xs text-white/60">
             <span>© {new Date().getFullYear()} Todd Brannon. All rights reserved.</span>
             <button

@@ -3,7 +3,7 @@ import { ArrowLeft } from 'lucide-react';
 export default function PrivacyPolicy({ onBack }: { onBack: () => void }) {
   return (
     <div className="min-h-screen bg-[#1a1a1a] py-12 px-4 md:px-6 animate-fadeIn">
-      <div className="max-w-[720px] mx-auto">
+      <main className="max-w-[720px] mx-auto">
         <button
           data-testid="button-back-privacy"
           onClick={onBack}
@@ -74,7 +74,7 @@ export default function PrivacyPolicy({ onBack }: { onBack: () => void }) {
             </p>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
