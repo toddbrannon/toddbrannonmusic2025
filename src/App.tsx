@@ -1,4 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import CMIndex from './pages/confidentmusician/Index';
+import CMLessons from './pages/confidentmusician/Lessons';
+import CMPDFs from './pages/confidentmusician/PDFs';
+import CMVideos from './pages/confidentmusician/Videos';
+import CMAudio from './pages/confidentmusician/Audio';
 import heroImage from './assets/RivoltaLive.jpg';
 import logo from './assets/tb_music_logo_1400.png';
 import brandLogo from './assets/tbm_brand.png';
@@ -32,6 +38,8 @@ function App() {
   const [showCoachingForm, setShowCoachingForm] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
+  const location = useLocation();
+  const isCMPath = location.pathname.startsWith('/confidentmusician');
 
   const albums = [
     { title: 'Deep Calls To Deep (demo)', artist: 'Todd Brannon', image: deepImg, year: '2025',
@@ -82,17 +90,19 @@ function App() {
   ];
 
   useEffect(() => {
+    if (isCMPath) return;
     document.title = 'Todd Brannon Music';
-  }, []);
+  }, [isCMPath]);
 
   useEffect(() => {
+    if (isCMPath) return;
     if (sessionStorage.getItem('modal-dismissed')) return;
     const timer = setTimeout(() => {
       wasAutoTriggeredRef.current = true;
       setShowModal(true);
     }, 5000);
     return () => clearTimeout(timer);
-  }, []);
+  }, [isCMPath]);
 
   useEffect(() => {
     if (showModal && modalRef.current) {
@@ -143,6 +153,18 @@ function App() {
       if (document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
   };
+
+  if (isCMPath) {
+    return (
+      <Routes>
+        <Route path="/confidentmusician" element={<CMIndex />} />
+        <Route path="/confidentmusician/lessons" element={<CMLessons />} />
+        <Route path="/confidentmusician/pdfs" element={<CMPDFs />} />
+        <Route path="/confidentmusician/videos" element={<CMVideos />} />
+        <Route path="/confidentmusician/audio" element={<CMAudio />} />
+      </Routes>
+    );
+  }
 
   if (showPrivacyPolicy) {
     return (

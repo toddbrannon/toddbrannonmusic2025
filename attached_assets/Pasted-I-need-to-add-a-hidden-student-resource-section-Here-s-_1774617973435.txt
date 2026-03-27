@@ -1,0 +1,37 @@
+I need to add a hidden student resource section. Here's exactly what to build:
+1. Install React Router DOM (if not already present):
+npm install react-router-dom
+2. Update src/App.tsx to add these new routes under /confidentmusician using react-router-dom, nested alongside the existing routes. Do not break any existing routes.
+3. Create these new files:
+
+src/pages/confidentmusician/Index.tsx — Hub landing page with navigation cards to the 4 sub-sections
+src/pages/confidentmusician/Lessons.tsx — Deeper Dive Lessons page (lesson cards with title, description, and content area)
+src/pages/confidentmusician/PDFs.tsx — PDF Resources page (downloadable resource cards with title + download button)
+src/pages/confidentmusician/Videos.tsx — Video Resources page (embeddable video cards for YouTube/Vimeo)
+src/pages/confidentmusician/Audio.tsx — Audio Resources page (audio player cards for files or embeds)
+src/components/confidentmusician/CMLayout.tsx — Shared layout wrapper with consistent header/nav and "← Back to Hub" link used across all sub-pages
+
+4. Design requirements:
+
+Mobile-first, fully responsive (students will scan QR codes on phones)
+Dark background (#1a1a2e or similar deep navy/black) with gold/amber accent color (#d4af37) to feel premium and music-themed
+Match the general vibe of the existing site but keep this section visually distinct
+Clean card-based layout for resource listings
+Each page has a clear <h1> page title and a descriptive subtitle
+
+5. Content placeholders:
+
+Populate each page with 2–3 sample placeholder cards so the layout is visible
+Add comments like {/* ADD NEW LESSON CARDS HERE */} to mark where content gets added
+Each card should have: title, short description, and a CTA (Download / Watch / Listen / Read More)
+
+6. Routing:
+
+/confidentmusician → Hub landing page
+/confidentmusician/lessons → Deeper Dive Lessons
+/confidentmusician/pdfs → PDF Resources
+/confidentmusician/videos → Video Resources
+/confidentmusician/audio → Audio Resources
+This section should NOT appear in the main site navigation — it is access-by-QR-code only
+
+7. Do not modify any existing components, pages, or styles outside of App.tsx routing additions.
