@@ -22,7 +22,7 @@ export default function CMLayout({
   const location = useLocation();
 
   return (
-    <div className="min-h-screen bg-[#0f0f1a] text-white">
+    <div className="min-h-screen bg-[#0f0f1a] text-white flex flex-col">
       <header className="sticky top-0 z-10 bg-[#0f0f1a]/95 backdrop-blur-sm border-b border-white/10">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
           <Link
@@ -30,7 +30,7 @@ export default function CMLayout({
             className="text-sm font-semibold tracking-wide shrink-0"
             style={{ color: GOLD }}
           >
-            Confident Musician
+            The Confident Musician
           </Link>
           <nav aria-label="Section navigation" className="flex flex-wrap gap-1 justify-end">
             {navLinks.map(link => {
@@ -54,7 +54,7 @@ export default function CMLayout({
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 py-10">
+      <main className="max-w-4xl mx-auto px-4 py-10 flex-1">
         <div className="mb-8 border-l-4 pl-5" style={{ borderColor: GOLD }}>
           <h1 className="text-3xl font-semibold text-white mb-1">{title}</h1>
           {subtitle && (
@@ -65,7 +65,7 @@ export default function CMLayout({
       </main>
 
       <footer className="border-t border-white/10 py-6 px-4 text-center text-xs text-gray-600">
-        Confident Musician · Private student portal · Todd Brannon Music
+        The Confident Musician · Private student portal · Todd Brannon Music
       </footer>
     </div>
   );

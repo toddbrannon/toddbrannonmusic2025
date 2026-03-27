@@ -49,18 +49,18 @@ const sections = [
 
 export default function CMIndex() {
   useEffect(() => {
-    document.title = 'Confident Musician | Student Hub';
+    document.title = 'The Confident Musician | Student Hub';
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#0f0f1a] text-white">
+    <div className="min-h-screen bg-[#0f0f1a] text-white flex flex-col">
       <header className="border-b border-white/10">
         <div className="max-w-4xl mx-auto px-4 py-5 text-center">
           <p className="text-xs tracking-widest uppercase mb-2" style={{ color: GOLD }}>
             Private Student Portal
           </p>
           <h1 className="text-3xl md:text-4xl font-semibold text-white mb-2">
-            Confident Musician
+            The Confident Musician
           </h1>
           <p className="text-gray-400 font-light text-base max-w-xl mx-auto">
             Your personal resource hub. Everything here is created for students working with Todd Brannon.
@@ -68,7 +68,7 @@ export default function CMIndex() {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 py-10">
+      <main className="max-w-4xl mx-auto px-4 py-10 flex-1">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {sections.map(section => (
             <Link
@@ -103,7 +103,7 @@ export default function CMIndex() {
       </main>
 
       <footer className="border-t border-white/10 py-6 px-4 text-center text-xs text-gray-600">
-        Confident Musician · Private student portal · Todd Brannon Music
+        The Confident Musician · Private student portal · Todd Brannon Music
       </footer>
     </div>
   );
