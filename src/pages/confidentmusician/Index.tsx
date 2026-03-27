@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const GOLD = '#d4af37';
@@ -48,9 +48,20 @@ const sections = [
 ];
 
 export default function CMIndex() {
+  const [copiedPath, setCopiedPath] = useState<string | null>(null);
+
   useEffect(() => {
     document.title = 'The Confident Musician | Student Hub';
   }, []);
+
+  function handleCopy(e: React.MouseEvent, path: string) {
+    e.preventDefault();
+    const url = window.location.origin + path;
+    navigator.clipboard.writeText(url).then(() => {
+      setCopiedPath(path);
+      setTimeout(() => setCopiedPath(null), 2000);
+    });
+  }
 
   return (
     <div className="min-h-screen bg-[#0f0f1a] text-white flex flex-col">
@@ -70,35 +81,63 @@ export default function CMIndex() {
 
       <main className="max-w-4xl mx-auto px-4 py-10 flex-1">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {sections.map(section => (
-            <Link
-              key={section.path}
-              to={section.path}
-              className="group block rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all p-6"
-            >
-              <div
-                className="w-12 h-12 rounded-lg flex items-center justify-center mb-5"
-                style={{ backgroundColor: 'rgba(212,175,55,0.12)', color: GOLD }}
+          {sections.map(section => {
+            const fullUrl = window.location.origin + section.path;
+            const copied = copiedPath === section.path;
+
+            return (
+              <Link
+                key={section.path}
+                to={section.path}
+                className="group block rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all p-6"
               >
-                {section.icon}
-              </div>
-              <h2 className="text-lg font-semibold text-white mb-2 group-hover:text-[#d4af37] transition-colors">
-                {section.label}
-              </h2>
-              <p className="text-sm text-gray-400 font-light leading-relaxed">
-                {section.description}
-              </p>
-              <div
-                className="mt-5 text-sm font-medium flex items-center gap-1 transition-colors"
-                style={{ color: GOLD }}
-              >
-                Open section
-                <svg aria-hidden="true" className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </svg>
-              </div>
-            </Link>
-          ))}
+                <div
+                  className="w-12 h-12 rounded-lg flex items-center justify-center mb-5"
+                  style={{ backgroundColor: 'rgba(212,175,55,0.12)', color: GOLD }}
+                >
+                  {section.icon}
+                </div>
+                <h2 className="text-lg font-semibold text-white mb-2 group-hover:text-[#d4af37] transition-colors">
+                  {section.label}
+                </h2>
+                <p className="text-sm text-gray-400 font-light leading-relaxed mb-5">
+                  {section.description}
+                </p>
+
+                {/* QR URL row */}
+                <div
+                  className="flex items-center gap-2 rounded-lg border border-white/10 bg-black/30 px-3 py-2"
+                  onClick={e => e.preventDefault()}
+                >
+                  <span className="flex-1 text-xs text-gray-500 font-mono truncate select-all">
+                    {fullUrl}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={e => handleCopy(e, section.path)}
+                    className="shrink-0 text-xs font-semibold px-2.5 py-1 rounded-md transition-all"
+                    style={copied
+                      ? { backgroundColor: 'rgba(212,175,55,0.2)', color: GOLD }
+                      : { backgroundColor: 'rgba(255,255,255,0.07)', color: '#9ca3af' }
+                    }
+                    aria-label={`Copy link for ${section.label}`}
+                  >
+                    {copied ? '✓ Copied' : 'Copy'}
+                  </button>
+                </div>
+
+                <div
+                  className="mt-4 text-sm font-medium flex items-center gap-1 transition-colors"
+                  style={{ color: GOLD }}
+                >
+                  Open section
+                  <svg aria-hidden="true" className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                  </svg>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </main>
 
