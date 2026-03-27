@@ -6,24 +6,20 @@ const GOLD = '#d4af37';
 interface PDFCard {
   title: string;
   description: string;
-  filename: string;
 }
 
 const pdfs: PDFCard[] = [
   {
     title: 'Major & Minor Scale Charts',
     description: 'Printable fretboard diagrams for all 12 major and natural minor scales across five positions.',
-    filename: 'scale-charts.pdf',
   },
   {
     title: 'Chord Diagram Library',
     description: 'Open chords, barre chords, and power chord shapes for every common key. Great desk reference.',
-    filename: 'chord-diagrams.pdf',
   },
   {
     title: 'Weekly Practice Log',
     description: 'Track your daily practice sessions, goals, and progress. Print a new sheet each week.',
-    filename: 'practice-log.pdf',
   },
 ];
 
@@ -31,7 +27,7 @@ const pdfs: PDFCard[] = [
 
 export default function CMPDFs() {
   useEffect(() => {
-    document.title = 'PDF Resources | Confident Musician';
+    document.title = 'PDF Resources | The Confident Musician';
   }, []);
 
   return (
@@ -39,6 +35,16 @@ export default function CMPDFs() {
       title="PDF Resources"
       subtitle="Download, print, and keep. These reference sheets are yours to use however helps most."
     >
+      {/* Coming soon notice */}
+      <div className="flex gap-3 items-start rounded-xl border border-[#d4af37]/25 bg-[#d4af37]/8 px-5 py-4 mb-7">
+        <svg aria-hidden="true" className="w-5 h-5 mt-0.5 shrink-0" style={{ color: GOLD }} fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <p className="text-sm font-light leading-relaxed" style={{ color: GOLD }}>
+          PDFs are being designed and will be ready to download soon. Each sheet is built specifically for students — clean, printable, and guitar-focused.
+        </p>
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {pdfs.map(pdf => (
           <div
@@ -57,17 +63,12 @@ export default function CMPDFs() {
             <p className="text-sm text-gray-400 font-light leading-relaxed flex-1 mb-5">
               {pdf.description}
             </p>
-            <a
-              href={`/resources/pdfs/${pdf.filename}`}
-              download
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-opacity hover:opacity-80 text-[#0f0f1a] self-start"
-              style={{ backgroundColor: GOLD }}
-            >
-              <svg aria-hidden="true" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium bg-white/8 text-gray-400 border border-white/10 self-start">
+              <svg aria-hidden="true" className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              Download
-            </a>
+              Coming Soon
+            </span>
           </div>
         ))}
 

@@ -35,7 +35,7 @@ const lessons: LessonCard[] = [
 
 export default function CMLessons() {
   useEffect(() => {
-    document.title = 'Deeper Dive Lessons | Confident Musician';
+    document.title = 'Deeper Dive Lessons | The Confident Musician';
   }, []);
 
   return (
@@ -43,13 +43,23 @@ export default function CMLessons() {
       title="Deeper Dive Lessons"
       subtitle="Lesson write-ups that go deeper than your session — take your time with each one."
     >
+      {/* Coming soon notice */}
+      <div className="flex gap-3 items-start rounded-xl border border-[#d4af37]/25 bg-[#d4af37]/8 px-5 py-4 mb-7">
+        <svg aria-hidden="true" className="w-5 h-5 mt-0.5 shrink-0" style={{ color: GOLD }} fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <p className="text-sm font-light leading-relaxed" style={{ color: GOLD }}>
+          Full lesson content is being written and formatted right now. These previews show what's coming — full write-ups, diagrams, and examples will be available here shortly.
+        </p>
+      </div>
+
       <div className="space-y-5">
         {lessons.map(lesson => (
           <div
             key={lesson.title}
             className="rounded-xl border border-white/10 bg-white/5 p-6"
           >
-            <div className="flex flex-wrap gap-2 mb-3">
+            <div className="flex flex-wrap items-center gap-2 mb-3">
               {lesson.tags.map(tag => (
                 <span
                   key={tag}
@@ -59,19 +69,15 @@ export default function CMLessons() {
                   {tag}
                 </span>
               ))}
+              <span className="ml-auto text-xs px-2.5 py-0.5 rounded-full font-semibold bg-white/8 text-gray-400 border border-white/10 tracking-wide">
+                Coming Soon
+              </span>
             </div>
             <h2 className="text-xl font-semibold text-white mb-1">{lesson.title}</h2>
             <p className="text-sm text-gray-400 font-light mb-4">{lesson.description}</p>
-            <p className="text-sm text-gray-300 font-light leading-relaxed border-t border-white/10 pt-4">
+            <p className="text-sm text-gray-500 font-light leading-relaxed border-t border-white/10 pt-4 italic">
               {lesson.body}
             </p>
-            <button
-              type="button"
-              className="mt-5 px-4 py-2 rounded-lg text-sm font-medium transition-colors text-[#0f0f1a]"
-              style={{ backgroundColor: GOLD }}
-            >
-              Read More
-            </button>
           </div>
         ))}
 
