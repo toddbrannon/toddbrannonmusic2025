@@ -1,11 +1,66 @@
+
+const path = require('path');
+const fs = require('fs');
+const { v4: uuidv4 } = require('uuid');
+const { pool, init } = require('./db.js');
+const { sendDownloadLink } = require('./mailer.js');
+require('dotenv').config();
+
 import express from 'express';
 import { Resend } from 'resend';
+import { google } from 'googleapis';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import fs from 'fs';
 
 const app = express();
+
 app.use(express.json({ limit: '100kb' }));
+app.use(express.urlencoded({ extended: true }));
+
+const PDF_PATH = process.env.PDF_PATH || '/data/lead-magnet.pdf';
+const PDF_FILENAME = process.env.PDF_FILENAME || 'todd-brannon-music-guide.pdf';
+// --- Lead Magnet Submission Route ---
+app.post('/api/submit', async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return res.status(400).json({ error: 'A valid email address is required.' });
+    }
+    let token;
+    const result = await pool.query('SELECT token FROM leads WHERE email = $1', [email]);
+    if (result.rows.length > 0) {
+      token = result.rows[0].token;
+    } else {
+      token = uuidv4();
+      await pool.query('INSERT INTO leads (email, token) VALUES ($1, $2)', [email, token]);
+    }
+    await sendDownloadLink(email, token);
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    console.error('Submit error:', err);
+    return res.status(500).json({ error: err.message || 'An error occurred.' });
+  }
+});
+
+// --- Lead Magnet Download Route ---
+app.get('/download/:token', async (req, res) => {
+  try {
+    const { token } = req.params;
+    const result = await pool.query('SELECT * FROM leads WHERE token = $1', [token]);
+    if (result.rows.length === 0) {
+      return res.status(404).send('<h1>Not Found</h1><p>Invalid or expired download link.</p>');
+    }
+    // Only update downloaded_at if not already set
+    await pool.query('UPDATE leads SET downloaded_at = COALESCE(downloaded_at, NOW()) WHERE token = $1', [token]);
+    if (!fs.existsSync(PDF_PATH)) {
+      return res.status(503).send('<h1>Service Unavailable</h1><p>The requested file is not available. Please try again later.</p>');
+    }
+    return res.download(PDF_PATH, PDF_FILENAME);
+  } catch (err) {
+    console.error('Download error:', err);
+    return res.status(500).send('<h1>Server Error</h1><p>Could not process your request.</p>');
+  }
+});
 
 if (!process.env.RESEND_API_KEY || !process.env.CONTACT_EMAIL) {
   console.error('Missing required environment variables: RESEND_API_KEY and/or CONTACT_EMAIL');
@@ -14,6 +69,12 @@ if (!process.env.RESEND_API_KEY || !process.env.CONTACT_EMAIL) {
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL;
+const GOOGLE_SHEETS_WEBHOOK_URL = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
+const GOOGLE_SHEET_ID = process.env.GOOGLE_SHEET_ID;
+const GOOGLE_SHEET_NAME = process.env.GOOGLE_SHEET_NAME || 'Waitlist';
+const GOOGLE_SERVICE_ACCOUNT_JSON = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
+const GOOGLE_SERVICE_ACCOUNT_EMAIL = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+const GOOGLE_PRIVATE_KEY = process.env.GOOGLE_PRIVATE_KEY;
 
 const VALID_STUDENT_TYPES = ['myself', 'my-child', 'both'];
 const VALID_EXPERIENCE = ['beginner', 'some-experience', 'intermediate', 'advanced'];
@@ -78,6 +139,73 @@ function formatList(items) {
   if (Array.isArray(items)) return items.map(formatLabel).map(escapeHtml).join(', ');
   return escapeHtml(formatLabel(items));
 }
+
+function normalizePrivateKey(key) {
+  return key ? String(key).replace(/\\n/g, '\n') : '';
+}
+
+async function appendWaitlistRow(email) {
+  if (GOOGLE_SHEETS_WEBHOOK_URL) {
+    const response = await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Google Sheets webhook responded with ${response.status}`);
+    }
+
+    return;
+  }
+
+  const serviceAccount = GOOGLE_SERVICE_ACCOUNT_JSON
+    ? JSON.parse(GOOGLE_SERVICE_ACCOUNT_JSON)
+    : {
+        client_email: GOOGLE_SERVICE_ACCOUNT_EMAIL,
+        private_key: normalizePrivateKey(GOOGLE_PRIVATE_KEY),
+      };
+
+  if (!GOOGLE_SHEET_ID || !serviceAccount.client_email || !serviceAccount.private_key) {
+    throw new Error('Google Sheets integration is not configured. Set GOOGLE_SHEETS_WEBHOOK_URL or Google service account credentials.');
+  }
+
+  const auth = new google.auth.GoogleAuth({
+    credentials: serviceAccount,
+    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+  });
+
+  const authClient = await auth.getClient();
+  const sheets = google.sheets({ version: 'v4', auth: authClient });
+
+  await sheets.spreadsheets.values.append({
+    spreadsheetId: GOOGLE_SHEET_ID,
+    range: `${GOOGLE_SHEET_NAME}!A:B`,
+    valueInputOption: 'USER_ENTERED',
+    insertDataOption: 'INSERT_ROWS',
+    requestBody: {
+      values: [[new Date().toISOString(), escapeHtml(email)]],
+    },
+  });
+}
+
+app.post('/api/waitlist', async (req, res) => {
+  try {
+    const email = sanitizeString(req.body.email, 320);
+
+    if (!email || !isValidEmail(email)) {
+      return res.status(400).json({ error: 'Please provide a valid email address.' });
+    }
+
+    await appendWaitlistRow(email);
+
+    return res.json({ success: true });
+  } catch (err) {
+    console.error('Waitlist submit error:', err);
+    const message = String(err.message || 'Failed to submit waitlist. Please try again.');
+    return res.status(500).json({ error: message });
+  }
+});
 
 app.post('/api/inquire', async (req, res) => {
   try {
@@ -190,6 +318,14 @@ if (fs.existsSync(distPath)) {
 }
 
 const PORT = 3001;
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`API server running on port ${PORT}`);
-});
+// Ensure DB is ready before starting server
+init()
+  .then(() => {
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`API server running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('Failed to initialize database:', err);
+    process.exit(1);
+  });
