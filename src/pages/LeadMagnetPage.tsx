@@ -101,7 +101,7 @@ const LeadMagnetPage: React.FC = () => {
 
       {/* Footer */}
       <footer className="px-6 py-10 text-center text-gray-500 text-sm bg-white border-t border-[#C9A84C]/20">
-        <p>&copy; 2026 Todd Brannon Music. All rights reserved.</p>
+        <p>&copy; 2026 Todd Brannon Music <a>https://www.toddbrannonmusic.com</a>. All rights reserved.</p>
       </footer>
     </div>
   );
