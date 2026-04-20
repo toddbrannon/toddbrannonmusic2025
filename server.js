@@ -320,7 +320,7 @@ if (fs.existsSync(distPath)) {
   app.use(express.static(distPath));
   // Serve index.html for all non-API routes (including / and client-side routes)
   app.get(/^\/(?!api\/).*/, (req, res) => {
-    res.sendFile(path.join(distPath, 'index.html'));
+    res.sendFile(join(distPath, 'index.html'));
   });
 }
 
