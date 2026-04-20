@@ -182,7 +182,10 @@ function Summer2026() {
           </div>
 
           <button
-            onClick={() => navigate('/inquire')}
+            onClick={() => {
+                setShowInquiryForm(true);
+                window.scrollTo(0, 0);
+              }}
             className="inline-flex items-center justify-center px-8 py-4 bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42] font-semibold rounded-lg transition-colors"
           >
             👉 Claim a Spot Before They Fill
@@ -347,7 +350,10 @@ function Summer2026() {
                     👉 Join the Waitlist
                   </button>
                   <button
-                    onClick={() => navigate('/inquire')}
+                    onClick={() => {
+                      setShowInquiryForm(true);
+                      window.scrollTo(0, 0);
+                    }}
                     className="px-6 py-3 bg-[#1A2E42] hover:bg-[#2a3e52] text-white font-semibold rounded-lg transition-colors"
                   >
                     👉 Book a Private Lesson
