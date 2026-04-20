@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import brandLogo from '../assets/tbm_brand.png';
+import InquiryForm from '../InquiryForm';
 
 function Summer2026() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
+  const [showInquiryForm, setShowInquiryForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -20,6 +22,17 @@ function Summer2026() {
       },
       { threshold: 0.1 }
     );
+
+    if (showInquiryForm) {
+        return (
+          <InquiryForm
+            onBack={() => {
+              setShowInquiryForm(false);
+              window.scrollTo(0, 0);
+            }}
+          />
+        );
+      }
 
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
@@ -114,7 +127,10 @@ function Summer2026() {
                 👉 Join the Waitlist
               </button>
               <button
-                onClick={() => navigate('/inquire')}
+                onClick={() => {
+                  setShowInquiryForm(true);
+                  window.scrollTo(0, 0);
+                }}
                 className="px-8 py-4 bg-[#1A2E42] hover:bg-[#2a3e52] text-white font-semibold rounded-lg transition-colors"
               >
                 👉 Book a Local Lesson
