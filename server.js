@@ -1,16 +1,15 @@
-
-const path = require('path');
-const fs = require('fs');
-const { v4: uuidv4 } = require('uuid');
-const { pool, init } = require('./db.js');
-const { sendDownloadLink } = require('./mailer.js');
-require('dotenv').config();
-
+import fs from 'fs';
+import { v4 as uuidv4 } from 'uuid';
+import { pool, init } from './db.js';
+import { sendDownloadLink } from './mailer.js';
+import dotenv from 'dotenv';
 import express from 'express';
 import { Resend } from 'resend';
 import { google } from 'googleapis';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+
+dotenv.config();
 
 const app = express();
 
