@@ -71,8 +71,10 @@ app.get('/download/:token', async (req, res) => {
     console.log('Buffer size being sent:', fileBuffer.length);
     // --- END DIAGNOSTICS ---
 
-    return res.download(PDF_PATH, PDF_FILENAME);
-  } catch (err) {
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="${PDF_FILENAME}"`);
+    return res.send(fileBuffer);
+      } catch (err) {
     console.error('Download error:', err);
     return res.status(500).send('<h1>Server Error</h1><p>Could not process your request.</p>');
   }
