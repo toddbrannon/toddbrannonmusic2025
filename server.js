@@ -34,6 +34,13 @@ app.post('/api/submit', async (req, res) => {
       token = uuidv4();
       await pool.query('INSERT INTO leads (email, token) VALUES ($1, $2)', [email, token]);
     }
+    // Append to Google Sheet for lead magnet signups
+    try {
+      await appendWaitlistRow(email);
+    } catch (sheetErr) {
+      console.error('Google Sheet append error (lead magnet):', sheetErr);
+      // Don't block user if sheet fails
+    }
     await sendDownloadLink(email, token);
     return res.status(200).json({ success: true });
   } catch (err) {
@@ -312,8 +319,9 @@ const __dirname = dirname(__filename);
 const distPath = join(__dirname, 'dist');
 if (fs.existsSync(distPath)) {
   app.use(express.static(distPath));
-  app.get('/*splat', (req, res) => {
-    res.sendFile(join(distPath, 'index.html'));
+  // Serve index.html for all non-API routes (including / and client-side routes)
+  app.get(/^\/(?!api\/).*/, (req, res) => {
+    res.sendFile(path.join(distPath, 'index.html'));
   });
 }
 

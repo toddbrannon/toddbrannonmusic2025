@@ -107,18 +107,18 @@ function Summer2026() {
 
           {/* Call to Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <button
-              onClick={() => document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' })}
-              className="px-8 py-4 bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42] font-semibold rounded-lg transition-colors"
-            >
-              👉 Join the Waitlist
-            </button>
-            <button
-              onClick={() => navigate('/?inquiry=lessons')}
-              className="px-8 py-4 bg-[#1A2E42] hover:bg-[#2a3e52] text-white font-semibold rounded-lg transition-colors"
-            >
-              👉 Book a Local Lesson
-            </button>
+              <button
+                onClick={() => document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' })}
+                className="px-8 py-4 bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42] font-semibold rounded-lg transition-colors"
+              >
+                👉 Join the Waitlist
+              </button>
+              <button
+                onClick={() => navigate('/?inquiry=lessons')}
+                className="px-8 py-4 bg-[#1A2E42] hover:bg-[#2a3e52] text-white font-semibold rounded-lg transition-colors"
+              >
+                👉 Book a Local Lesson
+              </button>
           </div>
         </div>
       </section>

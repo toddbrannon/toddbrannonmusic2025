@@ -1,5 +1,14 @@
 
+
+import { Routes, Route } from 'react-router-dom';
 import LeadMagnetPage from './pages/LeadMagnetPage';
+import Summer2026 from './pages/Summer2026';
+import CMIndex from './pages/confidentmusician/Index';
+import CMLessons from './pages/confidentmusician/Lessons';
+import CMPDFs from './pages/confidentmusician/PDFs';
+import CMVideos from './pages/confidentmusician/Videos';
+import CMAudio from './pages/confidentmusician/Audio';
+import HomePage from './HomePage';
 
 function App() {
   return (
