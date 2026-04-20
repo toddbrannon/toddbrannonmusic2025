@@ -1,6 +1,6 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
 
-const transporter = nodemailer.createTransporter({
+const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: parseInt(process.env.SMTP_PORT),
   secure: process.env.SMTP_SECURE === 'true',
@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransporter({
   }
 });
 
-async function sendDownloadLink(email, token) {
+export async function sendDownloadLink(email, token) {
   const downloadUrl = `${process.env.BASE_URL}/download/${token}`;
   const leadMagnetTitle = process.env.LEAD_MAGNET_TITLE || 'Your Free Guide';
 
@@ -24,5 +24,3 @@ async function sendDownloadLink(email, token) {
 
   await transporter.sendMail(mailOptions);
 }
-
-module.exports = { sendDownloadLink };

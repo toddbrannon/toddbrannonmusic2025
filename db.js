@@ -1,11 +1,11 @@
-const { Pool } = require('pg');
+import { Pool } from 'pg';
 
-const pool = new Pool({
+export const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 });
 
-async function init() {
+export async function init() {
   const query = `
     CREATE TABLE IF NOT EXISTS leads (
       id SERIAL PRIMARY KEY,
@@ -18,5 +18,3 @@ async function init() {
   await pool.query(query);
   console.log('✓ Database ready');
 }
-
-module.exports = { pool, init };
