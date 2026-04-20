@@ -61,6 +61,16 @@ app.get('/download/:token', async (req, res) => {
     if (!fs.existsSync(PDF_PATH)) {
       return res.status(503).send('<h1>Service Unavailable</h1><p>The requested file is not available. Please try again later.</p>');
     }
+
+    // --- DIAGNOSTICS: file delivery ---
+    const filePath = PDF_PATH;
+    const fileBuffer = fs.readFileSync(filePath);
+    console.log('File path:', filePath);
+    console.log('File exists:', fs.existsSync(filePath));
+    console.log('File size on disk:', fs.statSync(filePath).size);
+    console.log('Buffer size being sent:', fileBuffer.length);
+    // --- END DIAGNOSTICS ---
+
     return res.download(PDF_PATH, PDF_FILENAME);
   } catch (err) {
     console.error('Download error:', err);
