@@ -336,7 +336,6 @@ function Summer2026() {
               <p className="text-sm text-red-600">{submitError}</p>
             )}
             {submitSuccess && (
-              {/* CHANGED: confirmation message is warmer and tells them what to expect */}
               <p className="text-sm text-[#1A2E42] font-semibold">You're in. Todd will reach out personally before launch.</p>
             )}
             <button
