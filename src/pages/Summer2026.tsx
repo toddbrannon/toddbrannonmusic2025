@@ -115,7 +115,7 @@ function Summer2026() {
           </p>
           <div className="text-lg text-gray-800 mb-12">
             <p className="mb-4">New lesson openings available now</p>
-            <p className="text-[#1A2E42] font-semibold">🚨 The Confident Guitarist Community is launching soon</p>
+            <p className="text-[#1A2E42] font-semibold">The Confident Guitarist Community is launching soon</p>
           </div>
 
           {/* Call to Action Buttons */}
@@ -131,59 +131,7 @@ function Summer2026() {
         </div>
       </section>
 
-      {/* Local Lessons Section */}
-      <section className="px-6 py-24 bg-[#1A2E42] text-white overflow-x-hidden">
-        <div
-          ref={sectionRef}
-          className={`max-w-4xl mx-auto text-center transition-all duration-1000 ease-out transform ${
-            isVisible 
-              ? 'opacity-100 translate-x-0 translate-y-0 scale-100' 
-              : 'opacity-0 -translate-x-full translate-y-16 scale-75'
-          }`}
-        >
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-white">🎯 New Daytime Lesson Openings (Argyle, TX)</h2>
-          <p className="text-lg leading-relaxed text-gray-200 mb-6">
-            I've opened up limited daytime spots at<br />
-            <span className="text-[#C9A84C] font-semibold">New Song School of the Arts</span>
-          </p>
-
-          <div className="bg-[#2A3E52] rounded-lg p-6 mb-8 max-w-md mx-auto">
-            <h3 className="text-xl font-semibold mb-4 text-[#C9A84C]">Available Times:</h3>
-            <ul className="text-left text-gray-200 space-y-2">
-              <li>• Wednesdays (before 4 PM)</li>
-              <li>• Fridays (11 AM – 4:30 PM)</li>
-            </ul>
-          </div>
-
-          <div className="mb-8">
-            <h3 className="text-xl font-semibold mb-4 text-[#C9A84C]">Best Fit For:</h3>
-            <ul className="text-gray-200 space-y-2">
-              <li>• Homeschool students</li>
-              <li>• Adults with flexible schedules</li>
-              <li>• Anyone serious about improving without the evening rush</li>
-            </ul>
-          </div>
-
-          <div className="bg-[#2A3E52] rounded-lg p-6 mb-8">
-            <h3 className="text-xl font-semibold mb-4 text-[#C9A84C]">Private Lessons That Actually Move You Forward</h3>
-            <ul className="text-left text-gray-200 space-y-2">
-              <li>• Clear, structured progression (no guesswork)</li>
-              <li>• Real musical application (not just theory)</li>
-              <li>• Personalized coaching based on your level and goals</li>
-            </ul>
-          </div>
-
-          <button
-            onClick={() => {
-                setShowInquiryForm(true);
-                window.scrollTo(0, 0);
-              }}
-            className="inline-flex items-center justify-center px-8 py-4 bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42] font-semibold rounded-lg transition-colors"
-          >
-            👉 Claim a Spot Before They Fill
-          </button>
-        </div>
-      </section>
+      
 
       {/* Community Launch Section */}
       <section className="px-6 py-24">
