@@ -120,26 +120,51 @@ function Summer2026() {
             not grinding through exercises nobody enjoys.
           </p>
 
-          {/* CHANGED: two separate CTAs, one per offer — no contradiction */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-4">
-            <button
-              onClick={() => setShowInquiryForm(true)}
-              className="px-8 py-4 bg-[#1A2E42] hover:bg-[#142536] text-white font-semibold rounded-lg transition-colors text-lg"
-            >
-              Book a Free Intro Call →
-            </button>
-            <button
-              onClick={() => document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' })}
-              className="px-8 py-4 bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42] font-semibold rounded-lg transition-colors text-lg"
-            >
-              👉 Save My Spot in the Community
-            </button>
-          </div>
+          <button
+            onClick={() => document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' })}
+            className="px-8 py-4 bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42] font-semibold rounded-lg transition-colors text-lg"
+          >
+            👉 Save My Spot in the Community
+          </button>
 
-          {/* CHANGED: context under CTAs explains what each is, clearly */}
-          <p className="text-sm text-gray-500 mt-2">
-            <strong>1-on-1 lessons</strong> are open now · <strong>The Confident Guitarist Community</strong> launches Summer 2026
-          </p>
+
+        </div>
+      </section>
+
+      {/* Todd's Story Section */}
+      <section className="px-6 py-24 bg-[#FEF7E0]">
+        <div className="max-w-2xl mx-auto">
+          <p className="text-sm uppercase tracking-[0.2em] text-[#C9A84C] mb-6">From Todd</p>
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-[#1A2E42]">One uncomfortable step changed everything. Here's what it taught me.</h2>
+          <div className="space-y-5 text-lg text-gray-800 leading-relaxed">
+            <p>
+              Back in the late '80s and early '90s, I was playing guitar — but I felt completely aimless. I loved it. I just didn't know what I was building toward or what to do with it.
+            </p>
+            <p>
+              Then in 1995, I took what felt like a terrifying next step: I started playing at church.
+            </p>
+            <p>
+              That one decision changed everything.
+            </p>
+            <p>
+              Through that, I met a drummer. That drummer became the drummer of the band my cousin and I put together in 1996. And for the next five-plus years, we drove across DFW every single week — no matter what — to rehearse, write, record, and play. Oklahoma, Louisiana, San Antonio, Houston. We did the thing I always dreamed of doing.
+            </p>
+            <p>
+              Every step was a little unknown at first. But somewhere along the way, it stopped feeling that way — and started feeling like exactly where I was supposed to be.
+            </p>
+            <p className="text-xl font-semibold text-[#1A2E42] border-l-4 border-[#C9A84C] pl-4 italic">
+              That was a community. Before I ever had that word for it.
+            </p>
+            <p>
+              I wasn't doing it alone. And that made all the difference.
+            </p>
+            <p>
+              Since then: 13 years on the worship team at my church in the Flower Mound area. Three live recordings. Students from age seven all the way to retired adults — at New Song School of the Arts in Argyle and Legacy Music Studio in Lewisville.
+            </p>
+            <p className="font-semibold text-[#1A2E42]">
+              I've lived the full journey. And now I want to give you the thing I wish I'd had — a clear next step, and people to take it with you.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -244,27 +269,28 @@ function Summer2026() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-12 mb-16">
-            <div className="bg-[#FFF8F0] rounded-lg p-8">
-              <h3 className="text-2xl font-bold mb-6 text-green-600">🤝 This is for you if:</h3>
-              <ul className="text-gray-800 space-y-2">
-                {/* CHANGED: more specific and honest */}
-                <li>• You've been playing on and off for years but haven't broken through</li>
-                <li>• You can learn a riff but can't hold a whole song together</li>
-                <li>• You want structure without being told what to feel about music</li>
-                <li>• You're ready to commit to showing up once a week</li>
-              </ul>
-            </div>
-
-            <div className="bg-[#F0F8FF] rounded-lg p-8">
-              {/* CHANGED: "not for" list is sharper and more honest — builds trust */}
-              <h3 className="text-2xl font-bold mb-6 text-red-600">This is not for you if:</h3>
-              <ul className="text-gray-800 space-y-2">
-                <li>• You just want someone to walk you through tabs for your favorite songs</li>
-                <li>• You're not willing to show up consistently</li>
-                <li>• You want shred technique, sweep picking, or scale theory deep-dives</li>
-                <li>• You're hoping results come without putting in the reps</li>
-              </ul>
+          <div className="mb-16">
+            <div className="bg-[#FFF8F0] rounded-lg p-8 text-center">
+              <h3 className="text-2xl font-bold mb-4 text-[#1A2E42]">🤝 Where do you want this to take you?</h3>
+              <p className="text-gray-800 mb-6">It doesn't matter where you're starting. What matters is that you have a next step — and people around you while you take it.</p>
+              <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 text-left">
+                <div className="bg-white rounded-lg p-4">
+                  <p className="font-semibold text-[#1A2E42] mb-1">🏠 Play better at home</p>
+                  <p className="text-sm text-gray-700">Pick up your guitar and actually enjoy it instead of feeling stuck</p>
+                </div>
+                <div className="bg-white rounded-lg p-4">
+                  <p className="font-semibold text-[#1A2E42] mb-1">👥 Play with friends</p>
+                  <p className="text-sm text-gray-700">Stop sitting out and start contributing when there are guitars in the room</p>
+                </div>
+                <div className="bg-white rounded-lg p-4">
+                  <p className="font-semibold text-[#1A2E42] mb-1">🎸 Start a band</p>
+                  <p className="text-sm text-gray-700">Build the confidence and the skills to step into a real playing situation</p>
+                </div>
+                <div className="bg-white rounded-lg p-4">
+                  <p className="font-semibold text-[#1A2E42] mb-1">✝️ Join a worship team</p>
+                  <p className="text-sm text-gray-700">Get ready to play in a church setting — the same path that changed everything for Todd</p>
+                </div>
+              </div>
             </div>
           </div>
 
