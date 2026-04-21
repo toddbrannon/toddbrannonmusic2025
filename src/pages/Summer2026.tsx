@@ -74,14 +74,14 @@ function Summer2026() {
       const data = await response.json();
 
       if (!response.ok) {
-        setSubmitError(data.error || 'Unable to submit waitlist. Please try again.');
+        setSubmitError(data.error || 'Unable to submit. Please try again.');
         return;
       }
 
       setSubmitSuccess(true);
       setEmail('');
     } catch (error) {
-      setSubmitError('Unable to submit waitlist. Please check your connection and try again.');
+      setSubmitError('Unable to submit. Please check your connection and try again.');
     } finally {
       setSubmitting(false);
     }
@@ -105,53 +105,68 @@ function Summer2026() {
       {/* Hero Section */}
       <section className="px-6 py-24 text-center">
         <div className="max-w-4xl mx-auto">
-          <span className="inline-block mb-6 text-sm uppercase tracking-[0.3em] text-[#C9A84C]">🎸 Become a Confident Guitarist</span>
+          {/* CHANGED: eyebrow speaks to the specific person, not an aspiration */}
+          <span className="inline-block mb-6 text-sm uppercase tracking-[0.3em] text-[#C9A84C]">🎸 For adults who've been "learning guitar" for years and still don't feel like players</span>
+
+          {/* CHANGED: headline names the real feeling instead of a vague "not just" construction */}
           <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight">
-            Not just someone who knows a few chords
+            You know more than you think. You just don't know what to do next.
           </h1>
-          <p className="text-xl md:text-2xl leading-relaxed text-gray-800 max-w-3xl mx-auto mb-8">
-            Stop guessing what to practice.<br />
-            Start playing music that actually feels good.
+
+          {/* CHANGED: subhead is specific and names Todd — makes it personal, not generic */}
+          <p className="text-xl md:text-2xl leading-relaxed text-gray-800 max-w-3xl mx-auto mb-12">
+            Most guitar students aren't missing talent — they're missing a clear path.
+            Todd's lessons cut through the noise so you're actually playing music,
+            not grinding through exercises nobody enjoys.
           </p>
-          <div className="text-lg text-gray-800 mb-12">
-            <p className="mb-4">New lesson openings available now</p>
-            <p className="text-[#1A2E42] font-semibold">The Confident Guitarist Community is launching soon</p>
+
+          {/* CHANGED: two separate CTAs, one per offer — no contradiction */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-4">
+            <button
+              onClick={() => setShowInquiryForm(true)}
+              className="px-8 py-4 bg-[#1A2E42] hover:bg-[#142536] text-white font-semibold rounded-lg transition-colors text-lg"
+            >
+              Book a Free Intro Call →
+            </button>
+            <button
+              onClick={() => document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' })}
+              className="px-8 py-4 bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42] font-semibold rounded-lg transition-colors text-lg"
+            >
+              👉 Save My Spot in the Community
+            </button>
           </div>
 
-          {/* Call to Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-              <button
-                onClick={() => document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' })}
-                className="px-8 py-4 bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42] font-semibold rounded-lg transition-colors"
-              >
-                👉 Join the Waitlist
-              </button>
-              
-          </div>
+          {/* CHANGED: context under CTAs explains what each is, clearly */}
+          <p className="text-sm text-gray-500 mt-2">
+            <strong>1-on-1 lessons</strong> are open now · <strong>The Confident Guitarist Community</strong> launches Summer 2026
+          </p>
         </div>
       </section>
-
-      
 
       {/* Community Launch Section */}
       <section className="px-6 py-24">
         <div className="max-w-4xl mx-auto">
+
+          {/* CHANGED: lead with the buyer's problem, not a hype tease */}
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-8 text-gray-900">🚨 Something Bigger Is Coming…</h2>
-            <p className="text-xl text-gray-800 mb-8">If you've ever felt like:</p>
+            <h2 className="text-4xl md:text-5xl font-bold mb-8 text-gray-900">You've been practicing. So why doesn't it feel like progress?</h2>
+            <p className="text-xl text-gray-800 mb-8">If this sounds familiar:</p>
             <ul className="text-lg text-gray-800 space-y-3 mb-12">
-              <li>• You're stuck playing the same things over and over</li>
-              <li>• You don't know what to practice next</li>
-              <li>• You can play… but don't feel confident</li>
+              {/* CHANGED: pain points rewritten as specific, recognizable moments — not vague feelings */}
+              <li>• You sit down to play and spend 10 minutes deciding what to work on</li>
+              <li>• You can play parts of songs but can't get through a full one cleanly</li>
+              <li>• You'd be embarrassed to play in front of anyone right now</li>
             </ul>
-            <p className="text-2xl text-[#1A2E42] font-semibold">This is for you.</p>
+            {/* CHANGED: direct statement replaces vague "This is for you" */}
+            <p className="text-2xl text-[#1A2E42] font-semibold">That's not a talent problem. That's a structure problem. And it's fixable.</p>
           </div>
 
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-8 text-[#1A2E42]">🎸 The Confident Guitarist Community</h2>
+            {/* CHANGED: rewritten to be outcome-first */}
             <p className="text-xl text-gray-800 mb-8">
-              A live, structured, engaging way to get better at guitar<br />
-              <span className="text-[#1A2E42] font-semibold">—without doing it alone</span>
+              A live, structured program that moves you forward every week<br />
+              <span className="text-[#1A2E42] font-semibold">— with other players doing the same work, at the same time</span>
             </p>
           </div>
 
@@ -160,143 +175,144 @@ function Summer2026() {
               <h3 className="text-2xl font-bold mb-6 text-[#1A2E42]">🎯 How It Works</h3>
               <div className="space-y-6">
                 <div>
-                  <h4 className="text-lg font-semibold mb-2 text-gray-900">🎥 Weekly Live Lesson</h4>
-                  <p className="text-gray-800">Sundays — 7 PM (Central)<br />Step-by-step instruction focused on real musical progress</p>
+                  {/* CHANGED: specificity retained, framing sharpened */}
+                  <h4 className="text-lg font-semibold mb-2 text-gray-900">🎥 Weekly Live Lesson — Sundays, 7 PM Central</h4>
+                  <p className="text-gray-800">Step-by-step instruction built around real musical progress, not isolated drills</p>
                 </div>
                 <div>
                   <h4 className="text-lg font-semibold mb-2 text-gray-900">🎤 Live Q&A + Hang Sessions</h4>
-                  <p className="text-gray-800">Get unstuck, ask questions, and stay consistent</p>
+                  {/* CHANGED: more specific benefit */}
+                  <p className="text-gray-800">Get unstuck fast. Ask the question you've been Googling for a week and get a real answer in real time</p>
                 </div>
                 <div>
-                  <h4 className="text-lg font-semibold mb-2 text-gray-900">🎶 Play Real Music</h4>
-                  <p className="text-gray-800">No random exercises. No disconnected drills.</p>
-                  <p className="text-gray-800 mt-2">You'll play along with:</p>
-                  <ul className="text-gray-800 ml-4 mt-2 space-y-1">
-                    <li>• Original songs I write and record</li>
-                    <li>• Custom backing tracks</li>
-                    <li>• Parts designed for your level</li>
-                  </ul>
+                  <h4 className="text-lg font-semibold mb-2 text-gray-900">🎶 Play Real Music from Day One</h4>
+                  {/* CHANGED: benefit-forward instead of negation-forward */}
+                  <p className="text-gray-800">Original songs, custom backing tracks, and parts designed for your exact level — so you're always playing something that sounds like music, not an exercise</p>
                 </div>
               </div>
             </div>
 
             <div className="bg-[#F0F8FF] rounded-lg p-8">
-              <h3 className="text-2xl font-bold mb-6 text-[#1A2E42]">🎸 One System — Multiple Levels</h3>
-              <p className="text-gray-800 mb-4">Inside the community:</p>
+              {/* CHANGED: headline clarifies the multi-level approach is a feature, not a workaround */}
+              <h3 className="text-2xl font-bold mb-6 text-[#1A2E42]">🎸 One Song. Every Level Plays Together.</h3>
+              <p className="text-gray-800 mb-4">Everyone works on the same music — at the part that fits where they are:</p>
               <ul className="text-gray-800 space-y-2">
-                <li>• <strong>Beginners</strong> → strum simple chords and stay engaged</li>
+                <li>• <strong>Beginners</strong> → strum the chords, stay in the groove</li>
                 <li>• <strong>Intermediate players</strong> → build rhythm, timing, and control</li>
-                <li>• <strong>Electric players</strong> → explore tone, effects, and lead parts</li>
+                <li>• <strong>Electric players</strong> → dig into tone, effects, and lead parts</li>
               </ul>
+              {/* CHANGED: payoff reframed as community benefit */}
               <p className="text-gray-800 mt-4">
-                <em>Everyone plays the same music—just at different levels</em>
+                <em>You're never the only one who doesn't have it figured out yet — because everyone's learning the same song</em>
               </p>
             </div>
           </div>
 
           <div className="bg-[#FEF7E0] rounded-lg p-8 mb-16">
-            <h3 className="text-2xl font-bold mb-6 text-center text-[#1A2E42]">⚡ Why This Actually Works</h3>
+            {/* CHANGED: section title is more specific */}
+            <h3 className="text-2xl font-bold mb-6 text-center text-[#1A2E42]">⚡ Why YouTube Hasn't Fixed This (And What Does)</h3>
             <div className="grid md:grid-cols-2 gap-8">
               <div>
-                <h4 className="text-lg font-semibold mb-3 text-red-600">Most people try to learn guitar like this:</h4>
+                {/* CHANGED: left column is more damning and specific */}
+                <h4 className="text-lg font-semibold mb-3 text-red-600">How most people try to improve:</h4>
                 <ul className="text-gray-800 space-y-1">
-                  <li>• Random videos</li>
-                  <li>• No structure</li>
-                  <li>• No accountability</li>
-                  <li>• No real progress</li>
+                  <li>• Search YouTube until something looks good</li>
+                  <li>• Follow it for a week, then get distracted</li>
+                  <li>• Repeat with a different video</li>
+                  <li>• Wonder why nothing is sticking</li>
                 </ul>
               </div>
               <div>
-                <h4 className="text-lg font-semibold mb-3 text-green-600">This is different:</h4>
+                {/* CHANGED: right column kept but each point is cleaner */}
+                <h4 className="text-lg font-semibold mb-3 text-green-600">How this works instead:</h4>
                 <ul className="text-gray-800 space-y-1">
-                  <li>• Structured weekly progression</li>
-                  <li>• Live interaction (not pre-recorded guesswork)</li>
-                  <li>• Music-first learning approach</li>
-                  <li>• Built-in community</li>
+                  <li>• A clear weekly path — you always know what's next</li>
+                  <li>• Live interaction so bad habits get caught early</li>
+                  <li>• Music-first so practice actually sounds like something</li>
+                  <li>• A group so you show up even when motivation drops</li>
                 </ul>
               </div>
             </div>
             <div className="text-center mt-8">
-              <p className="text-xl font-semibold text-[#1A2E42]">The Real Goal</p>
+              {/* CHANGED: "The Real Goal" rewritten as a concrete image, not a vague feeling */}
+              <p className="text-xl font-semibold text-[#1A2E42]">What this actually looks like</p>
               <p className="text-lg text-gray-800 mt-2">
-                You pick up your guitar…<br />
-                You play…<br />
-                And it actually feels good
+                You pick up your guitar on a Tuesday night.<br />
+                You play through a full song — cleanly, confidently.<br />
+                And you think: <em>yeah, I'm actually getting better.</em>
               </p>
             </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-12 mb-16">
             <div className="bg-[#FFF8F0] rounded-lg p-8">
-              <h3 className="text-2xl font-bold mb-6 text-green-600">🤝 Who This Is For</h3>
-              <p className="text-gray-800 mb-4">This is for you if:</p>
+              <h3 className="text-2xl font-bold mb-6 text-green-600">🤝 This is for you if:</h3>
               <ul className="text-gray-800 space-y-2">
-                <li>• You've been playing but feel stuck</li>
-                <li>• You've tried learning on your own and plateaued</li>
-                <li>• You want structure without rigidity</li>
-                <li>• You want to actually enjoy playing again</li>
+                {/* CHANGED: more specific and honest */}
+                <li>• You've been playing on and off for years but haven't broken through</li>
+                <li>• You can learn a riff but can't hold a whole song together</li>
+                <li>• You want structure without being told what to feel about music</li>
+                <li>• You're ready to commit to showing up once a week</li>
               </ul>
             </div>
 
             <div className="bg-[#F0F8FF] rounded-lg p-8">
-              <h3 className="text-2xl font-bold mb-6 text-red-600">This is NOT for:</h3>
+              {/* CHANGED: "not for" list is sharper and more honest — builds trust */}
+              <h3 className="text-2xl font-bold mb-6 text-red-600">This is not for you if:</h3>
               <ul className="text-gray-800 space-y-2">
-                <li>• People looking for random song tutorials only</li>
-                <li>• People unwilling to show up consistently</li>
-                <li>• People expecting results without effort</li>
-                <li>• People looking for lessons on how to shred, chicken pick, or learn more scales</li>
+                <li>• You just want someone to walk you through tabs for your favorite songs</li>
+                <li>• You're not willing to show up consistently</li>
+                <li>• You want shred technique, sweep picking, or scale theory deep-dives</li>
+                <li>• You're hoping results come without putting in the reps</li>
               </ul>
             </div>
           </div>
 
+          {/* CHANGED: launch section rewritten — no hype, just clear offer and specific incentive */}
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-8 text-[#1A2E42]">🚀 Launching Soon</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-8 text-[#1A2E42]">🚀 Opening Summer 2026 — Spots Are Limited</h2>
             <p className="text-xl text-gray-800 mb-8">
-              The Confident Guitarist Community is opening in the next couple of weeks
+              The community launches in the next few weeks. Waitlist members get first access and launch pricing.
             </p>
-            <p className="text-lg text-gray-800 mb-8">
-              Join the waitlist and get:
-            </p>
+            <p className="text-lg text-gray-800 mb-4">When you join the waitlist, you'll get:</p>
             <ul className="text-gray-800 space-y-2 mb-8">
-              <li>• Early access</li>
-              <li>• Launch pricing</li>
-              <li>• Sneak peeks of lessons and backing tracks</li>
+              <li>• First access when doors open</li>
+              <li>• Launch pricing (lower than public rate)</li>
+              <li>• A preview lesson and backing track before launch</li>
             </ul>
             <button
               onClick={() => document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' })}
               className="px-8 py-4 bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42] font-semibold rounded-lg transition-colors text-lg"
             >
-              👉 Join the Waitlist Now
+              👉 Save My Spot
             </button>
           </div>
 
+          {/* CHANGED: "Two paths" section rewritten — Option 2 is specific and action-oriented */}
           <div className="bg-[#FEF7E0] rounded-lg p-8 mb-16">
-            <h3 className="text-2xl font-bold mb-6 text-center text-[#1A2E42]">⚡ Two Paths Forward</h3>
+            <h3 className="text-2xl font-bold mb-6 text-center text-[#1A2E42]">⚡ Two ways this goes from here</h3>
             <div className="grid md:grid-cols-2 gap-8">
               <div className="text-center">
-                <h4 className="text-lg font-semibold mb-3 text-gray-800">Option 1</h4>
-                <p className="text-gray-800">Keep doing what you've been doing</p>
-                <p className="text-red-600 mt-2">→ inconsistent progress</p>
-                <p className="text-red-600">→ no clear direction</p>
+                <h4 className="text-lg font-semibold mb-3 text-gray-800">You don't sign up</h4>
+                <p className="text-gray-800">Same YouTube rabbit holes. Same plateau. Same guitar sitting in the corner more than it should.</p>
               </div>
               <div className="text-center">
-                <h4 className="text-lg font-semibold mb-3 text-[#1A2E42]">Option 2</h4>
-                <p className="text-gray-800">Join something built to actually move you forward</p>
+                <h4 className="text-lg font-semibold mb-3 text-[#1A2E42]">You get on the list</h4>
+                <p className="text-gray-800 mb-4">First access to a structured program built for exactly where you are — with a teacher and a group holding you to it.</p>
                 <div className="flex flex-col gap-4 mt-4">
                   <button
                     onClick={() => document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' })}
                     className="px-6 py-3 bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42] font-semibold rounded-lg transition-colors"
                   >
-                    👉 Join the Waitlist
+                    👉 Save My Spot
                   </button>
-                  
                 </div>
               </div>
             </div>
           </div>
 
           <div className="text-center text-gray-700">
-            <p>No spam. Just early access, updates, and real value.</p>
+            <p>No spam. Just early access, a preview lesson, and the launch date when it's set.</p>
           </div>
         </div>
       </section>
@@ -304,7 +320,9 @@ function Summer2026() {
       {/* Waitlist Signup Section */}
       <section id="waitlist" className="px-6 py-24 bg-[#F0F8FF]">
         <div className="max-w-md mx-auto text-center">
-          <h2 className="text-2xl font-semibold mb-4 text-gray-900">Join the Waitlist</h2>
+          {/* CHANGED: waitlist header is specific about what happens next */}
+          <h2 className="text-2xl font-semibold mb-2 text-gray-900">Get Early Access + Launch Pricing</h2>
+          <p className="text-gray-600 mb-6">Drop your email and you'll hear from Todd directly when spots open.</p>
           <form onSubmit={handleWaitlistSubmit} className="flex flex-col gap-4">
             <input
               type="email"
@@ -318,14 +336,15 @@ function Summer2026() {
               <p className="text-sm text-red-600">{submitError}</p>
             )}
             {submitSuccess && (
-              <p className="text-sm text-[#1A2E42] font-semibold">You're on the waitlist! We'll follow up soon.</p>
+              {/* CHANGED: confirmation message is warmer and tells them what to expect */}
+              <p className="text-sm text-[#1A2E42] font-semibold">You're in. Todd will reach out personally before launch.</p>
             )}
             <button
               type="submit"
               disabled={submitting}
               className="px-8 py-3 bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42] font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[#C9A84C] disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {submitting ? 'Joining...' : 'Join Waitlist'}
+              {submitting ? 'Saving your spot...' : 'Save My Spot'}
             </button>
           </form>
         </div>
