@@ -178,6 +178,44 @@ function HomePage() {
         </div>
       </header>
 
+
+      {/* New Daytime Lesson Openings (Argyle, TX) Section - relocated from Summer2026 */}
+      <section className="px-6 py-24 bg-[#1A2E42] text-white overflow-x-hidden">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-white">🎯 New Daytime Lesson Openings (Argyle, TX)</h2>
+          <p className="text-lg leading-relaxed text-gray-200 mb-6">
+            I've opened up limited daytime spots at<br />
+            <span className="text-[#C9A84C] font-semibold">New Song School of the Arts</span>
+          </p>
+
+          <div className="bg-[#2A3E52] rounded-lg p-6 mb-8 max-w-md mx-auto">
+            <h3 className="text-xl font-semibold mb-4 text-[#C9A84C]">Available Times:</h3>
+            <ul className="text-left text-gray-200 space-y-2">
+              <li>• Wednesdays (before 4 PM)</li>
+              <li>• Fridays (11 AM – 4:30 PM)</li>
+            </ul>
+          </div>
+
+          <div className="mb-8">
+            <h3 className="text-xl font-semibold mb-4 text-[#C9A84C]">Best Fit For:</h3>
+            <ul className="text-gray-200 space-y-2">
+              <li>• Homeschool students</li>
+              <li>• Adults with flexible schedules</li>
+              <li>• Anyone serious about improving without the evening rush</li>
+            </ul>
+          </div>
+
+          <div className="bg-[#2A3E52] rounded-lg p-6 mb-8">
+            <h3 className="text-xl font-semibold mb-4 text-[#C9A84C]">Private Lessons That Actually Move You Forward</h3>
+            <ul className="text-left text-gray-200 space-y-2">
+              <li>• Clear, structured progression (no guesswork)</li>
+              <li>• Real musical application (not just theory)</li>
+              <li>• Personalized coaching based on your level and goals</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
       <main id="main-content" ref={mainContentRef} tabIndex={-1} className="focus:outline-none">
 
       <section id="summer-2026-announcement" aria-labelledby="announcement-heading" className="py-24 bg-[#0f172a] text-white">

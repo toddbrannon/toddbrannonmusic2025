@@ -126,15 +126,7 @@ function Summer2026() {
               >
                 👉 Join the Waitlist
               </button>
-              <button
-                onClick={() => {
-                  setShowInquiryForm(true);
-                  window.scrollTo(0, 0);
-                }}
-                className="px-8 py-4 bg-[#1A2E42] hover:bg-[#2a3e52] text-white font-semibold rounded-lg transition-colors"
-              >
-                👉 Book a Local Lesson
-              </button>
+              
           </div>
         </div>
       </section>
@@ -349,15 +341,7 @@ function Summer2026() {
                   >
                     👉 Join the Waitlist
                   </button>
-                  <button
-                    onClick={() => {
-                      setShowInquiryForm(true);
-                      window.scrollTo(0, 0);
-                    }}
-                    className="px-6 py-3 bg-[#1A2E42] hover:bg-[#2a3e52] text-white font-semibold rounded-lg transition-colors"
-                  >
-                    👉 Book a Private Lesson
-                  </button>
+                  
                 </div>
               </div>
             </div>
