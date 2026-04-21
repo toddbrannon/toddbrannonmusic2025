@@ -23,17 +23,6 @@ function Summer2026() {
       { threshold: 0.1 }
     );
 
-    if (showInquiryForm) {
-        return (
-          <InquiryForm
-            onBack={() => {
-              setShowInquiryForm(false);
-              window.scrollTo(0, 0);
-            }}
-          />
-        );
-      }
-
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
@@ -44,6 +33,17 @@ function Summer2026() {
       }
     };
   }, []);
+
+  if (showInquiryForm) {
+    return (
+      <InquiryForm
+        onBack={() => {
+          setShowInquiryForm(false);
+          window.scrollTo(0, 0);
+        }}
+      />
+    );
+  }
 
   const handleWaitlistSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
