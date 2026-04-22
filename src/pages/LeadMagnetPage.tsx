@@ -1,8 +1,45 @@
-
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-const GOLD = '#C9A84C';
+// ─────────────────────────────────────────────────
+// ADD NEW LEAD MAGNETS HERE
+// ─────────────────────────────────────────────────
+interface LeadMagnetConfig {
+  title: string;
+  subtitle: string;
+  description: string;
+  bullets: string[];
+  formHeading: string;
+}
+
+const LEAD_MAGNETS: Record<string, LeadMagnetConfig> = {
+  'major-scale-for-guitarists': {
+    title: 'The Guitar Scale That Unlocks Everything Else',
+    subtitle: '🎁 Free Download',
+    description:
+      'A free reference sheet for guitarists who want to understand music, not just play it. Learn the C Major Scale across two octaves — and how its numbered structure becomes the foundation for playing in any key, building chords, and understanding the Nashville Number System.',
+    bullets: [
+      'Both octaves with tab notation and exact fingering — ascending and descending',
+      'See how Whole steps and Half steps create the numbered structure that works in any major key across the neck',
+      'Build the foundation for chord theory and the Nashville Number System',
+    ],
+    formHeading: 'Send it to my inbox',
+  },
+  // Add future lead magnets here:
+  // 'nashville-number-system-cheat-sheet': {
+  //   title: '...',
+  //   subtitle: '...',
+  //   description: '...',
+  //   bullets: [...],
+  //   formHeading: '...',
+  // },
+};
+// ─────────────────────────────────────────────────
+
 const LeadMagnetPage: React.FC = () => {
+  const { slug } = useParams<{ slug: string }>();
+  const config = slug ? LEAD_MAGNETS[slug] : null;
+
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
@@ -22,7 +59,7 @@ const LeadMagnetPage: React.FC = () => {
       const res = await fetch('/api/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, slug }),
       });
       const data = await res.json();
       if (res.ok && data.success) {
@@ -32,11 +69,23 @@ const LeadMagnetPage: React.FC = () => {
         setStatus('error');
         setErrorMsg(data.error || 'Something went wrong.');
       }
-    } catch (err: any) {
+    } catch {
       setStatus('error');
       setErrorMsg('Network error. Please try again.');
     }
   };
+
+  if (!config) {
+    return (
+      <div className="min-h-screen bg-[#F0F8FF] flex items-center justify-center text-[#1A2E42]">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold mb-4">Page Not Found</h1>
+          <p className="text-gray-600">This resource doesn't exist or may have moved.</p>
+          <a href="/" className="mt-6 inline-block text-[#C9A84C] hover:underline">← Back to home</a>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#F0F8FF] text-[#1A2E42] flex flex-col">
@@ -50,18 +99,24 @@ const LeadMagnetPage: React.FC = () => {
       {/* Hero Section */}
       <section className="px-6 py-20 text-center bg-gradient-to-b from-[#F0F8FF] to-[#FEF7E0] flex-1">
         <div className="max-w-2xl mx-auto">
-          <span className="inline-block mb-4 text-sm uppercase tracking-[0.3em] text-[#C9A84C]">🎁 Free Download</span>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight text-[#1A2E42]">The Guitar Scale That Unlocks Everything Else</h1>
+          <span className="inline-block mb-4 text-sm uppercase tracking-[0.3em] text-[#C9A84C]">
+            {config.subtitle}
+          </span>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight text-[#1A2E42]">
+            {config.title}
+          </h1>
           <p className="text-lg md:text-xl leading-relaxed text-gray-800 max-w-xl mx-auto mb-8">
-            A free reference sheet for guitarists who want to understand music, not just play it. Learn the C Major Scale across two octaves — and how its numbered structure becomes the foundation for playing in any key, building chords, and understanding the Nashville Number System.
+            {config.description}
           </p>
           <ul className="text-left text-lg text-[#1A2E42] mb-8 max-w-xl mx-auto space-y-3">
-            <li className="flex items-start"><span className="mr-2 text-[#C9A84C]">→</span> Both octaves with tab notation and exact fingering — ascending and descending</li>
-            <li className="flex items-start"><span className="mr-2 text-[#C9A84C]">→</span> See how Whole steps and Half steps create the numbered structure that works in any major key across the neck</li>
-            <li className="flex items-start"><span className="mr-2 text-[#C9A84C]">→</span> Build the foundation for chord theory and the Nashville Number System</li>
+            {config.bullets.map((bullet, i) => (
+              <li key={i} className="flex items-start">
+                <span className="mr-2 text-[#C9A84C]">→</span> {bullet}
+              </li>
+            ))}
           </ul>
           <div className="bg-white rounded-xl shadow-lg p-8 border border-[#C9A84C]/30 max-w-lg mx-auto">
-            <h2 className="text-2xl font-bold mb-4 text-[#1A2E42]">Send it to my inbox</h2>
+            <h2 className="text-2xl font-bold mb-4 text-[#1A2E42]">{config.formHeading}</h2>
             <form onSubmit={handleSubmit} autoComplete="off" className="flex flex-col gap-4">
               <div className="flex flex-col sm:flex-row gap-2">
                 <input

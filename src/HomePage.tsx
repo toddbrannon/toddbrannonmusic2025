@@ -230,7 +230,7 @@ function HomePage() {
               <button
                 data-testid="button-announce-contact"
                 onClick={() => {
-                  setShowContactForm(true);
+                  setShowInquiryForm(true);
                   window.scrollTo(0, 0);
                 }}
                 className="inline-flex items-center justify-center rounded-lg bg-[#C9A84C] px-6 py-3 text-sm font-light text-[#1A2E42] transition-colors hover:bg-[#b8953d]"
@@ -366,7 +366,7 @@ function HomePage() {
             </div>
           </div>
 
-          {/* Performance Shorts */}
+          {/* Performance Shorts
           <div>
             <h3 className="text-2xl font-light text-white mb-2">Performance Shorts</h3>
             <p className="text-sm font-light text-gray-400 mb-1">Quick clips from the home studio and beyond.</p>
@@ -398,7 +398,7 @@ function HomePage() {
                 View more on YouTube →
               </a>
             </div>
-          </div>
+          </div> */}
 
         </div>
       </section>

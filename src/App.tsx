@@ -1,5 +1,3 @@
-
-
 import { Routes, Route } from 'react-router-dom';
 import LeadMagnetPage from './pages/LeadMagnetPage';
 import Summer2026 from './pages/Summer2026';
@@ -19,7 +17,7 @@ function App() {
       <Route path="/confidentmusician/pdfs" element={<CMPDFs />} />
       <Route path="/confidentmusician/videos" element={<CMVideos />} />
       <Route path="/confidentmusician/audio" element={<CMAudio />} />
-      <Route path="/free-download" element={<LeadMagnetPage />} />
+      <Route path="/free/:slug" element={<LeadMagnetPage />} />
       <Route path="/" element={<HomePage />} />
     </Routes>
   );
