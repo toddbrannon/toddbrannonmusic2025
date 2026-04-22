@@ -5,11 +5,10 @@ import { sendDownloadLink } from './mailer.js';
 import dotenv from 'dotenv';
 import express from 'express';
 import session from 'express-session';
+import rateLimit from 'express-rate-limit';
 import { Resend } from 'resend';
-import { google } from 'googleapis';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import rateLimit from 'express-rate-limit';
 
 dotenv.config();
 
@@ -21,15 +20,89 @@ const __dirname = dirname(__filename);
 app.use(express.json({ limit: '100kb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// --- SESSION SETUP ---
 app.use(session({
   secret: process.env.SESSION_SECRET || 'supersecret',
   resave: false,
   saveUninitialized: false,
 }));
 
+if (!process.env.RESEND_API_KEY || !process.env.CONTACT_EMAIL) {
+  console.error('Missing required environment variables: RESEND_API_KEY and/or CONTACT_EMAIL');
+  process.exit(1);
+}
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+const CONTACT_EMAIL = process.env.CONTACT_EMAIL;
 const PDF_PATH = process.env.PDF_PATH || '/data/lead-magnet.pdf';
 const PDF_FILENAME = process.env.PDF_FILENAME || 'todd-brannon-music-guide.pdf';
+
+const VALID_STUDENT_TYPES = ['myself', 'my-child', 'both'];
+const VALID_EXPERIENCE = ['beginner', 'some-experience', 'intermediate', 'advanced'];
+const VALID_INTERESTS = ['guitar-lessons', 'worship-prep', 'home-recording', 'songwriting', 'not-sure'];
+const VALID_AVAILABILITY = ['after-school', 'daytime', 'homeschool', 'flexible', 'open'];
+
+const LABELS = {
+  'myself': 'Myself',
+  'my-child': 'My Child',
+  'both': 'Both',
+  'beginner': 'Complete Beginner',
+  'some-experience': 'Some Experience',
+  'intermediate': 'Intermediate',
+  'advanced': 'Advanced',
+  'guitar-lessons': 'Guitar Lessons',
+  'worship-prep': 'Worship Team Prep',
+  'home-recording': 'Home Recording (Logic Pro)',
+  'songwriting': 'Songwriting Coaching',
+  'not-sure': 'Not Sure Yet',
+  'after-school': 'After School',
+  'daytime': 'Daytime',
+  'homeschool': 'Homeschool',
+  'flexible': 'Flexible',
+  'open': 'Open',
+};
+
+// ─────────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────────
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function sanitizeString(val, maxLen = 500) {
+  if (typeof val !== 'string') return '';
+  return val.slice(0, maxLen).trim();
+}
+
+function sanitizeEnum(val, allowed) {
+  if (typeof val === 'string' && allowed.includes(val)) return val;
+  return '';
+}
+
+function sanitizeEnumArray(val, allowed) {
+  if (!Array.isArray(val)) return [];
+  return val.filter(v => typeof v === 'string' && allowed.includes(v));
+}
+
+function formatLabel(val) {
+  return LABELS[val] || val;
+}
+
+function formatList(items) {
+  if (!items || (Array.isArray(items) && items.length === 0) || items === '') return 'Not specified';
+  if (Array.isArray(items)) return items.map(formatLabel).map(escapeHtml).join(', ');
+  return escapeHtml(formatLabel(items));
+}
 
 // ─────────────────────────────────────────────────
 // ADMIN ROUTES
@@ -41,13 +114,12 @@ function requireAuth(req, res, next) {
 }
 
 const loginRateLimit = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10,                   // 10 attempts per window
+  windowMs: 15 * 60 * 1000,
+  max: 10,
   message: { success: false, message: 'Too many login attempts. Please try again later.' },
   standardHeaders: true,
   legacyHeaders: false,
 });
-
 
 app.post('/admin/login', loginRateLimit, (req, res) => {
   const { username, password } = req.body;
@@ -92,7 +164,7 @@ app.get('/admin', (req, res) => {
 app.post('/api/submit', async (req, res) => {
   try {
     const { email } = req.body;
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!email || !isValidEmail(email)) {
       return res.status(400).json({ error: 'A valid email address is required.' });
     }
     let token;
@@ -102,11 +174,6 @@ app.post('/api/submit', async (req, res) => {
     } else {
       token = uuidv4();
       await pool.query('INSERT INTO leads (email, token) VALUES ($1, $2)', [email, token]);
-    }
-    try {
-      await appendWaitlistRow(email);
-    } catch (sheetErr) {
-      console.error('Google Sheet append error (lead magnet):', sheetErr);
     }
     await sendDownloadLink(email, token);
     return res.status(200).json({ success: true });
@@ -142,139 +209,6 @@ app.get('/download/:token', async (req, res) => {
 });
 
 // ─────────────────────────────────────────────────
-// ENVIRONMENT / CONFIG
-// ─────────────────────────────────────────────────
-
-if (!process.env.RESEND_API_KEY || !process.env.CONTACT_EMAIL) {
-  console.error('Missing required environment variables: RESEND_API_KEY and/or CONTACT_EMAIL');
-  process.exit(1);
-}
-
-const resend = new Resend(process.env.RESEND_API_KEY);
-const CONTACT_EMAIL = process.env.CONTACT_EMAIL;
-const GOOGLE_SHEETS_WEBHOOK_URL = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
-const GOOGLE_SHEET_ID = process.env.GOOGLE_SHEET_ID;
-const GOOGLE_SHEET_NAME = process.env.GOOGLE_SHEET_NAME || 'Waitlist';
-const GOOGLE_SERVICE_ACCOUNT_JSON = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
-const GOOGLE_SERVICE_ACCOUNT_EMAIL = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
-const GOOGLE_PRIVATE_KEY = process.env.GOOGLE_PRIVATE_KEY;
-
-const VALID_STUDENT_TYPES = ['myself', 'my-child', 'both'];
-const VALID_EXPERIENCE = ['beginner', 'some-experience', 'intermediate', 'advanced'];
-const VALID_INTERESTS = ['guitar-lessons', 'worship-prep', 'home-recording', 'songwriting', 'not-sure'];
-const VALID_AVAILABILITY = ['after-school', 'daytime', 'homeschool', 'flexible', 'open'];
-
-// ─────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────
-
-function escapeHtml(str) {
-  if (!str) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
-function isValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-function sanitizeString(val, maxLen = 500) {
-  if (typeof val !== 'string') return '';
-  return val.slice(0, maxLen).trim();
-}
-
-function sanitizeEnum(val, allowed) {
-  if (typeof val === 'string' && allowed.includes(val)) return val;
-  return '';
-}
-
-function sanitizeEnumArray(val, allowed) {
-  if (!Array.isArray(val)) return [];
-  return val.filter(v => typeof v === 'string' && allowed.includes(v));
-}
-
-const LABELS = {
-  'myself': 'Myself',
-  'my-child': 'My Child',
-  'both': 'Both',
-  'beginner': 'Complete Beginner',
-  'some-experience': 'Some Experience',
-  'intermediate': 'Intermediate',
-  'advanced': 'Advanced',
-  'guitar-lessons': 'Guitar Lessons',
-  'worship-prep': 'Worship Team Prep',
-  'home-recording': 'Home Recording (Logic Pro)',
-  'songwriting': 'Songwriting Coaching',
-  'not-sure': 'Not Sure Yet',
-  'after-school': 'After School',
-  'daytime': 'Daytime',
-  'homeschool': 'Homeschool',
-  'flexible': 'Flexible',
-  'open': 'Open',
-};
-
-function formatLabel(val) {
-  return LABELS[val] || val;
-}
-
-function formatList(items) {
-  if (!items || (Array.isArray(items) && items.length === 0) || items === '') return 'Not specified';
-  if (Array.isArray(items)) return items.map(formatLabel).map(escapeHtml).join(', ');
-  return escapeHtml(formatLabel(items));
-}
-
-function normalizePrivateKey(key) {
-  return key ? String(key).replace(/\\n/g, '\n') : '';
-}
-
-async function appendWaitlistRow(email) {
-  if (GOOGLE_SHEETS_WEBHOOK_URL) {
-    const response = await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
-    });
-    if (!response.ok) {
-      throw new Error(`Google Sheets webhook responded with ${response.status}`);
-    }
-    return;
-  }
-
-  const serviceAccount = GOOGLE_SERVICE_ACCOUNT_JSON
-    ? JSON.parse(GOOGLE_SERVICE_ACCOUNT_JSON)
-    : {
-        client_email: GOOGLE_SERVICE_ACCOUNT_EMAIL,
-        private_key: normalizePrivateKey(GOOGLE_PRIVATE_KEY),
-      };
-
-  if (!GOOGLE_SHEET_ID || !serviceAccount.client_email || !serviceAccount.private_key) {
-    throw new Error('Google Sheets integration is not configured.');
-  }
-
-  const auth = new google.auth.GoogleAuth({
-    credentials: serviceAccount,
-    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-  });
-
-  const authClient = await auth.getClient();
-  const sheets = google.sheets({ version: 'v4', auth: authClient });
-
-  await sheets.spreadsheets.values.append({
-    spreadsheetId: GOOGLE_SHEET_ID,
-    range: `${GOOGLE_SHEET_NAME}!A:B`,
-    valueInputOption: 'USER_ENTERED',
-    insertDataOption: 'INSERT_ROWS',
-    requestBody: {
-      values: [[new Date().toISOString(), escapeHtml(email)]],
-    },
-  });
-}
-
-// ─────────────────────────────────────────────────
 // API ROUTES
 // ─────────────────────────────────────────────────
 
@@ -284,11 +218,14 @@ app.post('/api/waitlist', async (req, res) => {
     if (!email || !isValidEmail(email)) {
       return res.status(400).json({ error: 'Please provide a valid email address.' });
     }
-    await appendWaitlistRow(email);
+    await pool.query(
+      'INSERT INTO summer2026_signups (email) VALUES ($1) ON CONFLICT (email) DO NOTHING',
+      [email]
+    );
     return res.json({ success: true });
   } catch (err) {
     console.error('Waitlist submit error:', err);
-    return res.status(500).json({ error: String(err.message || 'Failed to submit waitlist. Please try again.') });
+    return res.status(500).json({ error: 'Failed to submit. Please try again.' });
   }
 });
 
