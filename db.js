@@ -17,12 +17,13 @@ export async function init() {
   `);
 
   await pool.query(`
-    CREATE TABLE IF NOT EXISTS summer2026_signups (
-      id SERIAL PRIMARY KEY,
-      email TEXT NOT NULL UNIQUE,
-      created_at TIMESTAMPTZ DEFAULT NOW()
-    );
-  `);
+  CREATE TABLE IF NOT EXISTS summer2026_signups (
+    id SERIAL PRIMARY KEY,
+    email TEXT NOT NULL UNIQUE,
+    email_opt_in BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+  );
+`);
 
   console.log('✓ Database ready');
 }

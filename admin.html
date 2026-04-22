@@ -53,7 +53,7 @@
       <div id="panel-signups">
         <table>
           <thead>
-            <tr><th>Email</th><th>Signed Up</th></tr>
+            <tr><th>Email</th><th>Marketing Opt-In</th><th>Signed Up</th></tr>
           </thead>
           <tbody id="tbody-signups"></tbody>
         </table>
@@ -106,6 +106,7 @@
         if (name === 'signups') {
           tr.innerHTML = `
             <td>${esc(row.email)}</td>
+            <td><span class="badge ${row.email_opt_in ? 'badge-yes' : 'badge-no'}">${row.email_opt_in ? 'Yes' : 'No'}</span></td>
             <td>${fmt(row.created_at)}</td>`;
         } else {
           const dl = row.downloaded_at;

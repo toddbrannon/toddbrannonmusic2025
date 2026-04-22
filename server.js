@@ -215,12 +215,13 @@ app.get('/download/:token', async (req, res) => {
 app.post('/api/waitlist', async (req, res) => {
   try {
     const email = sanitizeString(req.body.email, 320);
+    const emailOptIn = req.body.emailOptIn === true || req.body.emailOptIn === 'true';
     if (!email || !isValidEmail(email)) {
       return res.status(400).json({ error: 'Please provide a valid email address.' });
     }
     await pool.query(
-      'INSERT INTO summer2026_signups (email) VALUES ($1) ON CONFLICT (email) DO NOTHING',
-      [email]
+      'INSERT INTO summer2026_signups (email, email_opt_in) VALUES ($1, $2) ON CONFLICT (email) DO NOTHING',
+      [email, emailOptIn]
     );
     return res.json({ success: true });
   } catch (err) {

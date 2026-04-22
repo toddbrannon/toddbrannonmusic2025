@@ -1,7 +1,9 @@
 import { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 
-export default function PrivacyPolicy({ onBack }: { onBack: () => void }) {
+export default function PrivacyPolicy() {
+  const navigate = useNavigate();
   const headingRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
@@ -10,11 +12,10 @@ export default function PrivacyPolicy({ onBack }: { onBack: () => void }) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#1a1a1a] py-12 px-4 md:px-6 animate-fadeIn">
+    <div className="min-h-screen bg-[#1a1a1a] py-12 px-4 md:px-6">
       <main className="max-w-[720px] mx-auto">
         <button
-          data-testid="button-back-privacy"
-          onClick={onBack}
+          onClick={() => navigate(-1)}
           className="mb-8 inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors"
         >
           <ArrowLeft aria-hidden="true" className="w-4 h-4" />
@@ -25,8 +26,10 @@ export default function PrivacyPolicy({ onBack }: { onBack: () => void }) {
           ref={headingRef}
           tabIndex={-1}
           className="text-3xl md:text-4xl font-semibold text-white mb-2 focus:outline-none"
-        >Privacy Policy</h1>
-        <p className="text-sm text-gray-400 mb-10">Last updated: March 9, 2026</p>
+        >
+          Privacy Policy
+        </h1>
+        <p className="text-sm text-gray-400 mb-10">Last updated: April 22, 2026</p>
 
         <div className="space-y-8 text-gray-300 font-light leading-relaxed">
           <p>
@@ -36,21 +39,24 @@ export default function PrivacyPolicy({ onBack }: { onBack: () => void }) {
           <div>
             <h2 className="text-xl font-medium text-white mb-3">What I Collect</h2>
             <p>
-              When you submit an inquiry through the contact form on this site, I collect your name, email address, and optionally your phone number, along with any details you choose to share in the message field.
+              Depending on how you interact with this site, I may collect your name, email address, and optionally your phone number. This includes information submitted through contact forms, lesson inquiry forms, free resource requests, and waitlist signups.
             </p>
           </div>
 
           <div>
             <h2 className="text-xl font-medium text-white mb-3">How I Use It</h2>
+            <p className="mb-3">
+              Your information is used to respond to your inquiry, deliver requested resources, or notify you about programs you've expressed interest in — such as The Confident Guitarist Community.
+            </p>
             <p>
-              Your information is used solely to respond to your inquiry about lessons or coaching services. I do not use it for marketing, advertising, or any other purpose.
+              If you opt in to marketing communications during signup, I may also send you occasional emails about new lessons, resources, announcements, or offerings from Todd Brannon Music. You can opt out at any time by replying to any email with "unsubscribe" or by contacting me directly.
             </p>
           </div>
 
           <div>
             <h2 className="text-xl font-medium text-white mb-3">Where It Goes</h2>
             <p>
-              Submitted form data is delivered to my private email inbox via Resend and may be logged in a private Google Sheet for my own organizational purposes. Neither Resend nor Google Sheets sells or shares your data with third parties.
+              Submitted form data is stored in a private, secured database and delivered to my private email inbox via Resend. I do not use third-party CRMs or marketing platforms that sell or share your data.
             </p>
           </div>
 
@@ -64,7 +70,7 @@ export default function PrivacyPolicy({ onBack }: { onBack: () => void }) {
           <div>
             <h2 className="text-xl font-medium text-white mb-3">Data Retention</h2>
             <p>
-              I retain inquiry information only as long as it is relevant to our communication. You may request deletion of your information at any time by emailing{' '}
+              I retain your information only as long as it is relevant to our communication or your interest in my programs. You may request deletion of your information at any time by emailing{' '}
               <a href="mailto:todd@toddbrannonmusic.com" className="text-[#C9A84C] hover:underline">todd@toddbrannonmusic.com</a>.
             </p>
           </div>

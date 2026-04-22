@@ -12,6 +12,7 @@ function Summer2026() {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+  const [emailOptIn, setEmailOptIn] = useState(true);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -68,7 +69,7 @@ function Summer2026() {
       const response = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: trimmedEmail }),
+        body: JSON.stringify({ email: trimmedEmail, emailOptIn }),
       });
 
       const data = await response.json();
@@ -348,39 +349,55 @@ function Summer2026() {
 
       {/* Waitlist Signup Section */}
       <section id="waitlist" className="px-6 py-24 bg-[#F0F8FF]">
-        <div className="max-w-md mx-auto text-center">
-          {/* CHANGED: waitlist header is specific about what happens next */}
-          <h2 className="text-2xl font-semibold mb-2 text-gray-900">Get Early Access + Launch Pricing</h2>
-          <p className="text-gray-600 mb-6">Drop your email and you'll hear from Todd directly when spots open.</p>
-          <form onSubmit={handleWaitlistSubmit} className="flex flex-col gap-4">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-              className="px-4 py-3 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#C9A84C]"
-            />
-            {submitError && (
-              <p className="text-sm text-red-600">{submitError}</p>
-            )}
-            {submitSuccess && (
-              <p className="text-sm text-[#1A2E42] font-semibold">You're in. Todd will reach out personally before launch.</p>
-            )}
-            <button
-              type="submit"
-              disabled={submitting}
-              className="px-8 py-3 bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42] font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[#C9A84C] disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {submitting ? 'Saving your spot...' : 'Save My Spot'}
-            </button>
-          </form>
-        </div>
-      </section>
+  <div className="max-w-md mx-auto text-center">
+    <h2 className="text-2xl font-semibold mb-2 text-gray-900">Get Early Access + Launch Pricing</h2>
+    <p className="text-gray-600 mb-6">Drop your email and you'll hear from Todd directly when spots open.</p>
+    <form onSubmit={handleWaitlistSubmit} className="flex flex-col gap-4">
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Enter your email"
+        required
+        className="px-4 py-3 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#C9A84C]"
+      />
+      <label className="flex items-start gap-3 text-sm text-gray-600 text-left cursor-pointer">
+        <input
+          type="checkbox"
+          checked={emailOptIn}
+          onChange={(e) => setEmailOptIn(e.target.checked)}
+          className="mt-0.5 accent-[#C9A84C] w-4 h-4 shrink-0"
+        />
+        <span>
+          I'd also like to receive occasional emails from Todd Brannon Music about new lessons, resources, and announcements unrelated to this community launch.
+        </span>
+      </label>
+      <p className="text-xs text-gray-400 text-left">
+        You can unsubscribe at any time. View our{' '}
+        <a href="/privacy-policy" className="text-[#C9A84C] hover:underline">Privacy Policy</a>.
+      </p>
+      {submitError && <p className="text-sm text-red-600">{submitError}</p>}
+      {submitSuccess && (
+        <p className="text-sm text-[#1A2E42] font-semibold">You're in. Todd will reach out personally before launch.</p>
+      )}
+      <button
+        type="submit"
+        disabled={submitting}
+        className="px-8 py-3 bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42] font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[#C9A84C] disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {submitting ? 'Saving your spot...' : 'Save My Spot'}
+      </button>
+    </form>
+  </div>
+</section>
 
-      {/* Footer */}
-      <footer className="px-6 py-12 text-center text-gray-700">
-        <p>&copy; 2026 Todd Brannon Music. All rights reserved.</p>
+      <footer className="px-6 py-12 text-center text-gray-500 text-sm bg-white border-t border-gray-100">
+        <p className="mb-2">&copy; 2026 Todd Brannon Music. All rights reserved.</p>
+        <p>
+          <a href="/privacy-policy" className="text-[#C9A84C] hover:underline">Privacy Policy</a>
+          {' · '}
+          <a href="mailto:todd@toddbrannonmusic.com" className="text-[#C9A84C] hover:underline">Contact</a>
+        </p>
       </footer>
     </div>
   );
