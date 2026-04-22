@@ -6,7 +6,7 @@ export const pool = new Pool({
 });
 
 export async function init() {
-  const query = `
+  await pool.query(`
     CREATE TABLE IF NOT EXISTS leads (
       id SERIAL PRIMARY KEY,
       email TEXT NOT NULL UNIQUE,
@@ -14,7 +14,15 @@ export async function init() {
       downloaded_at TIMESTAMPTZ,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
-  `;
-  await pool.query(query);
+  `);
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS summer2026_signups (
+      id SERIAL PRIMARY KEY,
+      email TEXT NOT NULL UNIQUE,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    );
+  `);
+
   console.log('✓ Database ready');
 }
