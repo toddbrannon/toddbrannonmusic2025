@@ -1,44 +1,12 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import LEAD_MAGNETS from '../../leadMagnets.json';
 
-// ─────────────────────────────────────────────────
-// ADD NEW LEAD MAGNETS HERE
-// ─────────────────────────────────────────────────
-interface LeadMagnetConfig {
-  title: string;
-  subtitle: string;
-  description: string;
-  bullets: string[];
-  formHeading: string;
-}
 
-const LEAD_MAGNETS: Record<string, LeadMagnetConfig> = {
-  'major-scale-for-guitarists': {
-    title: 'The Guitar Scale That Unlocks Everything Else',
-    subtitle: '🎁 Free Download',
-    description:
-      'A free reference sheet for guitarists who want to understand music, not just play it. Learn the C Major Scale across two octaves — and how its numbered structure becomes the foundation for playing in any key, building chords, and understanding the Nashville Number System.',
-    bullets: [
-      'Both octaves with tab notation and exact fingering — ascending and descending',
-      'See how Whole steps and Half steps create the numbered structure that works in any major key across the neck',
-      'Build the foundation for chord theory and the Nashville Number System',
-    ],
-    formHeading: 'Send it to my inbox',
-  },
-  // Add future lead magnets here:
-  // 'nashville-number-system-cheat-sheet': {
-  //   title: '...',
-  //   subtitle: '...',
-  //   description: '...',
-  //   bullets: [...],
-  //   formHeading: '...',
-  // },
-};
-// ─────────────────────────────────────────────────
 
 const LeadMagnetPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const config = slug ? LEAD_MAGNETS[slug] : null;
+  const config = slug ? (LEAD_MAGNETS as Record<string, any>)[slug] : null;
 
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
