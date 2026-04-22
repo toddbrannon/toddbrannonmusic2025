@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login</title>
+  <style>
+    body { font-family: sans-serif; background: #f7f7f7; }
+    .login-box { max-width: 340px; margin: 80px auto; background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 12px #0001; }
+    input, button { width: 100%; margin-bottom: 1rem; padding: 0.7rem; border-radius: 4px; border: 1px solid #ccc; }
+    button { background: #1A2E42; color: #fff; border: none; font-weight: bold; cursor: pointer; }
+    button:hover { background: #C9A84C; color: #1A2E42; }
+    .error { color: #c00; margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>Admin Login</h2>
+    <form id="loginForm">
+      <input type="text" name="username" placeholder="Username" required />
+      <input type="password" name="password" placeholder="Password" required />
+      <div class="error" id="errorMsg"></div>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+  <script>
+    document.getElementById('loginForm').onsubmit = async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const res = await fetch('/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: form.username.value,
+          password: form.password.value
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        window.location = '/admin';
+      } else {
+        document.getElementById('errorMsg').textContent = data.message || 'Login failed';
+      }
+    };
+  </script>
+</body>
+</html>

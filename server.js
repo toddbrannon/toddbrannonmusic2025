@@ -4,6 +4,7 @@ import { pool, init } from './db.js';
 import { sendDownloadLink } from './mailer.js';
 import dotenv from 'dotenv';
 import express from 'express';
+import session from 'express-session';
 import { Resend } from 'resend';
 import { google } from 'googleapis';
 import { fileURLToPath } from 'url';
@@ -13,12 +14,62 @@ dotenv.config();
 
 const app = express();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 app.use(express.json({ limit: '100kb' }));
 app.use(express.urlencoded({ extended: true }));
 
+// --- SESSION SETUP ---
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'supersecret',
+  resave: false,
+  saveUninitialized: false,
+}));
+
 const PDF_PATH = process.env.PDF_PATH || '/data/lead-magnet.pdf';
 const PDF_FILENAME = process.env.PDF_FILENAME || 'todd-brannon-music-guide.pdf';
-// --- Lead Magnet Submission Route ---
+
+// ─────────────────────────────────────────────────
+// ADMIN ROUTES
+// ─────────────────────────────────────────────────
+
+function requireAuth(req, res, next) {
+  if (req.session?.user === process.env.ADMIN_USERNAME) return next();
+  res.status(401).send('Unauthorized');
+}
+
+app.post('/admin/login', (req, res) => {
+  const { username, password } = req.body;
+  if (username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD) {
+    req.session.user = process.env.ADMIN_USERNAME;
+    return res.json({ success: true });
+  }
+  res.status(401).json({ success: false, message: 'Invalid credentials' });
+});
+
+app.post('/admin/logout', (req, res) => {
+  req.session.destroy(() => res.json({ success: true }));
+});
+
+app.get('/admin/signups', requireAuth, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM summer2026_signups ORDER BY created_at DESC');
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: 'DB error', details: err.message });
+  }
+});
+
+app.get('/admin', (req, res) => {
+  const file = req.session?.user === process.env.ADMIN_USERNAME ? 'admin.html' : 'login.html';
+  res.sendFile(join(__dirname, file));
+});
+
+// ─────────────────────────────────────────────────
+// LEAD MAGNET ROUTES
+// ─────────────────────────────────────────────────
+
 app.post('/api/submit', async (req, res) => {
   try {
     const { email } = req.body;
@@ -33,12 +84,10 @@ app.post('/api/submit', async (req, res) => {
       token = uuidv4();
       await pool.query('INSERT INTO leads (email, token) VALUES ($1, $2)', [email, token]);
     }
-    // Append to Google Sheet for lead magnet signups
     try {
       await appendWaitlistRow(email);
     } catch (sheetErr) {
       console.error('Google Sheet append error (lead magnet):', sheetErr);
-      // Don't block user if sheet fails
     }
     await sendDownloadLink(email, token);
     return res.status(200).json({ success: true });
@@ -48,7 +97,6 @@ app.post('/api/submit', async (req, res) => {
   }
 });
 
-// --- Lead Magnet Download Route ---
 app.get('/download/:token', async (req, res) => {
   try {
     const { token } = req.params;
@@ -56,29 +104,27 @@ app.get('/download/:token', async (req, res) => {
     if (result.rows.length === 0) {
       return res.status(404).send('<h1>Not Found</h1><p>Invalid or expired download link.</p>');
     }
-    // Only update downloaded_at if not already set
     await pool.query('UPDATE leads SET downloaded_at = COALESCE(downloaded_at, NOW()) WHERE token = $1', [token]);
     if (!fs.existsSync(PDF_PATH)) {
       return res.status(503).send('<h1>Service Unavailable</h1><p>The requested file is not available. Please try again later.</p>');
     }
-
-    // --- DIAGNOSTICS: file delivery ---
-    const filePath = PDF_PATH;
-    const fileBuffer = fs.readFileSync(filePath);
-    console.log('File path:', filePath);
-    console.log('File exists:', fs.existsSync(filePath));
-    console.log('File size on disk:', fs.statSync(filePath).size);
+    const fileBuffer = fs.readFileSync(PDF_PATH);
+    console.log('File path:', PDF_PATH);
+    console.log('File exists:', fs.existsSync(PDF_PATH));
+    console.log('File size on disk:', fs.statSync(PDF_PATH).size);
     console.log('Buffer size being sent:', fileBuffer.length);
-    // --- END DIAGNOSTICS ---
-
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', `attachment; filename="${PDF_FILENAME}"`);
     return res.send(fileBuffer);
-      } catch (err) {
+  } catch (err) {
     console.error('Download error:', err);
     return res.status(500).send('<h1>Server Error</h1><p>Could not process your request.</p>');
   }
 });
+
+// ─────────────────────────────────────────────────
+// ENVIRONMENT / CONFIG
+// ─────────────────────────────────────────────────
 
 if (!process.env.RESEND_API_KEY || !process.env.CONTACT_EMAIL) {
   console.error('Missing required environment variables: RESEND_API_KEY and/or CONTACT_EMAIL');
@@ -98,6 +144,10 @@ const VALID_STUDENT_TYPES = ['myself', 'my-child', 'both'];
 const VALID_EXPERIENCE = ['beginner', 'some-experience', 'intermediate', 'advanced'];
 const VALID_INTERESTS = ['guitar-lessons', 'worship-prep', 'home-recording', 'songwriting', 'not-sure'];
 const VALID_AVAILABILITY = ['after-school', 'daytime', 'homeschool', 'flexible', 'open'];
+
+// ─────────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────────
 
 function escapeHtml(str) {
   if (!str) return '';
@@ -169,11 +219,9 @@ async function appendWaitlistRow(email) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email }),
     });
-
     if (!response.ok) {
       throw new Error(`Google Sheets webhook responded with ${response.status}`);
     }
-
     return;
   }
 
@@ -185,7 +233,7 @@ async function appendWaitlistRow(email) {
       };
 
   if (!GOOGLE_SHEET_ID || !serviceAccount.client_email || !serviceAccount.private_key) {
-    throw new Error('Google Sheets integration is not configured. Set GOOGLE_SHEETS_WEBHOOK_URL or Google service account credentials.');
+    throw new Error('Google Sheets integration is not configured.');
   }
 
   const auth = new google.auth.GoogleAuth({
@@ -207,21 +255,21 @@ async function appendWaitlistRow(email) {
   });
 }
 
+// ─────────────────────────────────────────────────
+// API ROUTES
+// ─────────────────────────────────────────────────
+
 app.post('/api/waitlist', async (req, res) => {
   try {
     const email = sanitizeString(req.body.email, 320);
-
     if (!email || !isValidEmail(email)) {
       return res.status(400).json({ error: 'Please provide a valid email address.' });
     }
-
     await appendWaitlistRow(email);
-
     return res.json({ success: true });
   } catch (err) {
     console.error('Waitlist submit error:', err);
-    const message = String(err.message || 'Failed to submit waitlist. Please try again.');
-    return res.status(500).json({ error: message });
+    return res.status(500).json({ error: String(err.message || 'Failed to submit waitlist. Please try again.') });
   }
 });
 
@@ -240,7 +288,6 @@ app.post('/api/inquire', async (req, res) => {
     if (!name || !email) {
       return res.status(400).json({ error: 'Name and email are required.' });
     }
-
     if (!isValidEmail(email)) {
       return res.status(400).json({ error: 'Please provide a valid email address.' });
     }
@@ -324,20 +371,23 @@ app.post('/api/inquire', async (req, res) => {
   }
 });
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+// ─────────────────────────────────────────────────
+// STATIC / SPA CATCH-ALL (must be last)
+// ─────────────────────────────────────────────────
 
 const distPath = join(__dirname, 'dist');
 if (fs.existsSync(distPath)) {
   app.use(express.static(distPath));
-  // Serve index.html for all non-API routes (including / and client-side routes)
-  app.get(/^\/(?!api\/).*/, (req, res) => {
+  app.get(/^\/(?!api\/|admin).*/, (req, res) => {
     res.sendFile(join(distPath, 'index.html'));
   });
 }
 
+// ─────────────────────────────────────────────────
+// START
+// ─────────────────────────────────────────────────
+
 const PORT = 3001;
-// Ensure DB is ready before starting server
 init()
   .then(() => {
     app.listen(PORT, '0.0.0.0', () => {

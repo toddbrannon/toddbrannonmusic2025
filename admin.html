@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Summer 2026 Signups</title>
+  <style>
+    body { font-family: sans-serif; background: #f7f7f7; }
+    .container { max-width: 700px; margin: 40px auto; background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 12px #0001; }
+    h2 { margin-bottom: 1.5rem; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+    th, td { padding: 0.7rem; border-bottom: 1px solid #eee; text-align: left; }
+    th { background: #1A2E42; color: #fff; }
+    tr:nth-child(even) { background: #f9f9f9; }
+    button { background: #C9A84C; color: #1A2E42; border: none; padding: 0.5rem 1rem; border-radius: 4px; font-weight: bold; cursor: pointer; float: right; }
+    button:hover { background: #1A2E42; color: #fff; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Summer 2026 Email Signups</h2>
+    <button onclick="logout()">Logout</button>
+    <table id="signupsTable">
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Created At</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <div id="errorMsg" style="color:#c00;"></div>
+  </div>
+  <script>
+    async function fetchSignups() {
+      const res = await fetch('/admin/signups');
+      if (!res.ok) {
+        document.getElementById('errorMsg').textContent = 'Failed to load signups.';
+        return;
+      }
+      const data = await res.json();
+      const tbody = document.querySelector('#signupsTable tbody');
+      tbody.innerHTML = '';
+      data.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${row.email}</td><td>${row.created_at ? new Date(row.created_at).toLocaleString() : ''}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+    function logout() {
+      fetch('/admin/logout', { method: 'POST' }).then(() => window.location = '/admin');
+    }
+    fetchSignups();
+  </script>
+</body>
+</html>

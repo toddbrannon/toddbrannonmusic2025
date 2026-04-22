@@ -135,22 +135,25 @@ function Summer2026() {
       <section className="px-6 py-24 bg-[#FEF7E0]">
         <div className="max-w-2xl mx-auto">
           <p className="text-sm uppercase tracking-[0.2em] text-[#C9A84C] mb-6">From Todd</p>
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-[#1A2E42]">One uncomfortable step changed everything. Here's what it taught me.</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-[#1A2E42]">I let my ego cost me seven years. Here's what finally changed.</h2>
           <div className="space-y-5 text-lg text-gray-800 leading-relaxed">
             <p>
-              Back in the late '80s and early '90s, I was playing guitar — but I felt completely aimless. I loved it. I just didn't know what I was building toward or what to do with it.
+              In 1988, I walked into a jazz improv class at my community college. The room was full of electric guitarists with practice amps, a piano player, a bassist, a drummer — and they just started playing. Going around the room. Each guitarist taking a turn.
             </p>
             <p>
-              Then in 1995, I took what felt like a terrifying next step: I started playing at church.
+              When it got to me, I noodled around in a major scale because that's all I had. No phrasing. No creativity. I felt completely exposed and way out of my league.
             </p>
             <p>
-              That one decision changed everything.
+              So I walked out of class and went straight to the registrar's office and withdrew. And because I was too embarrassed to face my instructor, I didn't just quit the class — I called to cancel my lessons and never went back.
+            </p>
+            <p className="text-xl font-semibold text-[#1A2E42] border-l-4 border-[#C9A84C] pl-4">
+              That was 1988. I didn't put myself in a room with other musicians again until 1995. Seven years.
             </p>
             <p>
-              Through that, I met a drummer. That drummer became the drummer of the band my cousin and I put together in 1996. And for the next five-plus years, we drove across DFW every single week — no matter what — to rehearse, write, record, and play. Oklahoma, Louisiana, San Antonio, Houston. We did the thing I always dreamed of doing.
+              For most of that time, I could barely believe I could be a confident guitarist — let alone be part of something I was proud of.
             </p>
             <p>
-              Every step was a little unknown at first. But somewhere along the way, it stopped feeling that way — and started feeling like exactly where I was supposed to be.
+              Then in 1995, I took what felt like a terrifying next step: I started playing at church. Through that, I met a drummer. That drummer became the drummer of the band my cousin and I put together in 1996. And for the next five-plus years, we drove across DFW every single week — no matter what — to rehearse, write, record, and play. Oklahoma, Louisiana, San Antonio, Houston. We did the thing I always dreamed of doing.
             </p>
             <p className="text-xl font-semibold text-[#1A2E42] border-l-4 border-[#C9A84C] pl-4 italic">
               That was a community. Before I ever had that word for it.
@@ -159,10 +162,10 @@ function Summer2026() {
               I wasn't doing it alone. And that made all the difference.
             </p>
             <p>
-              Since then: 13 years on the worship team at my church in the Flower Mound area. Three live recordings. Students from age seven all the way to retired adults — at New Song School of the Arts in Argyle and Legacy Music Studio in Lewisville.
+              Since then: 13 years on the worship team here in the Flower Mound area. Three live recordings. Students from age seven to retired adults — at New Song School of the Arts in Argyle and Legacy Music Studio in Lewisville.
             </p>
             <p className="font-semibold text-[#1A2E42]">
-              I've lived the full journey. And now I want to give you the thing I wish I'd had — a clear next step, and people to take it with you.
+              I know what it costs to stay in hiding. And I know what opens up when you finally stop. That's what this community is built around.
             </p>
           </div>
         </div>

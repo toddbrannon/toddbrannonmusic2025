@@ -10,9 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "body-parser": "^2.2.2",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "express-session": "^1.19.0",
     "googleapis": "^143.0.0",
     "lucide-react": "^0.344.0",
     "nodemailer": "^8.0.5",
