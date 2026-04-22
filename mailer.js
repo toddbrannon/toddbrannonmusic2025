@@ -10,9 +10,9 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-export async function sendDownloadLink(email, token) {
+export async function sendDownloadLink(email, token, title = 'Your Free PDF Resource') {
   const downloadUrl = `${process.env.BASE_URL}/download/${token}`;
-  const leadMagnetTitle = process.env.LEAD_MAGNET_TITLE || 'Your Free Guide';
+  const leadMagnetTitle = process.env.LEAD_MAGNET_TITLE || 'Your Free Download';
 
   const mailOptions = {
   from: `"${process.env.FROM_NAME}" <${process.env.FROM_EMAIL}>`,
