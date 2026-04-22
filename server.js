@@ -39,7 +39,16 @@ function requireAuth(req, res, next) {
   res.status(401).send('Unauthorized');
 }
 
-app.post('/admin/login', (req, res) => {
+const loginRateLimit = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10,                   // 10 attempts per window
+  message: { success: false, message: 'Too many login attempts. Please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+
+app.post('/admin/login', loginRateLimit, (req, res) => {
   const { username, password } = req.body;
   if (username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD) {
     req.session.user = process.env.ADMIN_USERNAME;
