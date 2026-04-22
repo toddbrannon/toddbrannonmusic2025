@@ -71,6 +71,15 @@ app.get('/admin/signups', requireAuth, async (req, res) => {
   }
 });
 
+app.get('/admin/leads', requireAuth, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT id, email, downloaded_at, created_at FROM leads ORDER BY created_at DESC');
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: 'DB error', details: err.message });
+  }
+});
+
 app.get('/admin', (req, res) => {
   const file = req.session?.user === process.env.ADMIN_USERNAME ? 'admin.html' : 'login.html';
   res.sendFile(join(__dirname, file));

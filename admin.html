@@ -3,54 +3,129 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Summer 2026 Signups</title>
+  <title>Admin Dashboard</title>
   <style>
-    body { font-family: sans-serif; background: #f7f7f7; }
-    .container { max-width: 700px; margin: 40px auto; background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 12px #0001; }
-    h2 { margin-bottom: 1.5rem; }
-    table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
-    th, td { padding: 0.7rem; border-bottom: 1px solid #eee; text-align: left; }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: sans-serif; background: #f7f7f7; margin: 0; }
+
+    .container { max-width: 800px; margin: 40px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 12px #0001; overflow: hidden; }
+
+    /* Header */
+    .header { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; border-bottom: 1px solid #eee; }
+    .header h2 { margin: 0; font-size: 1.25rem; }
+    .logout-btn { background: #C9A84C; color: #1A2E42; border: none; padding: 0.5rem 1.1rem; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 0.9rem; }
+    .logout-btn:hover { background: #1A2E42; color: #fff; }
+
+    /* Tabs */
+    .tabs { display: flex; border-bottom: 2px solid #eee; padding: 0 2rem; }
+    .tab { padding: 0.75rem 1.25rem; cursor: pointer; font-weight: 600; font-size: 0.9rem; color: #888; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.15s; }
+    .tab:hover { color: #1A2E42; }
+    .tab.active { color: #1A2E42; border-bottom-color: #C9A84C; }
+
+    /* Table */
+    .table-wrap { padding: 1.5rem 2rem; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 0.7rem 0.9rem; border-bottom: 1px solid #eee; text-align: left; font-size: 0.9rem; }
     th { background: #1A2E42; color: #fff; }
-    tr:nth-child(even) { background: #f9f9f9; }
-    button { background: #C9A84C; color: #1A2E42; border: none; padding: 0.5rem 1rem; border-radius: 4px; font-weight: bold; cursor: pointer; float: right; }
-    button:hover { background: #1A2E42; color: #fff; }
+    tr:nth-child(even) td { background: #f9f9f9; }
+    .empty { color: #888; font-size: 0.9rem; padding: 1rem 0; }
+    .error { color: #c00; font-size: 0.9rem; padding: 1rem 0; }
+    .badge { display: inline-block; font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 99px; font-weight: 600; }
+    .badge-yes { background: #d4edda; color: #155724; }
+    .badge-no { background: #f8d7da; color: #721c24; }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Summer 2026 Email Signups</h2>
-    <button onclick="logout()">Logout</button>
-    <table id="signupsTable">
-      <thead>
-        <tr>
-          <th>Email</th>
-          <th>Created At</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-    <div id="errorMsg" style="color:#c00;"></div>
+
+    <div class="header">
+      <h2>Admin Dashboard</h2>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('signups')">Summer 2026 Waitlist</div>
+      <div class="tab" onclick="switchTab('leads')">Leads</div>
+    </div>
+
+    <div class="table-wrap">
+      <!-- Summer 2026 Waitlist -->
+      <div id="panel-signups">
+        <table>
+          <thead>
+            <tr><th>Email</th><th>Signed Up</th></tr>
+          </thead>
+          <tbody id="tbody-signups"></tbody>
+        </table>
+        <div id="msg-signups"></div>
+      </div>
+
+      <!-- Leads -->
+      <div id="panel-leads" style="display:none;">
+        <table>
+          <thead>
+            <tr><th>Email</th><th>Downloaded</th><th>Signed Up</th></tr>
+          </thead>
+          <tbody id="tbody-leads"></tbody>
+        </table>
+        <div id="msg-leads"></div>
+      </div>
+    </div>
+
   </div>
+
   <script>
-    async function fetchSignups() {
-      const res = await fetch('/admin/signups');
-      if (!res.ok) {
-        document.getElementById('errorMsg').textContent = 'Failed to load signups.';
-        return;
-      }
-      const data = await res.json();
-      const tbody = document.querySelector('#signupsTable tbody');
+    const tabs = document.querySelectorAll('.tab');
+    let loaded = { signups: false, leads: false };
+
+    function switchTab(name) {
+      tabs.forEach(t => t.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('panel-signups').style.display = name === 'signups' ? '' : 'none';
+      document.getElementById('panel-leads').style.display  = name === 'leads'   ? '' : 'none';
+      if (!loaded[name]) fetchData(name);
+    }
+
+    async function fetchData(name) {
+      const endpoint = name === 'signups' ? '/admin/signups' : '/admin/leads';
+      const tbody = document.getElementById(`tbody-${name}`);
+      const msg   = document.getElementById(`msg-${name}`);
+      msg.textContent = '';
       tbody.innerHTML = '';
+
+      const res = await fetch(endpoint);
+      if (!res.ok) { msg.className = 'error'; msg.textContent = 'Failed to load data.'; return; }
+
+      const data = await res.json();
+      loaded[name] = true;
+
+      if (data.length === 0) { msg.className = 'empty'; msg.textContent = 'No records yet.'; return; }
+
       data.forEach(row => {
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${row.email}</td><td>${row.created_at ? new Date(row.created_at).toLocaleString() : ''}</td>`;
+        if (name === 'signups') {
+          tr.innerHTML = `
+            <td>${esc(row.email)}</td>
+            <td>${fmt(row.created_at)}</td>`;
+        } else {
+          const dl = row.downloaded_at;
+          tr.innerHTML = `
+            <td>${esc(row.email)}</td>
+            <td><span class="badge ${dl ? 'badge-yes' : 'badge-no'}">${dl ? 'Yes' : 'No'}</span></td>
+            <td>${fmt(row.created_at)}</td>`;
+        }
         tbody.appendChild(tr);
       });
     }
+
+    function fmt(ts) { return ts ? new Date(ts).toLocaleString() : '—'; }
+    function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
     function logout() {
       fetch('/admin/logout', { method: 'POST' }).then(() => window.location = '/admin');
     }
-    fetchSignups();
+
+    fetchData('signups');
   </script>
 </body>
 </html>
