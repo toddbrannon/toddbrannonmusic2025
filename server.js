@@ -9,6 +9,7 @@ import { Resend } from 'resend';
 import { google } from 'googleapis';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import rateLimit from 'express-rate-limit';
 
 dotenv.config();
 
