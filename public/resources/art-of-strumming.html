@@ -123,6 +123,7 @@
       grid-template-columns: 1fr;
       row-gap: 0.04in;
       align-items: center;
+      justify-items: start;
     }
 
     .top-band-dot {
@@ -133,6 +134,7 @@
       width: 100%;
       letter-spacing: 0.16em;
       line-height: 1.25;
+      text-align: left;
     }
 
     .top-band .top-band-text:first-of-type {
@@ -140,7 +142,7 @@
     }
 
     .top-band .top-band-text:last-of-type {
-      text-align: right;
+      text-align: left;
     }
   }
   .top-band-text {
@@ -667,13 +669,13 @@
 
   @media screen and (max-width: 767px) {
     .col-header {
-      font-size: 8.5pt;
+      font-size: 14px;
       letter-spacing: 0.2em;
     }
 
     .body-text {
-      font-size: 9.5pt;
-      line-height: 1.64;
+      font-size: 16px;
+      line-height: 1.66;
     }
 
     .notation-box {
@@ -681,13 +683,13 @@
     }
 
     .notation-label {
-      font-size: 7.8pt;
+      font-size: 13px;
       letter-spacing: 0.16em;
     }
 
     .notation-row {
       flex-wrap: nowrap;
-      gap: 0.02in;
+      gap: 0.012in;
     }
 
     .strum-beat {
@@ -695,15 +697,15 @@
     }
 
     .beat-num {
-      font-size: 6.8pt;
+      font-size: 11px;
     }
 
     .strum-arrow {
-      font-size: 12.5pt;
+      font-size: 16px;
     }
 
     .strum-char {
-      font-size: 8.3pt;
+      font-size: 13.5px;
     }
 
     .notation-key {
@@ -711,7 +713,7 @@
     }
 
     .notation-key-row1 {
-      gap: 0.14in;
+      gap: 0.1in;
     }
 
     .notation-key-row2 {
@@ -719,37 +721,37 @@
     }
 
     .key-item {
-      font-size: 7.2pt;
+      font-size: 12px;
       gap: 2px;
     }
 
     .pattern-name {
-      font-size: 9.2pt;
+      font-size: 15px;
     }
 
     .pattern-sequence {
-      font-size: 10.2pt;
+      font-size: 16px;
     }
 
     .pattern-desc {
-      font-size: 7.8pt;
+      font-size: 13px;
     }
 
     .tip-header {
-      font-size: 7.8pt;
+      font-size: 13px;
     }
 
     .tip-text {
-      font-size: 8.8pt;
+      font-size: 15px;
       line-height: 1.58;
     }
 
     .step-num {
-      font-size: 13.8pt;
+      font-size: 18px;
     }
 
     .step-content {
-      font-size: 8.8pt;
+      font-size: 15px;
       line-height: 1.58;
       padding-top: 3px;
     }
@@ -759,33 +761,33 @@
     }
 
     .rhythm-label {
-      font-size: 7.2pt;
+      font-size: 12px;
     }
 
     .practice-title {
-      font-size: 8.3pt;
+      font-size: 14px;
     }
 
     .practice-week {
-      font-size: 7.8pt;
+      font-size: 13px;
       line-height: 1.52;
     }
 
     .bpm-badge {
-      font-size: 7pt;
+      font-size: 11px;
     }
 
     .quote-text {
-      font-size: 9.2pt;
+      font-size: 15px;
     }
 
     .quote-attr {
-      font-size: 7.8pt;
+      font-size: 13px;
     }
 
     /* Override small inline sizing used in mobile-critical spots. */
     .step-content[style] {
-      font-size: 8.6pt !important;
+      font-size: 14px !important;
       padding-top: 2px !important;
     }
 
