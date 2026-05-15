@@ -51,24 +51,26 @@
 
   .page {
     width: 8.5in;
+    height: 11in;
     background: var(--cream);
     position: relative;
     overflow-x: hidden;
     font-family: 'Libre Baskerville', serif;
   }
 
-  @media screen {
+  @media screen and (max-width: 767px) {
     .page {
       width: 100%;
-      max-width: 8.5in;
-      min-height: auto;
+      height: auto;
+      max-width: 100%;
+      overflow: visible;
     }
   }
 
-  @media screen and (max-width: 767px) {
+  @media screen and (min-width: 768px) {
     .page {
-      max-width: 100%;
-      overflow: visible;
+      width: 100%;
+      max-width: 8.5in;
     }
   }
 
