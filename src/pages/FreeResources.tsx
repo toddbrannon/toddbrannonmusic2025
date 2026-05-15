@@ -56,7 +56,7 @@ export default function FreeResources() {
       </section>
 
       {/* Resource cards */}
-      <section className="flex-1 px-6 pb-20">
+      <section className="flex-1 px-6 pt-8 pb-20">
         <div className="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
           {resources.map((r) => (
             <a
