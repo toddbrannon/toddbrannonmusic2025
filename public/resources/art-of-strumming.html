@@ -32,23 +32,44 @@
     html, body {
       width: 100%;
       min-height: 100vh;
+      background: var(--cream);
     }
 
     body {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
+      padding: 0;
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    body {
       padding: 24px;
     }
   }
 
   .page {
     width: 8.5in;
-    height: 11in;
     background: var(--cream);
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
     font-family: 'Libre Baskerville', serif;
+  }
+
+  @media screen {
+    .page {
+      width: 100%;
+      max-width: 8.5in;
+      min-height: auto;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .page {
+      max-width: 100%;
+      overflow: visible;
+    }
   }
 
   /* ── GUITAR STRINGS BACKGROUND ── */
@@ -77,6 +98,17 @@
     padding: 0 0.35in;
     justify-content: space-between;
   }
+
+  @media screen and (max-width: 767px) {
+    .top-band {
+      position: sticky;
+      top: 0;
+      height: auto;
+      padding: 0.12in 0.25in;
+      flex-wrap: wrap;
+      gap: 0.1in;
+    }
+  }
   .top-band-text {
     font-family: 'Oswald', sans-serif;
     font-weight: 300;
@@ -100,6 +132,12 @@
     z-index: 2;
   }
 
+  @media screen and (max-width: 767px) {
+    .amber-stripe {
+      display: none;
+    }
+  }
+
   /* ── HEADER SECTION ── */
   .header-section {
     position: absolute;
@@ -111,6 +149,16 @@
     grid-template-columns: 1fr auto;
     align-items: end;
     gap: 0.2in;
+  }
+
+  @media screen and (max-width: 767px) {
+    .header-section {
+      position: static;
+      padding: 0.25in;
+      grid-template-columns: 1fr auto;
+      gap: 0.15in;
+      align-items: start;
+    }
   }
 
   .series-label {
@@ -171,6 +219,12 @@
     background: var(--espresso);
   }
 
+  @media screen and (max-width: 767px) {
+    .pick-icon {
+      height: 0.75in;
+    }
+  }
+
   /* ── DIVIDER ── */
   .section-divider {
     position: absolute;
@@ -178,6 +232,12 @@
     height: 1px;
     background: linear-gradient(90deg, var(--amber) 0%, var(--parchment) 100%);
     z-index: 3;
+  }
+
+  @media screen and (max-width: 767px) {
+    .section-divider {
+      display: none;
+    }
   }
 
   /* ── MAIN CONTENT GRID ── */
@@ -188,6 +248,17 @@
     grid-template-columns: 2.2in 1fr 1.7in;
     gap: 0.22in;
     z-index: 3;
+  }
+
+  @media screen and (max-width: 767px) {
+    .content-grid {
+      position: static;
+      grid-template-columns: 1fr;
+      gap: 0.16in;
+      padding: 0 0.25in 0.25in 0.25in;
+      margin-top: 2.36in;
+      overflow: visible;
+    }
   }
 
   /* ── COLUMN HEADERS ── */
@@ -494,6 +565,18 @@
     padding: 0 0.45in;
     justify-content: space-between;
   }
+
+  @media screen and (max-width: 767px) {
+    .footer-band {
+      position: static;
+      height: auto;
+      padding: 0.16in 0.25in;
+      flex-direction: column;
+      gap: 0.08in;
+      justify-content: center;
+      text-align: center;
+    }
+  }
   .footer-logo {
     font-family: 'Playfair Display', serif;
     font-weight: 700;
@@ -528,7 +611,7 @@
   /* ── WATERMARK ORNAMENT ── */
   .watermark {
     position: absolute;
-    right: -0.3in;
+    right: -2in;
     top: 1.2in;
     font-size: 5in;
     color: var(--espresso);
