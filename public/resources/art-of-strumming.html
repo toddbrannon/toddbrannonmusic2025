@@ -229,7 +229,7 @@
 
   @media screen and (max-width: 767px) {
     .pick-icon {
-      height: 0.75in;
+      display: none;
     }
   }
 
@@ -264,7 +264,7 @@
       grid-template-columns: 1fr;
       gap: 0.16in;
       padding: 0 0.25in 0.25in 0.25in;
-      margin-top: 2.36in;
+      margin-top: 0.12in;
       overflow: visible;
     }
   }
@@ -625,6 +625,16 @@
       right: 0;
       width: 100%;
       z-index: 9;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .bottom-stripe {
+      position: static;
+      width: 100%;
+      height: 0.055in;
+      margin: 0;
+      z-index: 4;
     }
   }
 
