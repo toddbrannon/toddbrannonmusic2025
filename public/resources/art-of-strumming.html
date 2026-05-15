@@ -32,6 +32,7 @@
     html, body {
       width: 100%;
       min-height: 100vh;
+      overflow-x: hidden;
       background: var(--cream);
     }
 
@@ -65,7 +66,8 @@
       width: 100%;
       height: auto;
       max-width: 100%;
-      overflow: visible;
+      overflow-x: hidden;
+      overflow-y: visible;
       margin-top: 0.38in;
       margin-bottom: 0.42in;
     }
@@ -286,6 +288,95 @@
       padding: 0 0.25in 0.25in 0.25in;
       margin-top: 0.12in;
       overflow: visible;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .top-band-text {
+      font-size: 10pt;
+      letter-spacing: 0.12em;
+    }
+
+    .series-label {
+      font-size: 9pt;
+      letter-spacing: 0.18em;
+    }
+
+    .main-title {
+      font-size: clamp(32pt, 13vw, 40pt);
+      line-height: 0.98;
+    }
+
+    .subtitle-text {
+      font-size: 12pt;
+      letter-spacing: 0.08em;
+    }
+
+    .col-header {
+      font-size: 9pt;
+      letter-spacing: 0.18em;
+    }
+
+    .body-text,
+    .tip-text,
+    .step-content,
+    .practice-week,
+    .quote-text {
+      font-size: 10pt;
+      line-height: 1.62;
+    }
+
+    .pattern-name,
+    .practice-title {
+      font-size: 9.5pt;
+    }
+
+    .pattern-desc,
+    .tip-header,
+    .quote-attr,
+    .rhythm-label {
+      font-size: 8pt;
+    }
+
+    .rhythm-value {
+      font-size: 17pt;
+    }
+
+    .notation-label {
+      font-size: 8pt;
+    }
+
+    .strum-char {
+      font-size: 9pt;
+    }
+
+    .beat-num,
+    .key-item,
+    .bpm-badge {
+      font-size: 7.5pt;
+    }
+
+    .footer-logo {
+      font-size: 13pt;
+    }
+
+    .footer-tagline,
+    .footer-url {
+      font-size: 9pt;
+    }
+
+    /* Override small inline sizing used in a few mobile-critical spots. */
+    .step-content[style] {
+      font-size: 9.5pt !important;
+      padding-top: 2px !important;
+    }
+
+    .step-num[style] {
+      font-size: 10pt !important;
+    }
+
+    .rhythm-value[style] {
+      font-size: 13pt !important;
     }
   }
 
@@ -671,6 +762,12 @@
     z-index: 1;
     line-height: 1;
     user-select: none;
+  }
+
+  @media screen and (max-width: 767px) {
+    .watermark {
+      display: none;
+    }
   }
 
   @media print {
