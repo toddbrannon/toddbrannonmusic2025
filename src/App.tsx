@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import LeadMagnetPage from './pages/LeadMagnetPage';
+import FreeResources from './pages/FreeResources';
 import Summer2026 from './pages/Summer2026';
 import CMIndex from './pages/confidentmusician/Index';
 import CMLessons from './pages/confidentmusician/Lessons';
@@ -19,6 +20,7 @@ function App() {
       <Route path="/confidentmusician/videos" element={<CMVideos />} />
       <Route path="/confidentmusician/audio" element={<CMAudio />} />
       <Route path="/free/:slug" element={<LeadMagnetPage />} />
+      <Route path="/free-resources" element={<FreeResources />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="/" element={<HomePage />} />
     </Routes>

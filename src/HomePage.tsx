@@ -546,6 +546,24 @@ function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 border-t border-white/10 px-6 py-10 text-center text-sm text-gray-400">
+        <div className="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4">
+          <span>&copy; 2026 Todd Brannon Music. All rights reserved.</span>
+          <span className="hidden sm:inline text-gray-600">·</span>
+          <button
+            onClick={() => { setShowPrivacyPolicy(true); window.scrollTo(0, 0); }}
+            className="hover:text-[#C9A84C] transition-colors"
+          >
+            Privacy Policy
+          </button>
+          <span className="hidden sm:inline text-gray-600">·</span>
+          <a href="/free-resources" className="hover:text-[#C9A84C] transition-colors">
+            Free Resources
+          </a>
+        </div>
+      </footer>
     </main>
     </div>
   );
