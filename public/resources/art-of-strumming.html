@@ -132,11 +132,12 @@
 
   /* ── AMBER STRIPE ── */
   .amber-stripe {
-    position: absolute;
+    position: fixed;
     top: 0.38in; left: 0; right: 0;
+    width: 100%;
     height: 0.055in;
     background: linear-gradient(90deg, var(--amber) 0%, var(--amber-light) 50%, var(--amber) 100%);
-    z-index: 2;
+    z-index: 9;
   }
 
   @media screen and (max-width: 767px) {
