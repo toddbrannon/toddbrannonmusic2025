@@ -112,8 +112,28 @@
       top: 0;
       height: auto;
       padding: 0.12in 0.25in;
-      flex-wrap: wrap;
-      gap: 0.1in;
+      display: grid;
+      grid-template-columns: 1fr;
+      row-gap: 0.04in;
+      align-items: center;
+    }
+
+    .top-band-dot {
+      display: none;
+    }
+
+    .top-band .top-band-text {
+      width: 100%;
+      letter-spacing: 0.16em;
+      line-height: 1.25;
+    }
+
+    .top-band .top-band-text:first-of-type {
+      text-align: left;
+    }
+
+    .top-band .top-band-text:last-of-type {
+      text-align: right;
     }
   }
   .top-band-text {
