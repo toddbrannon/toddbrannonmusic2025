@@ -77,7 +77,13 @@ const INPUT_BASE = 'w-full bg-[#252525] rounded-lg px-4 py-2.5 text-white placeh
 const INPUT_NORMAL = `${INPUT_BASE} border-[#777777]`;
 const INPUT_ERROR = `${INPUT_BASE} border-red-500`;
 
-export default function InquiryForm({ onBack }: { onBack: () => void }) {
+export default function InquiryForm({
+  onBack,
+  initialInterests,
+}: {
+  onBack: () => void;
+  initialInterests?: string[];
+}) {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
@@ -87,7 +93,7 @@ export default function InquiryForm({ onBack }: { onBack: () => void }) {
   const [phone, setPhone] = useState('');
   const [studentType, setStudentType] = useState('');
   const [experience, setExperience] = useState('');
-  const [interests, setInterests] = useState<string[]>([]);
+  const [interests, setInterests] = useState<string[]>(initialInterests ?? []);
   const [availability, setAvailability] = useState<string[]>([]);
   const [message, setMessage] = useState('');
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -119,6 +125,7 @@ export default function InquiryForm({ onBack }: { onBack: () => void }) {
 
   const interestOptions: ToggleOption[] = [
     { label: 'Guitar Lessons', value: 'guitar-lessons' },
+    { label: 'Group Classes', value: 'group-classes' },
     { label: 'Worship Team Prep', value: 'worship-prep' },
     { label: 'Home Recording (Logic Pro)', value: 'home-recording' },
     { label: 'Songwriting Coaching', value: 'songwriting' },
@@ -127,6 +134,8 @@ export default function InquiryForm({ onBack }: { onBack: () => void }) {
   const availabilityOptions: ToggleOption[] = [
     { label: 'After School', value: 'after-school' },
     { label: 'Daytime', value: 'daytime' },
+    { label: 'Weekend', value: 'weekend' },
+    { label: 'Homeschool', value: 'homeschool' },
   ];
 
   const validateField = (field: string, value: string): string => {

@@ -23,3 +23,11 @@ dist-ssr
 *.sln
 *.sw?
 .qodo
+
+# Source audio masters/bounces — only the encoded previews (.m4a/.mp3) are committed
+*.wav
+*.aif
+*.aiff
+
+# TypeScript incremental build artifacts
+*.tsbuildinfo

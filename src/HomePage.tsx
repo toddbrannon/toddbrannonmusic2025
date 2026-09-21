@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import heroImage from './assets/RivoltaLive.jpg';
 import logo from './assets/tb_music_logo_1400.png';
 import brandLogo from './assets/tbm_brand.png';
@@ -13,22 +12,94 @@ import exWayImg from './assets/albums/TheShakeExWayCover.jpg';
 import chaosImg from './assets/albums/TheShakeChaosCover.jpg';
 import deepImg from './assets/albums/DeepCallsToDeepDemoCover.png';
 import winsImg from './assets/albums/WinsAndScarsDemoCover.png';
+import enjoyTheRideImg from './assets/albums/EnjoyTheRide.jpg';
+import withoutYouImg from './assets/albums/WithoutYou.jpg';
 import toddLive2 from './assets/live/ToddLive2.jpeg';
 import toddLive3 from './assets/live/ToddLive10.png';
 import toddLive5 from './assets/live/ToddLive30.png';
 import toddLive10 from './assets/live/ToddLive22.png';
 import toddLive14 from './assets/live/ToddLive24.png';
+import toddWesternDays from './assets/live/ToddWesternDays.jpg';
+import bandLife from './assets/live/BandLife.jpg';
+import legacySOS from './assets/live/LegacySOS.jpg';
 
 import { SiSpotify, SiApplemusic, SiYoutubemusic, SiSoundcloud, SiBandcamp } from 'react-icons/si';
-import { Mic, Sliders, Music, Headphones } from 'lucide-react';
+import { Mic, Sliders, Music, Headphones, Play, Pause, ArrowDown } from 'lucide-react';
 
 function HomePage() {
   const mainContentRef = useRef<HTMLElement>(null);
   const [showInquiryForm, setShowInquiryForm] = useState(false);
+  const [inquiryPreset, setInquiryPreset] = useState<{ interests?: string[] } | null>(null);
   const [showCoachingForm, setShowCoachingForm] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
-  const navigate = useNavigate();
+
+  // Newest tracks, linked out to [untitled]. Drop an mp3 in public/audio/ and add a
+  // `preview` path here to light up the inline snippet player below.
+  const recentWork: {
+    title: string;
+    artist: string;
+    year: string;
+    image: string;
+    url: string;
+    preview?: string;
+  }[] = [
+    {
+      title: 'Enjoy the Ride',
+      artist: 'The Shake',
+      year: '2026',
+      image: enjoyTheRideImg,
+      url: 'https://untitled.stream/library/track/HZnlUZuUedb1ozL0DYGgI',
+      preview: '/audio/enjoy-the-ride.m4a',
+    },
+    {
+      title: 'Without You',
+      artist: 'The Shake',
+      year: '2026',
+      image: withoutYouImg,
+      url: 'https://untitled.stream/library/track/bVtBQjCyPbBqIj2fGVOo6',
+      preview: '/audio/without-you.m4a',
+    },
+  ];
+
+  const hasPreviews = recentWork.some((track) => track.preview);
+  const [playingIndex, setPlayingIndex] = useState<number | null>(null);
+  const audioRefs = useRef<(HTMLAudioElement | null)[]>([]);
+
+  // Only one preview plays at a time; starting one resets the other.
+  const togglePreview = (e: React.MouseEvent, index: number) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const audio = audioRefs.current[index];
+    if (!audio) return;
+    if (playingIndex === index) {
+      audio.pause();
+      setPlayingIndex(null);
+      return;
+    }
+    if (playingIndex !== null) {
+      const previous = audioRefs.current[playingIndex];
+      if (previous) {
+        previous.pause();
+        previous.currentTime = 0;
+      }
+    }
+    audio.play();
+    setPlayingIndex(index);
+  };
+
+  // Stop any preview still playing when this page unmounts (e.g. a form opens).
+  useEffect(() => {
+    const players = audioRefs.current;
+    return () => {
+      players.forEach((audio) => {
+        if (audio) {
+          audio.pause();
+          audio.currentTime = 0;
+        }
+      });
+    };
+  }, []);
 
   const albums = [
     { title: 'Deep Calls To Deep (demo)', artist: 'Todd Brannon', image: deepImg, year: '2025',
@@ -61,7 +132,10 @@ function HomePage() {
     }
   ];
 
-  const liveShots = [toddLive2, toddLive3, toddLive5, toddLive10, toddLive14]
+  const liveShots = [
+    toddLive2, toddLive3, toddLive5, toddLive10, toddLive14,
+    toddWesternDays, bandLife, legacySOS,
+  ];
 
   const platforms = [
     { key: 'appleMusic', label: 'Apple Music', icon: <SiApplemusic aria-hidden="true" className="w-6 h-6 text-white hover:text-gray-300 transition-colors" /> },
@@ -97,8 +171,10 @@ function HomePage() {
   if (showInquiryForm) {
     return (
       <InquiryForm
+        initialInterests={inquiryPreset?.interests}
         onBack={() => {
           setShowInquiryForm(false);
+          setInquiryPreset(null);
           window.scrollTo(0, 0);
         }}
       />
@@ -146,17 +222,25 @@ function HomePage() {
         <div className="absolute inset-0 flex flex-col justify-center items-center text-white z-10 px-6">
           <h1 className="sr-only">Todd Brannon Music</h1>
           <button
-            data-testid="button-big-announcement"
-            onClick={() => navigate('/summer-2026')}
-            className="mb-10 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#f57c00] via-[#ff9800] to-[#ffc107] px-10 py-5 text-xl font-bold tracking-[0.08em] text-[#1A1A1A] shadow-[0_28px_60px_rgba(255,152,0,0.28)] transition duration-200 hover:scale-[1.02] hover:brightness-110 focus:outline-none focus:ring-4 focus:ring-[#ff9800]/30"
+            data-testid="button-hero-new-music"
+            onClick={() =>
+              document.getElementById('recent-work')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            }
+            aria-label="New music: Enjoy the Ride and Without You. Scroll to listen."
+            className="mb-8 inline-flex max-w-full items-center gap-2 sm:gap-3 rounded-full border border-[#C9A84C]/60 bg-black/30 backdrop-blur-sm pl-1.5 pr-3 sm:pr-4 py-1.5 text-xs sm:text-sm font-light tracking-wide text-white transition-colors hover:border-[#C9A84C] hover:bg-black/50 focus:outline-none focus:ring-2 focus:ring-[#C9A84C]/60"
           >
-            Big Announcement for Summer 2026
+            <span className="shrink-0 rounded-full bg-[#C9A84C] px-2 sm:px-2.5 py-0.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-widest text-[#1A2E42]">New</span>
+            <span className="whitespace-nowrap">
+              Enjoy the Ride &amp; Without You<span className="hidden sm:inline"> &mdash; listen</span>
+            </span>
+            <ArrowDown className="w-4 h-4 shrink-0 text-[#C9A84C]" aria-hidden="true" />
           </button>
           <img src={logo} alt="" aria-hidden="true" className="h-[250px] md:h-[300px] lg:h-[400px] xl:h-[500px] mb-6 object-contain opacity-70" />
           <div className="flex flex-col sm:flex-row gap-4">
             <button
               data-testid="button-hero-lesson-inquiry"
               onClick={() => {
+                setInquiryPreset(null);
                 setShowInquiryForm(true);
                 window.scrollTo(0, 0);
               }}
@@ -179,75 +263,111 @@ function HomePage() {
       </header>
 
 
-      {/* New Daytime Lesson Openings (Argyle, TX) Section - relocated from Summer2026 */}
-      <section className="px-6 py-24 bg-[#1A2E42] text-white overflow-x-hidden">
+      {/* Private Lesson Availability (Argyle, TX) Section */}
+      <section aria-labelledby="lessons-heading" className="px-6 py-24 bg-[#1A2E42] text-white overflow-x-hidden">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-white">🎯 New Daytime Lesson Openings (Argyle, TX)</h2>
-          <p className="text-lg leading-relaxed text-gray-200 mb-6">
-            I've opened up limited daytime spots at<br />
-            <span className="text-[#C9A84C] font-semibold">New Song School of the Arts</span>
+          <span className="inline-block mb-4 text-sm uppercase tracking-[0.3em] text-[#C9A84C]">Guitar &amp; Beginner Piano &middot; Argyle, TX</span>
+          <h2 id="lessons-heading" className="text-3xl md:text-4xl font-bold mb-8 text-white">Private Lesson Spots Are Currently Available</h2>
+
+          <p className="text-lg leading-relaxed text-gray-200 max-w-2xl mx-auto mb-6">
+            I believe we were all created to create. Learning guitar or piano is one of the most
+            direct ways to express what&rsquo;s already in you &mdash; and to make something you can
+            actually hear.
           </p>
 
-          <div className="bg-[#2A3E52] rounded-lg p-6 mb-8 max-w-md mx-auto">
-            <h3 className="text-xl font-semibold mb-4 text-[#C9A84C]">Available Times:</h3>
-            <ul className="text-left text-gray-200 space-y-2">
-              <li>• Wednesdays (before 4 PM)</li>
-              <li>• Fridays (11 AM – 4:30 PM)</li>
+          <p className="text-lg leading-relaxed text-gray-200 max-w-2xl mx-auto mb-8">
+            Here&rsquo;s the honest part: my job is less about teaching you how to play and more about
+            teaching you how to practice. Anyone can hand you a chord chart. What moves you forward is
+            knowing what to work on, how to work on it, and why it matters this week.
+          </p>
+
+          <div className="bg-[#2A3E52] rounded-lg p-6 mb-8 text-left">
+            <h3 className="text-xl font-semibold mb-4 text-[#C9A84C]">What every lesson looks like</h3>
+            <ul className="text-gray-200 space-y-3">
+              <li>&bull; We warm up with scales and exercises that build finger strength, coordination, and real technique.</li>
+              <li>&bull; We look at last week&rsquo;s assignment, so you always know exactly where you stand.</li>
+              <li>&bull; We open up something new and dig into it together.</li>
+              <li>&bull; You leave with clear objectives for the week ahead &mdash; no guessing what to practice.</li>
+              <li>&bull; We close by looking at what&rsquo;s next, so you&rsquo;re motivated to put the work in before we meet again.</li>
             </ul>
+            <p className="text-sm text-gray-400 mt-4">
+              Parents: this means you&rsquo;ll always know what your student is working on and why.
+            </p>
           </div>
 
-          <div className="mb-8">
-            <h3 className="text-xl font-semibold mb-4 text-[#C9A84C]">Best Fit For:</h3>
+          <div className="bg-[#2A3E52] rounded-lg p-6 text-left mt-8">
+            <div className="text-xs font-light tracking-widest text-[#C9A84C] uppercase mb-2">Coming October 2026</div>
+            <h3 className="text-xl font-semibold text-[#C9A84C] mb-3">Not quite ready for private lessons?</h3>
+            <p className="text-gray-200 leading-relaxed mb-4">
+              I&rsquo;m putting together small group guitar classes for anyone who wants to learn in a
+              relaxed, no-pressure setting &mdash; no prior experience needed. Learn a few chords, play
+              some songs, and enjoy making music with other people.
+            </p>
             <ul className="text-gray-200 space-y-2">
-              <li>• Homeschool students</li>
-              <li>• Adults with flexible schedules</li>
-              <li>• Anyone serious about improving without the evening rush</li>
+              <li>&bull; Daytime classes for adults 55+ and homeschool students</li>
+              <li>&bull; A weekend class for working adults who can&rsquo;t get away during the week</li>
             </ul>
+            <p className="text-sm text-gray-400 mt-4">
+              Full schedule and pricing are coming soon. Let me know you&rsquo;re interested and
+              you&rsquo;ll be the first to hear.
+            </p>
           </div>
 
-          <div className="bg-[#2A3E52] rounded-lg p-6 mb-8">
-            <h3 className="text-xl font-semibold mb-4 text-[#C9A84C]">Private Lessons That Actually Move You Forward</h3>
-            <ul className="text-left text-gray-200 space-y-2">
-              <li>• Clear, structured progression (no guesswork)</li>
-              <li>• Real musical application (not just theory)</li>
-              <li>• Personalized coaching based on your level and goals</li>
-            </ul>
+          <p className="text-gray-200 mb-8">
+            Spots are limited and scheduling changes often, so the fastest way to find out what&rsquo;s
+            open is to ask.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              data-testid="button-lessons-section-inquiry"
+              onClick={() => {
+                setInquiryPreset(null);
+                setShowInquiryForm(true);
+                window.scrollTo(0, 0);
+              }}
+              className="py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42]"
+            >
+              Inquire About Lessons
+            </button>
+            <button
+              data-testid="button-lessons-section-group"
+              onClick={() => {
+                setInquiryPreset({ interests: ['group-classes'] });
+                setShowInquiryForm(true);
+                window.scrollTo(0, 0);
+              }}
+              className="py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42]"
+            >
+              Ask About Group Classes
+            </button>
           </div>
         </div>
       </section>
 
       <main id="main-content" ref={mainContentRef} tabIndex={-1} className="focus:outline-none">
 
-      <section id="summer-2026-announcement" aria-labelledby="announcement-heading" className="py-24 bg-[#0f172a] text-white">
-        <div className="max-w-6xl mx-auto px-6 md:px-24">
-          <div className="rounded-[2rem] border border-[#C9A84C]/20 bg-[#112240]/90 p-10 md:p-16 shadow-2xl shadow-black/30">
-            <span className="inline-block mb-4 text-sm uppercase tracking-[0.3em] text-[#C9A84C]">Summer 2026</span>
-            <h2 id="announcement-heading" className="text-4xl md:text-5xl font-light mb-6">Big Announcement for Summer 2026</h2>
-            <p className="text-base md:text-lg leading-relaxed text-gray-300 max-w-3xl">
-              Stay tuned for an exciting new release, event, and experience coming this summer. This section is ready to expand into the landing page content once the details are finalized.
-            </p>
-            <div className="mt-8">
-              <button
-                data-testid="button-announce-contact"
-                onClick={() => {
-                  setShowInquiryForm(true);
-                  window.scrollTo(0, 0);
-                }}
-                className="inline-flex items-center justify-center rounded-lg bg-[#C9A84C] px-6 py-3 text-sm font-light text-[#1A2E42] transition-colors hover:bg-[#b8953d]"
-              >
-                Learn More
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section aria-labelledby="about-heading" className="py-24 bg-gray-900 text-gray-100 overflow-hidden">
-        {/* Stat callouts */}
-        <div className="px-6 md:px-24 mb-20">
+      <section aria-labelledby="about-heading" className="pt-24 pb-8 bg-gray-900 text-gray-100 overflow-hidden">
+        {/* Intro */}
+        <div className="px-6 md:px-24">
           <div className="max-w-6xl mx-auto">
             <h2 id="about-heading" className="text-4xl md:text-5xl font-light mb-16">About</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+
+            <p className="text-2xl md:text-3xl font-light leading-relaxed text-white max-w-4xl">
+              Twenty-plus years of playing, recording, and teaching in North Texas &mdash; and
+              I&rsquo;m still convinced we were all created to create.
+            </p>
+
+            <p className="text-base md:text-lg font-light leading-relaxed text-gray-400 max-w-3xl mt-6">
+              Son of a gospel singer. Piano lessons as a kid, then a band &mdash; The Shake &mdash;
+              with records made in Dallas and Nashville. Since 2013 I&rsquo;ve played guitar on the
+              worship team at Valley Creek Church, with three live albums along the way. Today I
+              release instrumental music as HIAUTMSKI, produce remixes and session work from my
+              studio, and teach guitar and beginner piano across north DFW and Denton.
+            </p>
+
+            {/* Stat callouts */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mt-16 mb-20">
               {[
                 { value: '20+', label: 'Years in Music' },
                 { value: '3', label: 'Studio Recording Projects' },
@@ -260,59 +380,107 @@ function HomePage() {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
 
-        {/* Pull quote */}
-        <div className="px-6 md:px-24 mb-20">
-          <div className="max-w-6xl mx-auto">
-            <blockquote className="border-l-4 border-[#C9A84C] pl-8 md:pl-12">
-              <p className="text-2xl md:text-3xl font-light leading-relaxed text-white italic">
-                Son of a gospel singer — music has always been the foundation.
-              </p>
-            </blockquote>
-          </div>
-        </div>
+            {/* Audience paths */}
+            <div className="text-xs font-light tracking-widest text-[#C9A84C] uppercase mb-8">Which one are you?</div>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="rounded-xl border border-white/10 bg-gray-800/40 p-8 flex flex-col">
+                <h3 className="text-xl font-light text-white mb-3">Want to learn?</h3>
+                <p className="text-base font-light leading-relaxed text-gray-400 mb-6 flex-grow">
+                  Guitar or beginner piano, from your first chord to playing with confidence.
+                  I&rsquo;ll teach you how to practice &mdash; not just how to play.
+                </p>
+                <button
+                  data-testid="about-cta-lessons"
+                  onClick={() => {
+                    setInquiryPreset(null);
+                    setShowInquiryForm(true);
+                    window.scrollTo(0, 0);
+                  }}
+                  className="mt-auto w-full py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42]"
+                >
+                  Inquire About Lessons
+                </button>
+              </div>
 
-        {/* Timeline */}
-        <div className="px-6 md:px-24 mb-20">
-          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 md:gap-16">
-            <div>
-              <div className="text-xs font-light tracking-widest text-[#C9A84C] uppercase mb-3">Early Roots</div>
-              <h3 className="text-xl font-light text-white mb-4">Before the Stage</h3>
-              <p className="text-base font-light leading-relaxed text-gray-400">
-                The son of a gospel singer, I started piano lessons young and trained steadily until age 14. That early foundation — melody, harmony, discipline — shaped everything that followed.
-              </p>
+              <div className="rounded-xl border border-white/10 bg-gray-800/40 p-8 flex flex-col">
+                <h3 className="text-xl font-light text-white mb-3">Need a player, writer, or producer?</h3>
+                <p className="text-base font-light leading-relaxed text-gray-400 mb-6 flex-grow">
+                  Session guitar, co-writing, remixes, and full production from my studio &mdash;
+                  remote or in person. Bring the idea; I&rsquo;ll help you finish it.
+                </p>
+                <button
+                  data-testid="about-cta-collab"
+                  onClick={() => {
+                    setShowContactForm(true);
+                    window.scrollTo(0, 0);
+                  }}
+                  className="mt-auto w-full py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42]"
+                >
+                  Start a Conversation
+                </button>
+              </div>
+
+              <div className="rounded-xl border border-white/10 bg-gray-800/40 p-8 flex flex-col">
+                <h3 className="text-xl font-light text-white mb-3">Here for the music?</h3>
+                <p className="text-base font-light leading-relaxed text-gray-400 mb-6 flex-grow">
+                  From The Shake&rsquo;s <em>In This Chaos</em> to new instrumental releases as
+                  HIAUTMSKI &mdash; everything is streaming, and there&rsquo;s more on the way.
+                </p>
+                <button
+                  data-testid="about-cta-listen"
+                  onClick={() => document.getElementById('featured-work')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="mt-auto w-full py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42]"
+                >
+                  Listen
+                </button>
+              </div>
             </div>
-            <div>
-              <div className="text-xs font-light tracking-widest text-[#C9A84C] uppercase mb-3">The Shake Years · 1996–2001</div>
-              <h3 className="text-xl font-light text-white mb-4">Building the Band</h3>
-              <p className="text-base font-light leading-relaxed text-gray-400">
-                In 1996, I formed The Shake with my cousin and two friends. Over five years we recorded a 3-song EP (1998), the full-length album <em>In This Chaos</em> (1999), and additional sessions in Nashville (2001). We performed extensively throughout Dallas-Fort Worth and beyond.
-              </p>
-            </div>
-            <div>
-              <div className="text-xs font-light tracking-widest text-[#C9A84C] uppercase mb-3">Valley Creek · 2013–Present</div>
-              <h3 className="text-xl font-light text-white mb-4">Worship & Community</h3>
-              <p className="text-base font-light leading-relaxed text-gray-400">
-                Since 2013, I've served as a worship team guitarist at Valley Creek Church in Flower Mound — contributing to three live worship albums in 2015, 2023, and 2024.
-              </p>
-            </div>
-            <div>
-              <div className="text-xs font-light tracking-widest text-[#C9A84C] uppercase mb-3">Current Projects</div>
-              <h3 className="text-xl font-light text-white mb-4">Recording, Remixes & Teaching</h3>
-              <p className="text-base font-light leading-relaxed text-gray-400">
-                Original instrumental releases live on Spotify, Apple Music, and YouTube under the moniker HIAUTMSKI. I've also produced remixes of classic Shake songs from <em>In This Chaos</em>. On the teaching side, I instruct at two local studios serving north Dallas-Fort Worth and Denton, focusing on rock, pop, and worship — beginner to intermediate.
-              </p>
-            </div>
+
+            {/* Full history, opt-in */}
+            <details className="mt-16">
+              <summary className="inline-block list-none [&::-webkit-details-marker]:hidden text-sm font-light tracking-wide text-[#C9A84C] hover:text-[#b8953d] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#C9A84C] rounded">
+                Read more...
+              </summary>
+              <div className="grid md:grid-cols-2 gap-12 md:gap-16 mt-8">
+                <div>
+                  <div className="text-xs font-light tracking-widest text-[#C9A84C] uppercase mb-3">Early Roots</div>
+                  <h3 className="text-xl font-light text-white mb-4">Before the Stage</h3>
+                  <p className="text-base font-light leading-relaxed text-gray-400">
+                    The son of a gospel singer, I started piano lessons young and trained steadily until age 14. That early foundation — melody, harmony, discipline — shaped everything that followed.
+                  </p>
+                </div>
+                <div>
+                  <div className="text-xs font-light tracking-widest text-[#C9A84C] uppercase mb-3">The Shake Years · 1996–2001</div>
+                  <h3 className="text-xl font-light text-white mb-4">Building the Band</h3>
+                  <p className="text-base font-light leading-relaxed text-gray-400">
+                    In 1996, I formed The Shake with my cousin and two friends. Over five years we recorded a 3-song EP (1998), the full-length album <em>In This Chaos</em> (1999), and additional sessions in Nashville (2001). We performed extensively throughout Dallas-Fort Worth and beyond.
+                  </p>
+                </div>
+                <div>
+                  <div className="text-xs font-light tracking-widest text-[#C9A84C] uppercase mb-3">Valley Creek · 2013–Present</div>
+                  <h3 className="text-xl font-light text-white mb-4">Worship &amp; Community</h3>
+                  <p className="text-base font-light leading-relaxed text-gray-400">
+                    Since 2013, I've served as a worship team guitarist at Valley Creek Church in Flower Mound — contributing to three live worship albums in 2015, 2023, and 2024.
+                  </p>
+                </div>
+                <div>
+                  <div className="text-xs font-light tracking-widest text-[#C9A84C] uppercase mb-3">Current Projects</div>
+                  <h3 className="text-xl font-light text-white mb-4">Recording, Remixes &amp; Teaching</h3>
+                  <p className="text-base font-light leading-relaxed text-gray-400">
+                    Original instrumental releases live on Spotify, Apple Music, and YouTube under the moniker HIAUTMSKI. I've also produced remixes of classic Shake songs from <em>In This Chaos</em>. On the teaching side, I instruct at two local studios serving north Dallas-Fort Worth and Denton, focusing on rock, pop, and worship — beginner to intermediate.
+                  </p>
+                </div>
+              </div>
+            </details>
           </div>
         </div>
 
         {/* Photo grid */}
         <div className="px-6 md:px-24 mt-12 mb-8">
-          <div className="max-w-6xl mx-auto grid grid-cols-5 gap-2.5">
+          <div className="max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-3">
             {liveShots.map((image, index) => (
-              <div key={index} className="overflow-hidden rounded-xl" style={{ height: '360px' }}>
+              <div key={index} className="overflow-hidden rounded-xl aspect-[3/4]">
                 <img
                   src={image}
                   alt=""
@@ -326,12 +494,77 @@ function HomePage() {
 
       </section>
 
-      <section aria-labelledby="featured-work-heading" className="py-24 px-6 md:px-24 bg-gray-900">
+      <section id="featured-work" aria-labelledby="featured-work-heading" className="pt-12 pb-24 px-6 md:px-24 bg-gray-900">
         <div className="max-w-6xl mx-auto">
 
           {/* Section header */}
           <div className="mb-12">
             <h2 id="featured-work-heading" className="text-4xl md:text-5xl font-light text-white">Featured Work</h2>
+          </div>
+
+          {/* Recent work */}
+          <div id="recent-work" className="mb-24 scroll-mt-8">
+            <h3 className="text-2xl font-light text-white mb-2">What I&rsquo;ve been working on lately</h3>
+            <p className="text-sm font-light text-gray-400 mb-8">
+              {hasPreviews
+                ? 'New tracks in progress — press play for a preview, or tap the cover to hear the full track on [untitled].'
+                : 'New tracks in progress — tap a cover to listen on [untitled].'}
+            </p>
+            <div className="grid grid-cols-2 gap-4 sm:gap-6 max-w-xl">
+              {recentWork.map((track, index) => (
+                <div key={track.title}>
+                  <div className="group relative aspect-square overflow-hidden rounded-xl shadow-lg border border-white/10">
+                    <a
+                      href={track.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Listen to ${track.title} on untitled`}
+                      className="block w-full h-full"
+                    >
+                      <img
+                        src={track.image}
+                        alt={`${track.title} by ${track.artist}`}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                    </a>
+                    {track.preview && (
+                      <>
+                        <button
+                          type="button"
+                          data-testid={`preview-toggle-${index}`}
+                          onClick={(e) => togglePreview(e, index)}
+                          aria-label={
+                            playingIndex === index
+                              ? `Pause preview of ${track.title}`
+                              : `Play preview of ${track.title}`
+                          }
+                          aria-pressed={playingIndex === index}
+                          className="absolute bottom-3 right-3 h-11 w-11 rounded-full bg-[#C9A84C] text-[#1A2E42] flex items-center justify-center shadow-lg hover:bg-[#b8953d] transition-colors focus:outline-none focus:ring-2 focus:ring-white/70"
+                        >
+                          {playingIndex === index ? (
+                            <Pause className="w-5 h-5" aria-hidden="true" />
+                          ) : (
+                            <Play className="w-5 h-5" aria-hidden="true" />
+                          )}
+                        </button>
+                        <audio
+                          ref={(el) => {
+                            audioRefs.current[index] = el;
+                          }}
+                          src={track.preview}
+                          preload="none"
+                          onEnded={() => setPlayingIndex(null)}
+                        />
+                      </>
+                    )}
+                  </div>
+                  <div className="mt-3">
+                    <div className="text-base font-light text-white">{track.title}</div>
+                    <div className="text-xs font-light text-gray-400">{track.artist} &middot; {track.year}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Studio Productions */}
@@ -474,7 +707,7 @@ function HomePage() {
               <div className="mt-auto pt-6 border-t border-gray-800">
                 <button
                   data-testid="cta-lessons"
-                  onClick={() => { setShowInquiryForm(true); window.scrollTo(0, 0); }}
+                  onClick={() => { setInquiryPreset(null); setShowInquiryForm(true); window.scrollTo(0, 0); }}
                   className="w-full py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42]"
                 >
                   Inquire about lessons →
@@ -516,6 +749,7 @@ function HomePage() {
             <button
               data-testid="button-open-lesson-inquiry"
               onClick={() => {
+                setInquiryPreset(null);
                 setShowInquiryForm(true);
                 window.scrollTo(0, 0);
               }}

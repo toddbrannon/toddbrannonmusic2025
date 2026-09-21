@@ -38,8 +38,8 @@ const PDF_FILENAME = process.env.PDF_FILENAME || 'todd-brannon-music-guide.pdf';
 
 const VALID_STUDENT_TYPES = ['myself', 'my-child', 'both'];
 const VALID_EXPERIENCE = ['beginner', 'some-experience', 'intermediate', 'advanced'];
-const VALID_INTERESTS = ['guitar-lessons', 'worship-prep', 'home-recording', 'songwriting', 'not-sure'];
-const VALID_AVAILABILITY = ['after-school', 'daytime', 'homeschool', 'flexible', 'open'];
+const VALID_INTERESTS = ['guitar-lessons', 'group-classes', 'worship-prep', 'home-recording', 'songwriting', 'not-sure'];
+const VALID_AVAILABILITY = ['after-school', 'daytime', 'weekend', 'homeschool', 'flexible', 'open'];
 
 const LABELS = {
   'myself': 'Myself',
@@ -50,12 +50,14 @@ const LABELS = {
   'intermediate': 'Intermediate',
   'advanced': 'Advanced',
   'guitar-lessons': 'Guitar Lessons',
+  'group-classes': 'Group Classes',
   'worship-prep': 'Worship Team Prep',
   'home-recording': 'Home Recording (Logic Pro)',
   'songwriting': 'Songwriting Coaching',
   'not-sure': 'Not Sure Yet',
   'after-school': 'After School',
   'daytime': 'Daytime',
+  'weekend': 'Weekend',
   'homeschool': 'Homeschool',
   'flexible': 'Flexible',
   'open': 'Open',
@@ -309,7 +311,7 @@ app.post('/api/inquire', async (req, res) => {
       replyTo: email,
       subject: inquiryType === 'General Contact'
         ? 'New Message — Todd Brannon Music'
-        : `New ${escapeHtml(inquiryType)} — Todd Brannon Music`,
+        : `${interests.includes('group-classes') ? '[Group Classes] ' : ''}New ${escapeHtml(inquiryType)} — Todd Brannon Music`,
       html: htmlContent,
     });
 
