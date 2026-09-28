@@ -25,7 +25,13 @@ const INPUT_BASE = 'w-full bg-[#252525] rounded-lg px-4 py-2.5 text-white placeh
 const INPUT_NORMAL = `${INPUT_BASE} border-[#777777]`;
 const INPUT_ERROR = `${INPUT_BASE} border-red-500`;
 
-export default function GeneralContactForm({ onBack }: { onBack: () => void }) {
+export default function GeneralContactForm({
+  onBack,
+  inquiryType = 'General Contact',
+}: {
+  onBack: () => void;
+  inquiryType?: string;
+}) {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
@@ -96,7 +102,7 @@ export default function GeneralContactForm({ onBack }: { onBack: () => void }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          inquiryType: 'General Contact',
+          inquiryType,
           name,
           email,
           message: subject ? `Subject: ${subject}\n\n${message}` : message,
@@ -176,7 +182,7 @@ export default function GeneralContactForm({ onBack }: { onBack: () => void }) {
           tabIndex={-1}
           className="text-3xl md:text-4xl font-semibold text-white mb-2 focus:outline-none"
         >
-          Get in Touch
+          {inquiryType === 'General Contact' ? 'Get in Touch' : `${inquiryType} Inquiry`}
         </h1>
         <p className="text-gray-400 font-light mb-2">
           Have a question or want to work together? Drop me a line.

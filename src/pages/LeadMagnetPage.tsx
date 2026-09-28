@@ -45,7 +45,7 @@ const LeadMagnetPage: React.FC = () => {
 
   if (!config) {
     return (
-      <div className="min-h-screen bg-[#F0F8FF] flex items-center justify-center text-[#1A2E42]">
+      <div className="min-h-screen bg-[#F0F8FF] flex items-center justify-center text-[#1A2E42] pt-16">
         <div className="text-center">
           <h1 className="text-3xl font-bold mb-4">Page Not Found</h1>
           <p className="text-gray-600">This resource doesn't exist or may have moved.</p>
@@ -56,7 +56,7 @@ const LeadMagnetPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#F0F8FF] text-[#1A2E42] flex flex-col">
+    <div className="min-h-screen bg-[#F0F8FF] text-[#1A2E42] flex flex-col pt-16">
       {/* Header */}
       <header className="relative z-10 p-6 bg-white border-b border-[#C9A84C]/20">
         <div className="flex justify-between items-center max-w-4xl mx-auto">

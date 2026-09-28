@@ -24,7 +24,7 @@ export default function FreeResources() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#F0F8FF] text-[#1A2E42] flex flex-col">
+    <div className="min-h-screen bg-[#F0F8FF] text-[#1A2E42] flex flex-col pt-16">
       {/* Header */}
       <header className="bg-white border-b border-[#C9A84C]/20 px-6 py-5">
         <div className="max-w-4xl mx-auto flex items-center justify-between">

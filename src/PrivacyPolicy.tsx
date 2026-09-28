@@ -12,7 +12,7 @@ export default function PrivacyPolicy() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#1a1a1a] py-12 px-4 md:px-6">
+    <div className="min-h-screen bg-[#1a1a1a] pt-28 pb-12 px-4 md:px-6">
       <main className="max-w-[720px] mx-auto">
         <button
           onClick={() => navigate(-1)}

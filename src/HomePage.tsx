@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import heroImage from './assets/RivoltaLive.jpg';
-import logo from './assets/tb_music_logo_1400.png';
-import brandLogo from './assets/tbm_brand.png';
+import heroBackground from './assets/RivoltaLive.jpg';
+import toddStudioPortrait from './assets/live/ToddStudioInstructor.JPG';
 import InquiryForm from './InquiryForm';
 import CoachingInquiryForm from './CoachingInquiryForm';
+import RecentWork from './RecentWork';
+import { Link, useLocation } from 'react-router-dom';
+import { useScrollToHash } from './hooks/useScrollToHash';
 import GeneralContactForm from './GeneralContactForm';
 import PrivacyPolicy from './PrivacyPolicy';
 import mastersPlanImg from './assets/albums/MastersPlanStirredCover.jpg';
@@ -12,8 +14,6 @@ import exWayImg from './assets/albums/TheShakeExWayCover.jpg';
 import chaosImg from './assets/albums/TheShakeChaosCover.jpg';
 import deepImg from './assets/albums/DeepCallsToDeepDemoCover.png';
 import winsImg from './assets/albums/WinsAndScarsDemoCover.png';
-import enjoyTheRideImg from './assets/albums/EnjoyTheRide.jpg';
-import withoutYouImg from './assets/albums/WithoutYou.jpg';
 import toddLive2 from './assets/live/ToddLive2.jpeg';
 import toddLive3 from './assets/live/ToddLive10.png';
 import toddLive5 from './assets/live/ToddLive30.png';
@@ -24,82 +24,27 @@ import bandLife from './assets/live/BandLife.jpg';
 import legacySOS from './assets/live/LegacySOS.jpg';
 
 import { SiSpotify, SiApplemusic, SiYoutubemusic, SiSoundcloud, SiBandcamp } from 'react-icons/si';
-import { Mic, Sliders, Music, Headphones, Play, Pause, ArrowDown } from 'lucide-react';
+import { Mic, Sliders, Music, Headphones } from 'lucide-react';
 
 function HomePage() {
   const mainContentRef = useRef<HTMLElement>(null);
+  useScrollToHash();
+  const { key: locationKey } = useLocation();
   const [showInquiryForm, setShowInquiryForm] = useState(false);
   const [inquiryPreset, setInquiryPreset] = useState<{ interests?: string[] } | null>(null);
   const [showCoachingForm, setShowCoachingForm] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
 
-  // Newest tracks, linked out to [untitled]. Drop an mp3 in public/audio/ and add a
-  // `preview` path here to light up the inline snippet player below.
-  const recentWork: {
-    title: string;
-    artist: string;
-    year: string;
-    image: string;
-    url: string;
-    preview?: string;
-  }[] = [
-    {
-      title: 'Enjoy the Ride',
-      artist: 'The Shake',
-      year: '2026',
-      image: enjoyTheRideImg,
-      url: 'https://untitled.stream/library/track/HZnlUZuUedb1ozL0DYGgI',
-      preview: '/audio/enjoy-the-ride.m4a',
-    },
-    {
-      title: 'Without You',
-      artist: 'The Shake',
-      year: '2026',
-      image: withoutYouImg,
-      url: 'https://untitled.stream/library/track/bVtBQjCyPbBqIj2fGVOo6',
-      preview: '/audio/without-you.m4a',
-    },
-  ];
-
-  const hasPreviews = recentWork.some((track) => track.preview);
-  const [playingIndex, setPlayingIndex] = useState<number | null>(null);
-  const audioRefs = useRef<(HTMLAudioElement | null)[]>([]);
-
-  // Only one preview plays at a time; starting one resets the other.
-  const togglePreview = (e: React.MouseEvent, index: number) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const audio = audioRefs.current[index];
-    if (!audio) return;
-    if (playingIndex === index) {
-      audio.pause();
-      setPlayingIndex(null);
-      return;
-    }
-    if (playingIndex !== null) {
-      const previous = audioRefs.current[playingIndex];
-      if (previous) {
-        previous.pause();
-        previous.currentTime = 0;
-      }
-    }
-    audio.play();
-    setPlayingIndex(index);
-  };
-
-  // Stop any preview still playing when this page unmounts (e.g. a form opens).
+  // The forms replace the page body, so a nav link like /#featured-work would
+  // otherwise change the hash with nothing to scroll to. Any navigation closes
+  // whatever overlay is open and lets the sections render again.
   useEffect(() => {
-    const players = audioRefs.current;
-    return () => {
-      players.forEach((audio) => {
-        if (audio) {
-          audio.pause();
-          audio.currentTime = 0;
-        }
-      });
-    };
-  }, []);
+    setShowInquiryForm(false);
+    setShowCoachingForm(false);
+    setShowContactForm(false);
+    setShowPrivacyPolicy(false);
+  }, [locationKey]);
 
   const albums = [
     { title: 'Deep Calls To Deep (demo)', artist: 'Todd Brannon', image: deepImg, year: '2025',
@@ -211,62 +156,147 @@ function HomePage() {
       >
         Skip to main content
       </a>
-      <header className="relative h-screen">
-        <div className="absolute inset-0">
-          <img src={heroImage} alt="" aria-hidden="true" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gray-900 opacity-75"></div>
-        </div>
-        <nav aria-label="Main navigation" className="absolute top-0 w-full p-6 flex justify-between items-center z-10">
-          <img src={brandLogo} alt="Todd Brannon Music" className="h-8 md:h-10 object-contain" />
-        </nav>
-        <div className="absolute inset-0 flex flex-col justify-center items-center text-white z-10 px-6">
-          <h1 className="sr-only">Todd Brannon Music</h1>
-          <button
-            data-testid="button-hero-new-music"
-            onClick={() =>
-              document.getElementById('recent-work')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-            }
-            aria-label="New music: Enjoy the Ride and Without You. Scroll to listen."
-            className="mb-8 inline-flex max-w-full items-center gap-2 sm:gap-3 rounded-full border border-[#C9A84C]/60 bg-black/30 backdrop-blur-sm pl-1.5 pr-3 sm:pr-4 py-1.5 text-xs sm:text-sm font-light tracking-wide text-white transition-colors hover:border-[#C9A84C] hover:bg-black/50 focus:outline-none focus:ring-2 focus:ring-[#C9A84C]/60"
-          >
-            <span className="shrink-0 rounded-full bg-[#C9A84C] px-2 sm:px-2.5 py-0.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-widest text-[#1A2E42]">New</span>
-            <span className="whitespace-nowrap">
-              Enjoy the Ride &amp; Without You<span className="hidden sm:inline"> &mdash; listen</span>
-            </span>
-            <ArrowDown className="w-4 h-4 shrink-0 text-[#C9A84C]" aria-hidden="true" />
-          </button>
-          <img src={logo} alt="" aria-hidden="true" className="h-[250px] md:h-[300px] lg:h-[400px] xl:h-[500px] mb-6 object-contain opacity-70" />
-          <div className="flex flex-col sm:flex-row gap-4">
-            <button
-              data-testid="button-hero-lesson-inquiry"
-              onClick={() => {
-                setInquiryPreset(null);
-                setShowInquiryForm(true);
-                window.scrollTo(0, 0);
-              }}
-              className="py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42]"
-            >
-              Inquire About Lessons
-            </button>
-            <button
-              data-testid="button-hero-coaching-inquiry"
-              onClick={() => {
-                setShowCoachingForm(true);
-                window.scrollTo(0, 0);
-              }}
-              className="py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42]"
-            >
-              Inquire About Coaching
-            </button>
+      <header id="hero" className="relative min-h-screen flex items-center bg-[#0f172a] text-white overflow-hidden">
+        {/* Live-performance photo behind the hero */}
+        <img
+          src={heroBackground}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+          loading="eager"
+          decoding="async"
+        />
+        {/* Base darkening */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[#0f172a]/75" />
+        {/* Directional darkening: heaviest behind the copy (top on mobile, left on desktop) */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#0f172a] via-[#0f172a]/70 to-[#0f172a]/40 lg:bg-gradient-to-r lg:from-[#0f172a] lg:via-[#0f172a]/70 lg:to-[#0f172a]/30"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(201,168,76,0.10),transparent_55%)]"
+        />
+        <div className="relative z-10 max-w-6xl mx-auto px-6 py-24 lg:pt-32 w-full">
+          {/* Row 1 — introduction and actions beside the portrait */}
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.78fr] gap-12 lg:gap-14 items-center">
+            <div className="text-center lg:text-left flex flex-col items-center lg:items-start">
+              <p className="text-xs font-light tracking-[0.3em] uppercase text-[#C9A84C] mb-5">
+                Guitar &amp; Piano Lessons &middot; Session Work &middot; Near Argyle, TX
+              </p>
+              <h1 className="text-5xl md:text-6xl font-light leading-[1.05] tracking-tight text-white mb-6">Made to create.</h1>
+              <p className="text-lg md:text-xl font-light leading-relaxed text-gray-300 max-w-2xl">
+                Private guitar and beginner piano lessons, session guitar and production, and new
+                instrumental music &mdash; all from my studio near Argyle, Texas.
+              </p>
+              <div className="mt-10 flex flex-col sm:flex-row gap-4">
+                <button
+                  data-testid="button-hero-lesson-inquiry"
+                  onClick={() => {
+                    setInquiryPreset(null);
+                    setShowInquiryForm(true);
+                    window.scrollTo(0, 0);
+                  }}
+                  className="py-3.5 px-7 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42]"
+                >
+                  Inquire About Lessons
+                </button>
+                <button
+                  data-testid="button-hero-coaching-inquiry"
+                  onClick={() => {
+                    setShowCoachingForm(true);
+                    window.scrollTo(0, 0);
+                  }}
+                  className="py-3.5 px-7 rounded-lg text-sm font-light tracking-wide transition-colors border border-[#C9A84C]/70 text-[#C9A84C] hover:bg-[#C9A84C]/10"
+                >
+                  Inquire About Coaching
+                </button>
+              </div>
+
+              <button
+                data-testid="hero-link-collab"
+                onClick={() => {
+                  setShowContactForm(true);
+                  window.scrollTo(0, 0);
+                }}
+                className="mt-6 text-balance text-sm font-light text-gray-400 underline underline-offset-4 decoration-gray-600 hover:text-white hover:decoration-[#C9A84C] transition-colors"
+              >
+                Need a session player, writer, or producer? Let&rsquo;s talk &rarr;
+              </button>
+            </div>
+
+            {/* Portrait + latest music */}
+          <div className="relative mx-auto w-full max-w-[300px] sm:max-w-sm lg:max-w-[370px]">
+            {/* Photo card with a symmetric halo */}
+            <div className="relative">
+              <div aria-hidden="true" className="pointer-events-none absolute -inset-4 rounded-[1.5rem] border border-[#C9A84C]/30" />
+              <div className="relative overflow-hidden rounded-2xl border border-white/10 shadow-2xl bg-[#1A2E42]">
+                <img
+                  src={toddStudioPortrait}
+                  alt="Todd Brannon seated in his home studio holding a guitar, with a recording session on the screen behind him"
+                  className="w-full aspect-[4/5] object-cover object-[50%_35%] saturate-[.82] contrast-[1.06] brightness-100"
+                  loading="eager"
+                  decoding="async"
+                />
+                {/* Cool the warm wall toward the site navy */}
+                <div aria-hidden="true" className="absolute inset-0 bg-[#1A2E42] mix-blend-multiply opacity-40 pointer-events-none" />
+                {/* Warm light spilling in from the top right, echoing the lamp */}
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 pointer-events-none mix-blend-screen opacity-45 bg-[radial-gradient(ellipse_at_85%_15%,rgba(201,168,76,0.55),rgba(201,168,76,0.12)_35%,transparent_60%)]"
+                />
+                {/* Fade the lower photo into the music strip */}
+                <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-[#0f172a]/85 via-[#0f172a]/30 to-transparent pointer-events-none" />
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 pointer-events-none"
+                  style={{ boxShadow: 'inset 0 0 120px 40px rgba(15,23,42,0.55)' }}
+                />
+                {/* Film grain: inline SVG noise, so nothing extra loads */}
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-[.18]"
+                  style={{
+                    backgroundImage:
+                      "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
+                    backgroundSize: '160px 160px',
+                  }}
+                />
+              </div>
+            </div>
+            {/* Latest-music strip overlapping the bottom of the photo card */}
+            <div className="relative -mt-10 mx-4 rounded-xl border border-white/10 bg-[#0f172a]/90 backdrop-blur-md shadow-xl px-4 py-3">
+              <RecentWork variant="strip" />
+            </div>
+            </div>
           </div>
+
+          {/* Row 2 — Guitar Together featured offer. The graphic carries all of its own copy
+              and CTA. The file has a navy frame around the card (card spans x 179–1742,
+              y 28–783 of 1920×819); the link box is sized to the card and clips that frame. */}
+          <Link
+            to="/guitar-together?source=todd-homepage"
+            data-testid="hero-cta-guitar-together"
+            className="relative mt-16 lg:mt-20 block w-full aspect-[1564/756] overflow-hidden rounded-[1.92%/3.97%] shadow-2xl transition-transform duration-300 hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C] focus-visible:ring-offset-4 focus-visible:ring-offset-[#0f172a]"
+          >
+            <img
+              src="/images/guitar-together-homepage.jpg"
+              alt="Guitar Together — 8-week beginner guitar classes for adults in Old Town Lewisville. Space limited."
+              width={1920}
+              height={819}
+              className="absolute max-w-none w-[122.76%] h-auto left-[-11.45%] top-[-3.70%]"
+              loading="eager"
+              decoding="async"
+            />
+          </Link>
         </div>
       </header>
 
 
-      {/* Private Lesson Availability (Argyle, TX) Section */}
-      <section aria-labelledby="lessons-heading" className="px-6 py-24 bg-[#1A2E42] text-white overflow-x-hidden">
+      {/* Private Lesson Availability (near Argyle, TX) Section */}
+      <section id="lessons" aria-labelledby="lessons-heading" className="scroll-mt-20 px-6 py-24 bg-[#1A2E42] text-white overflow-x-hidden">
         <div className="max-w-4xl mx-auto text-center">
-          <span className="inline-block mb-4 text-sm uppercase tracking-[0.3em] text-[#C9A84C]">Guitar &amp; Beginner Piano &middot; Argyle, TX</span>
+          <span className="inline-block mb-4 text-sm uppercase tracking-[0.3em] text-[#C9A84C]">Guitar &amp; Beginner Piano &middot; Near Argyle, TX</span>
           <h2 id="lessons-heading" className="text-3xl md:text-4xl font-bold mb-8 text-white">Private Lesson Spots Are Currently Available</h2>
 
           <p className="text-lg leading-relaxed text-gray-200 max-w-2xl mx-auto mb-6">
@@ -330,37 +360,34 @@ function HomePage() {
             >
               Inquire About Lessons
             </button>
-            <button
+            <Link
               data-testid="button-lessons-section-group"
-              onClick={() => {
-                setInquiryPreset({ interests: ['group-classes'] });
-                setShowInquiryForm(true);
-                window.scrollTo(0, 0);
-              }}
-              className="py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42]"
+              to="/guitar-together"
+              className="inline-flex items-center justify-center py-3 px-6 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42]"
             >
-              Ask About Group Classes
-            </button>
+              Group Classes
+            </Link>
           </div>
         </div>
       </section>
 
       <main id="main-content" ref={mainContentRef} tabIndex={-1} className="focus:outline-none">
 
-      <section aria-labelledby="about-heading" className="pt-24 pb-8 bg-gray-900 text-gray-100 overflow-hidden">
+      <section id="about" aria-labelledby="about-heading" className="scroll-mt-20 pt-24 pb-8 bg-gray-900 text-gray-100 overflow-hidden">
         {/* Intro */}
         <div className="px-6 md:px-24">
           <div className="max-w-6xl mx-auto">
             <h2 id="about-heading" className="text-4xl md:text-5xl font-light mb-16">About</h2>
 
             <p className="text-2xl md:text-3xl font-light leading-relaxed text-white max-w-4xl">
-              Twenty-plus years of playing, recording, and teaching in North Texas &mdash; and
-              I&rsquo;m still convinced we were all created to create.
+              Decades of playing. Years of teaching. And I&rsquo;m still convinced we were all
+              created to create.
             </p>
 
             <p className="text-base md:text-lg font-light leading-relaxed text-gray-400 max-w-3xl mt-6">
               Son of a gospel singer. Piano lessons as a kid, then a band &mdash; The Shake &mdash;
-              with records made in Dallas and Nashville. Since 2013 I&rsquo;ve played guitar on the
+              with performances throughout Texas and surrounding states. Recording sessions in DFW
+              and Nashville. Since 2013 I&rsquo;ve played guitar on the
               worship team at Valley Creek Church, with three live albums along the way. Today I
               release instrumental music as HIAUTMSKI, produce remixes and session work from my
               studio, and teach guitar and beginner piano across north DFW and Denton.
@@ -494,7 +521,7 @@ function HomePage() {
 
       </section>
 
-      <section id="featured-work" aria-labelledby="featured-work-heading" className="pt-12 pb-24 px-6 md:px-24 bg-gray-900">
+      <section id="featured-work" aria-labelledby="featured-work-heading" className="scroll-mt-20 pt-12 pb-12 px-6 md:px-24 bg-gray-900">
         <div className="max-w-6xl mx-auto">
 
           {/* Section header */}
@@ -502,73 +529,8 @@ function HomePage() {
             <h2 id="featured-work-heading" className="text-4xl md:text-5xl font-light text-white">Featured Work</h2>
           </div>
 
-          {/* Recent work */}
-          <div id="recent-work" className="mb-24 scroll-mt-8">
-            <h3 className="text-2xl font-light text-white mb-2">What I&rsquo;ve been working on lately</h3>
-            <p className="text-sm font-light text-gray-400 mb-8">
-              {hasPreviews
-                ? 'New tracks in progress — press play for a preview, or tap the cover to hear the full track on [untitled].'
-                : 'New tracks in progress — tap a cover to listen on [untitled].'}
-            </p>
-            <div className="grid grid-cols-2 gap-4 sm:gap-6 max-w-xl">
-              {recentWork.map((track, index) => (
-                <div key={track.title}>
-                  <div className="group relative aspect-square overflow-hidden rounded-xl shadow-lg border border-white/10">
-                    <a
-                      href={track.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`Listen to ${track.title} on untitled`}
-                      className="block w-full h-full"
-                    >
-                      <img
-                        src={track.image}
-                        alt={`${track.title} by ${track.artist}`}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                    </a>
-                    {track.preview && (
-                      <>
-                        <button
-                          type="button"
-                          data-testid={`preview-toggle-${index}`}
-                          onClick={(e) => togglePreview(e, index)}
-                          aria-label={
-                            playingIndex === index
-                              ? `Pause preview of ${track.title}`
-                              : `Play preview of ${track.title}`
-                          }
-                          aria-pressed={playingIndex === index}
-                          className="absolute bottom-3 right-3 h-11 w-11 rounded-full bg-[#C9A84C] text-[#1A2E42] flex items-center justify-center shadow-lg hover:bg-[#b8953d] transition-colors focus:outline-none focus:ring-2 focus:ring-white/70"
-                        >
-                          {playingIndex === index ? (
-                            <Pause className="w-5 h-5" aria-hidden="true" />
-                          ) : (
-                            <Play className="w-5 h-5" aria-hidden="true" />
-                          )}
-                        </button>
-                        <audio
-                          ref={(el) => {
-                            audioRefs.current[index] = el;
-                          }}
-                          src={track.preview}
-                          preload="none"
-                          onEnded={() => setPlayingIndex(null)}
-                        />
-                      </>
-                    )}
-                  </div>
-                  <div className="mt-3">
-                    <div className="text-base font-light text-white">{track.title}</div>
-                    <div className="text-xs font-light text-gray-400">{track.artist} &middot; {track.year}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
           {/* Studio Productions */}
-          <div className="mb-24">
+          <div>
             <h3 className="text-2xl font-light text-white mb-2">Studio Productions</h3>
             <p className="text-sm font-light text-gray-400 mb-2">Original releases, remixes, and studio projects spanning two decades.</p>
             <p className="text-xs font-light italic text-gray-400 mb-8">Hover or focus a cover to listen</p>
@@ -636,7 +598,7 @@ function HomePage() {
         </div>
       </section>
 
-      <section aria-labelledby="services-heading" className="pt-12 pb-24 px-6 md:px-24 bg-gray-900 text-gray-100">
+      <section aria-labelledby="services-heading" className="pt-12 pb-12 px-6 md:px-24 bg-gray-900 text-gray-100">
         <div className="max-w-6xl mx-auto">
 
           {/* Section header */}
@@ -741,7 +703,7 @@ function HomePage() {
         </div>
       </section>
 
-      <section id="contact" aria-labelledby="contact-heading" className="py-24 px-6 md:px-24 bg-gray-900 text-gray-100">
+      <section id="contact" aria-labelledby="contact-heading" className="scroll-mt-20 pt-12 pb-24 px-6 md:px-24 bg-gray-900 text-gray-100">
         <div className="max-w-3xl mx-auto text-center">
           <h2 id="contact-heading" className="text-4xl md:text-5xl font-light mb-8">Get in Touch</h2>
 
@@ -795,6 +757,10 @@ function HomePage() {
           <span className="hidden sm:inline text-gray-600">·</span>
           <a href="/free-resources" className="hover:text-[#C9A84C] transition-colors">
             Free Resources
+          </a>
+          <span className="hidden sm:inline text-gray-600">·</span>
+          <a href="/licensing" className="hover:text-[#C9A84C] transition-colors">
+            Licensing + Production
           </a>
         </div>
       </footer>

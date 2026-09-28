@@ -252,6 +252,9 @@ app.post('/api/inquire', async (req, res) => {
     }
 
     const safeName = escapeHtml(name);
+    const emailHeading = inquiryType === 'Licensing / Production'
+      ? 'New Licensing / Production Inquiry'
+      : 'New Lesson Inquiry';
     const safeEmail = escapeHtml(email);
     const safePhone = escapeHtml(phone) || 'Not provided';
     const safeMessage = escapeHtml(message);
@@ -259,7 +262,7 @@ app.post('/api/inquire', async (req, res) => {
     const htmlContent = `
       <div style="font-family: 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #1a1a1a; color: #e5e5e5; border-radius: 12px; overflow: hidden;">
         <div style="background-color: #C9A84C; padding: 24px 32px;">
-          <h1 style="margin: 0; font-size: 22px; color: #1a1a1a; font-weight: 600;">New Lesson Inquiry</h1>
+          <h1 style="margin: 0; font-size: 22px; color: #1a1a1a; font-weight: 600;">${emailHeading}</h1>
         </div>
         <div style="padding: 32px;">
           <table style="width: 100%; border-collapse: collapse;">
@@ -311,7 +314,9 @@ app.post('/api/inquire', async (req, res) => {
       replyTo: email,
       subject: inquiryType === 'General Contact'
         ? 'New Message — Todd Brannon Music'
-        : `${interests.includes('group-classes') ? '[Group Classes] ' : ''}New ${escapeHtml(inquiryType)} — Todd Brannon Music`,
+        : inquiryType === 'Licensing / Production'
+          ? `Licensing / Production Inquiry from ${safeName}`
+          : `${interests.includes('group-classes') ? '[Group Classes] ' : ''}New ${escapeHtml(inquiryType)} — Todd Brannon Music`,
       html: htmlContent,
     });
 
@@ -335,7 +340,66 @@ app.post('/api/inquire', async (req, res) => {
 // ─────────────────────────────────────────────────
 
 const distPath = join(__dirname, 'dist');
+
+// ─────────────────────────────────────────────────
+// ROUTE-SPECIFIC SOCIAL METADATA
+// The site is a client-rendered SPA, but social crawlers (Facebook, iMessage,
+// X) don't run its JavaScript — they read only the HTML we serve. So for the
+// routes below we inject Open Graph / Twitter tags into dist/index.html before
+// sending it. Every other route is served byte-for-byte as built.
+// ─────────────────────────────────────────────────
+
+const SITE_ORIGIN = 'https://www.toddbrannonmusic.com';
+
+const ROUTE_META = {
+  '/guitar-together': {
+    title: "You've Always Wanted to Play Guitar | Guitar Together",
+    description:
+      'An 8-week beginner guitar experience for adults in Old Town Lewisville. No experience necessary. Tuesday and Saturday morning groups starting in October.',
+    image: `${SITE_ORIGIN}/og/guitar-together.jpg`,
+  },
+};
+
+function socialTags(path, meta) {
+  const url = `${SITE_ORIGIN}${path}`;
+  const tags = [
+    ['meta', 'name', 'description', meta.description],
+    ['meta', 'property', 'og:type', 'website'],
+    ['meta', 'property', 'og:site_name', 'Todd Brannon Music'],
+    ['meta', 'property', 'og:title', meta.title],
+    ['meta', 'property', 'og:description', meta.description],
+    ['meta', 'property', 'og:url', url],
+    ['meta', 'property', 'og:image', meta.image],
+    ['meta', 'property', 'og:image:width', '1200'],
+    ['meta', 'property', 'og:image:height', '630'],
+    ['meta', 'name', 'twitter:card', 'summary_large_image'],
+    ['meta', 'name', 'twitter:title', meta.title],
+    ['meta', 'name', 'twitter:description', meta.description],
+    ['meta', 'name', 'twitter:image', meta.image],
+  ]
+    .map(([, attr, key, value]) => `    <meta ${attr}="${key}" content="${escapeHtml(value)}" />`)
+    .join('\n');
+
+  return `    <title>${escapeHtml(meta.title)}</title>\n${tags}\n    <link rel="canonical" href="${url}" />\n`;
+}
+
 if (fs.existsSync(distPath)) {
+  // Must be registered before the static/catch-all handlers below.
+  app.get(Object.keys(ROUTE_META), (req, res, next) => {
+    const meta = ROUTE_META[req.path];
+    if (!meta) return next();
+    try {
+      const html = fs.readFileSync(join(distPath, 'index.html'), 'utf8');
+      const withMeta = html
+        .replace(/[ \t]*<title>[\s\S]*?<\/title>\n?/i, '')   // our own <title> replaces it
+        .replace('</head>', `${socialTags(req.path, meta)}  </head>`);
+      return res.type('html').send(withMeta);
+    } catch (err) {
+      console.error('Social metadata injection failed:', err);
+      return next();
+    }
+  });
+
   app.use(express.static(distPath));
   app.get(/^\/(?!api\/|admin).*/, (req, res) => {
     res.sendFile(join(distPath, 'index.html'));
