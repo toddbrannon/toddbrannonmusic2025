@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import heroBackground from '../assets/RivoltaLive.jpg';
 import toddStudioPortrait from '../assets/live/ToddStudioInstructor.JPG';
 import guitarTogetherLogo from '../assets/guitar-together-logo.png';
+import { trackEvent } from '../analytics';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // STRIPE PAYMENT LINKS — paste the two Payment Link URLs here.
@@ -95,13 +96,13 @@ const faqs = [
 const SOURCE_KEY = 'tbm:guitar-together-source';
 
 /**
- * Reads ?source=… (e.g. /guitar-together?source=todd-facebook) and remembers it
- * for the rest of the visit, so a later read — analytics, a form field, or the
- * Stripe hand-off below — can use it without touching the page structure.
+ * Reads ?utm_source=… or the older ?source=… (e.g. /guitar-together?source=todd-homepage)
+ * and remembers it for the rest of the visit, so the register_click event and the
+ * Stripe hand-off below can use it without touching the page structure.
  */
 function useSourceParam(): string | null {
   const [params] = useSearchParams();
-  const fromUrl = params.get('source');
+  const fromUrl = params.get('utm_source') || params.get('source');
 
   useEffect(() => {
     if (!fromUrl) return;
@@ -310,6 +311,7 @@ export default function GuitarTogether() {
                 <a
                   href={registrationUrl(cohort.stripeUrl, source)}
                   data-testid={cohort.testId}
+                  onClick={() => trackEvent('register_click', { cohort: cohort.id, source: source ?? '(none)' })}
                   className={`${goldButton} mt-8 w-full text-base py-4`}
                 >
                   {cohort.cta}
