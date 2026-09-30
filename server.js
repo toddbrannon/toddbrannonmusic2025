@@ -336,6 +336,23 @@ app.post('/api/inquire', async (req, res) => {
 });
 
 // ─────────────────────────────────────────────────
+// SHORT MARKETING LINKS
+// toddbrannonmusic.com/together/fb → the full UTM-tagged Guitar Together URL,
+// so each channel shows up separately in Umami. Add a line to add a channel.
+// 302 (not 301) so browsers don't cache it and a target can be changed later.
+// ─────────────────────────────────────────────────
+
+const SHORT_LINKS = {
+  fb: 'utm_source=facebook&utm_medium=social&utm_campaign=guitar-together',
+  email: 'utm_source=email&utm_medium=email&utm_campaign=guitar-together',
+};
+
+app.get('/together{/:channel}', (req, res) => {
+  const query = SHORT_LINKS[req.params.channel?.toLowerCase()];
+  res.redirect(302, query ? `/guitar-together?${query}` : '/guitar-together');
+});
+
+// ─────────────────────────────────────────────────
 // STATIC / SPA CATCH-ALL (must be last)
 // ─────────────────────────────────────────────────
 
