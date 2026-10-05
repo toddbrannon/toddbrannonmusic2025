@@ -182,32 +182,38 @@ export default function GuitarTogether() {
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(201,168,76,0.10),transparent_55%)]"
         />
 
-        <div className="relative z-10 max-w-3xl mx-auto w-full text-center">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-light leading-[1.08] tracking-tight text-white">
-            You&rsquo;ve always wanted to play.
+        <div className="relative z-10 max-w-4xl mx-auto w-full text-center">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-light leading-[1.12] tracking-tight text-white text-balance">
+            Finally learn guitar&nbsp;&mdash; with other adults who are starting where you are.
           </h1>
-          <p className="mt-4 text-xl sm:text-2xl font-light text-gray-300">Maybe now&rsquo;s the time.</p>
-
-          <div className="mt-10 mb-2">
-            <img
-              src={guitarTogetherLogo}
-              alt="Guitar Together"
-              className="mx-auto w-full max-w-[280px] sm:max-w-[360px] md:max-w-[420px]"
-              loading="eager"
-              decoding="async"
-            />
-            <p className="mt-3 text-base sm:text-lg font-light text-gray-200">
-              An 8-Week Beginner Guitar Experience for Adults
-            </p>
-          </div>
-
-          <p className="mt-6 text-base sm:text-lg font-light text-gray-400 text-balance">
-            No experience. No pressure. No long-term commitment.
+          <p className="mt-4 text-lg sm:text-xl md:text-2xl font-light text-gray-300 text-balance">
+            An 8-week beginner guitar experience in Lewisville.
           </p>
 
-          <button data-testid="button-hero-choose-class" onClick={goToClasses} className={`${goldButton} mt-10 w-full sm:w-auto`}>
-            Choose your class
+          <img
+            src={guitarTogetherLogo}
+            alt="Guitar Together"
+            className="mt-8 mx-auto w-full max-w-[280px] sm:max-w-[360px] md:max-w-[420px]"
+            loading="eager"
+            decoding="async"
+          />
+
+          <p className="mt-5 text-base sm:text-lg font-light text-gray-300 text-balance">
+            No experience needed. No pressure.
+            <br />
+            Just 10 adults learning guitar&nbsp;together.
+          </p>
+
+          <button data-testid="button-hero-choose-class" onClick={goToClasses} className={`${goldButton} mt-8 w-full sm:w-auto`}>
+            Find your class <span aria-hidden="true" className="ml-2">&rarr;</span>
           </button>
+
+          <p className="mt-5 text-xs sm:text-sm font-light tracking-wide text-gray-400 text-balance">
+            8 weeks &middot; $279 &middot; Bring your own guitar
+            <span className="hidden sm:inline"> &middot; </span>
+            <br className="sm:hidden" />
+            Only 10 seats per class
+          </p>
         </div>
       </section>
 
