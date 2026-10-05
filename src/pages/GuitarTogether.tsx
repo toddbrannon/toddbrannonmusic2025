@@ -47,9 +47,9 @@ const stages = [
 const cohorts = [
   {
     id: 'tuesday',
-    day: 'Tuesday morning',
+    day: 'Tuesday midday',
     audience: 'Especially welcoming to adults 55+ and adults with flexible weekday schedules.',
-    time: 'Tuesdays · 11:30 AM–12:20 PM',
+    time: 'Tuesdays · 12:00–12:50 PM',
     dates: 'October 13 – December 8, 2026',
     skipped: 'No class November 24',
     stripeUrl: TUESDAY_STRIPE_URL,
@@ -77,7 +77,7 @@ const faqs = [
   { q: 'What kind of guitar do I need?', a: 'A playable acoustic or electric guitar is fine.' },
   {
     q: 'Is this only for people 55+?',
-    a: 'No. The Tuesday morning class is especially suited to adults 55+ and people with flexible weekday schedules, but Guitar Together is open to adults generally.',
+    a: 'No. The Tuesday midday class is especially suited to adults 55+ and people with flexible weekday schedules, but Guitar Together is open to adults generally.',
   },
   {
     q: 'What if I miss a class?',
@@ -272,7 +272,7 @@ export default function GuitarTogether() {
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-light text-white mb-3">Choose your class</h2>
           <p className="text-base font-light text-gray-400 mb-10">
-            Two cohorts, same program. Pick the morning that fits your week.
+            Two cohorts, same program. Pick the day that fits your week.
           </p>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

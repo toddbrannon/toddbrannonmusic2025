@@ -372,7 +372,7 @@ const ROUTE_META = {
   '/guitar-together': {
     title: "You've Always Wanted to Play Guitar | Guitar Together",
     description:
-      'An 8-week beginner guitar experience for adults in Old Town Lewisville. No experience necessary. Tuesday and Saturday morning groups starting in October.',
+      'An 8-week beginner guitar experience for adults in Old Town Lewisville. No experience necessary. Tuesday and Saturday groups starting in October.',
     image: `${SITE_ORIGIN}/og/guitar-together.jpg`,
   },
 };
