@@ -13,6 +13,11 @@ import { trackEvent } from '../analytics';
 const TUESDAY_STRIPE_URL = 'https://buy.stripe.com/6oU9AU8BQ5dF9Qy3TR6kg01';
 const SATURDAY_STRIPE_URL = 'https://buy.stripe.com/14AfZi8BQ49B7Iq1LJ6kg02';
 
+// Registration is closed between sessions: false hides the "Choose your class"
+// section and every button that scrolls to it. To reopen, update the cohort
+// dates and Stripe links below, then set this back to true.
+const REGISTRATION_OPEN = false;
+
 const PAGE_TITLE = 'Beginner Adult Guitar Class in Lewisville, TX | Guitar Together';
 const PAGE_DESCRIPTION =
   'Join Guitar Together, an 8-week small-group beginner guitar experience for adults at Legacy Music Studio in Old Town Lewisville. No experience necessary.';
@@ -204,9 +209,11 @@ export default function GuitarTogether() {
             Just 10 adults learning guitar&nbsp;together.
           </p>
 
-          <button data-testid="button-hero-choose-class" onClick={goToClasses} className={`${goldButton} mt-8 w-full sm:w-auto`}>
-            Find your class <span aria-hidden="true" className="ml-2">&rarr;</span>
-          </button>
+          {REGISTRATION_OPEN && (
+            <button data-testid="button-hero-choose-class" onClick={goToClasses} className={`${goldButton} mt-8 w-full sm:w-auto`}>
+              Find your class <span aria-hidden="true" className="ml-2">&rarr;</span>
+            </button>
+          )}
 
           <p className="mt-5 text-xs sm:text-sm font-light tracking-wide text-gray-400 text-balance">
             8 weeks &middot; $279 &middot; Bring your own guitar
@@ -268,65 +275,67 @@ export default function GuitarTogether() {
       </section>
 
       {/* ── Choose your class (primary conversion) ───────────────────────── */}
-      <section id="choose-your-class" className="scroll-mt-20 px-6 py-20 md:py-24">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-light text-white mb-3">Choose your class</h2>
-          <p className="text-base font-light text-gray-400 mb-10">
-            Two cohorts, same program. Pick the day that fits your week.
-          </p>
+      {REGISTRATION_OPEN && (
+        <section id="choose-your-class" className="scroll-mt-20 px-6 py-20 md:py-24">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-light text-white mb-3">Choose your class</h2>
+            <p className="text-base font-light text-gray-400 mb-10">
+              Two cohorts, same program. Pick the day that fits your week.
+            </p>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {cohorts.map((cohort) => (
-              <div
-                key={cohort.id}
-                className="flex flex-col rounded-2xl border border-white/10 bg-[#1A2E42]/40 p-6 sm:p-8"
-              >
-                <h3 className="text-2xl font-light text-white">{cohort.day}</h3>
-                <p className="mt-3 text-sm font-light leading-relaxed text-gray-400">{cohort.audience}</p>
-
-                <dl className="mt-6 space-y-3 text-sm font-light text-gray-200">
-                  <div>
-                    <dt className="sr-only">Meets</dt>
-                    <dd className="text-base text-white">{cohort.time}</dd>
-                  </div>
-                  <div>
-                    <dt className="sr-only">Dates</dt>
-                    <dd>
-                      {cohort.dates}
-                      <span className="block text-gray-500">{cohort.skipped}</span>
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="sr-only">Location</dt>
-                    <dd>
-                      Legacy Music Studio
-                      <span className="block text-gray-500">Old Town Lewisville, Texas</span>
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="sr-only">Format</dt>
-                    <dd className="text-gray-500">8 sessions · Maximum 10 participants</dd>
-                  </div>
-                </dl>
-
-                <div className="mt-8 flex items-baseline gap-3">
-                  <span className="text-4xl sm:text-5xl font-light text-[#C9A84C]">$279</span>
-                  <span className="text-sm font-light text-gray-400">for the complete 8-week program</span>
-                </div>
-
-                <a
-                  href={registrationUrl(cohort.stripeUrl, source)}
-                  data-testid={cohort.testId}
-                  onClick={() => trackEvent('register_click', { cohort: cohort.id, source: source ?? '(none)' })}
-                  className={`${goldButton} mt-8 w-full text-base py-4`}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {cohorts.map((cohort) => (
+                <div
+                  key={cohort.id}
+                  className="flex flex-col rounded-2xl border border-white/10 bg-[#1A2E42]/40 p-6 sm:p-8"
                 >
-                  {cohort.cta}
-                </a>
-              </div>
-            ))}
+                  <h3 className="text-2xl font-light text-white">{cohort.day}</h3>
+                  <p className="mt-3 text-sm font-light leading-relaxed text-gray-400">{cohort.audience}</p>
+
+                  <dl className="mt-6 space-y-3 text-sm font-light text-gray-200">
+                    <div>
+                      <dt className="sr-only">Meets</dt>
+                      <dd className="text-base text-white">{cohort.time}</dd>
+                    </div>
+                    <div>
+                      <dt className="sr-only">Dates</dt>
+                      <dd>
+                        {cohort.dates}
+                        <span className="block text-gray-500">{cohort.skipped}</span>
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="sr-only">Location</dt>
+                      <dd>
+                        Legacy Music Studio
+                        <span className="block text-gray-500">Old Town Lewisville, Texas</span>
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="sr-only">Format</dt>
+                      <dd className="text-gray-500">8 sessions · Maximum 10 participants</dd>
+                    </div>
+                  </dl>
+
+                  <div className="mt-8 flex items-baseline gap-3">
+                    <span className="text-4xl sm:text-5xl font-light text-[#C9A84C]">$279</span>
+                    <span className="text-sm font-light text-gray-400">for the complete 8-week program</span>
+                  </div>
+
+                  <a
+                    href={registrationUrl(cohort.stripeUrl, source)}
+                    data-testid={cohort.testId}
+                    onClick={() => trackEvent('register_click', { cohort: cohort.id, source: source ?? '(none)' })}
+                    className={`${goldButton} mt-8 w-full text-base py-4`}
+                  >
+                    {cohort.cta}
+                  </a>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ── What you need ────────────────────────────────────────────────── */}
       <section className="px-6 py-20 md:py-24 bg-[#0b1220]">
@@ -404,17 +413,19 @@ export default function GuitarTogether() {
       <section className="px-6 py-24 border-t border-white/10">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-5xl font-light leading-tight text-white mb-5">Stop waiting for someday.</h2>
-          <p className="text-base md:text-lg font-light text-gray-400 text-balance mb-10">
+          <p className={`text-base md:text-lg font-light text-gray-400 text-balance ${REGISTRATION_OPEN ? 'mb-10' : ''}`}>
             Eight weeks. Ten people. One guitar you&rsquo;ve been meaning to learn.
           </p>
-          <button
-            data-testid="button-final-choose-class"
-            onClick={goToClasses}
-            className={`${goldButton} w-full sm:w-auto text-base py-4`}
-            style={{ borderColor: GOLD }}
-          >
-            Choose your class
-          </button>
+          {REGISTRATION_OPEN && (
+            <button
+              data-testid="button-final-choose-class"
+              onClick={goToClasses}
+              className={`${goldButton} w-full sm:w-auto text-base py-4`}
+              style={{ borderColor: GOLD }}
+            >
+              Choose your class
+            </button>
+          )}
         </div>
       </section>
     </main>
