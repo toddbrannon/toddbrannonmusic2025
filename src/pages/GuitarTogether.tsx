@@ -1,28 +1,11 @@
 import { useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import heroBackground from '../assets/RivoltaLive.jpg';
 import toddStudioPortrait from '../assets/live/ToddStudioInstructor.JPG';
 import guitarTogetherLogo from '../assets/guitar-together-logo.png';
-import { trackEvent } from '../analytics';
-
-// ─────────────────────────────────────────────────────────────────────────────
-// STRIPE PAYMENT LINKS — paste the two Payment Link URLs here.
-// Leave a value empty ('') and that cohort's button renders disabled, so the
-// page can ship before the links exist. Nothing else needs to change.
-// ─────────────────────────────────────────────────────────────────────────────
-const TUESDAY_STRIPE_URL = 'https://buy.stripe.com/6oU9AU8BQ5dF9Qy3TR6kg01';
-const SATURDAY_STRIPE_URL = 'https://buy.stripe.com/14AfZi8BQ49B7Iq1LJ6kg02';
-
-// Registration is closed between sessions: false hides the "Choose your class"
-// section and every button that scrolls to it. To reopen, update the cohort
-// dates and Stripe links below, then set this back to true.
-const REGISTRATION_OPEN = false;
 
 const PAGE_TITLE = 'Beginner Adult Guitar Class in Lewisville, TX | Guitar Together';
 const PAGE_DESCRIPTION =
   'Join Guitar Together, an 8-week small-group beginner guitar experience for adults at Legacy Music Studio in Old Town Lewisville. No experience necessary.';
-
-const GOLD = '#C9A84C';
 
 const highlights = ['No experience necessary', 'Small group — maximum 10', 'Play real songs'];
 
@@ -46,31 +29,6 @@ const stages = [
     weeks: 'Weeks 7–8',
     title: 'Christmas & celebration',
     copy: 'Learn approachable Christmas songs and finish the program playing music together.',
-  },
-];
-
-const cohorts = [
-  {
-    id: 'tuesday',
-    day: 'Tuesday midday',
-    audience: 'Especially welcoming to adults 55+ and adults with flexible weekday schedules.',
-    time: 'Tuesdays · 12:00–12:50 PM',
-    dates: 'October 13 – December 8, 2026',
-    skipped: 'No class November 24',
-    stripeUrl: TUESDAY_STRIPE_URL,
-    cta: 'Register for Tuesday',
-    testId: 'button-register-tuesday',
-  },
-  {
-    id: 'saturday',
-    day: 'Saturday morning',
-    audience: 'Designed especially for working adults and anyone whose schedule has kept them from learning guitar.',
-    time: 'Saturdays · 10:30–11:20 AM',
-    dates: 'October 17 – December 12, 2026',
-    skipped: 'No class November 28',
-    stripeUrl: SATURDAY_STRIPE_URL,
-    cta: 'Register for Saturday',
-    testId: 'button-register-saturday',
   },
 ];
 
@@ -98,48 +56,7 @@ const faqs = [
   },
 ];
 
-const SOURCE_KEY = 'tbm:guitar-together-source';
-
-/**
- * Reads ?utm_source=… or the older ?source=… (e.g. /guitar-together?source=todd-homepage)
- * and remembers it for the rest of the visit, so the register_click event and the
- * Stripe hand-off below can use it without touching the page structure.
- */
-function useSourceParam(): string | null {
-  const [params] = useSearchParams();
-  const fromUrl = params.get('utm_source') || params.get('source');
-
-  useEffect(() => {
-    if (!fromUrl) return;
-    try {
-      sessionStorage.setItem(SOURCE_KEY, fromUrl);
-    } catch {
-      /* private mode — the in-memory value below still works for this render */
-    }
-  }, [fromUrl]);
-
-  if (fromUrl) return fromUrl;
-  try {
-    return sessionStorage.getItem(SOURCE_KEY);
-  } catch {
-    return null;
-  }
-}
-
-// Stripe only accepts [A-Za-z0-9_-] in client_reference_id.
-const cleanSource = (source: string) => source.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 50);
-
-/** Passes the campaign source through to Stripe so paid registrations can be attributed. */
-function registrationUrl(stripeUrl: string, source: string | null): string {
-  if (!source) return stripeUrl;
-  const ref = cleanSource(source);
-  if (!ref) return stripeUrl;
-  return `${stripeUrl}${stripeUrl.includes('?') ? '&' : '?'}client_reference_id=${ref}`;
-}
-
 export default function GuitarTogether() {
-  const source = useSourceParam();
-
   useEffect(() => {
     const previousTitle = document.title;
     document.title = PAGE_TITLE;
@@ -158,12 +75,6 @@ export default function GuitarTogether() {
       else if (previousDescription !== null) tag.setAttribute('content', previousDescription);
     };
   }, []);
-
-  const goToClasses = () =>
-    document.getElementById('choose-your-class')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-  const goldButton =
-    'inline-flex items-center justify-center py-3.5 px-7 rounded-lg text-sm font-light tracking-wide transition-colors bg-[#C9A84C] hover:bg-[#b8953d] text-[#1A2E42]';
 
   return (
     <main className="bg-[#0f172a] text-gray-100">
@@ -208,12 +119,6 @@ export default function GuitarTogether() {
             <br />
             Just 10 adults learning guitar&nbsp;together.
           </p>
-
-          {REGISTRATION_OPEN && (
-            <button data-testid="button-hero-choose-class" onClick={goToClasses} className={`${goldButton} mt-8 w-full sm:w-auto`}>
-              Find your class <span aria-hidden="true" className="ml-2">&rarr;</span>
-            </button>
-          )}
 
           <p className="mt-5 text-xs sm:text-sm font-light tracking-wide text-gray-400 text-balance">
             8 weeks &middot; $279 &middot; Bring your own guitar
@@ -273,69 +178,6 @@ export default function GuitarTogether() {
           </ol>
         </div>
       </section>
-
-      {/* ── Choose your class (primary conversion) ───────────────────────── */}
-      {REGISTRATION_OPEN && (
-        <section id="choose-your-class" className="scroll-mt-20 px-6 py-20 md:py-24">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-light text-white mb-3">Choose your class</h2>
-            <p className="text-base font-light text-gray-400 mb-10">
-              Two cohorts, same program. Pick the day that fits your week.
-            </p>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {cohorts.map((cohort) => (
-                <div
-                  key={cohort.id}
-                  className="flex flex-col rounded-2xl border border-white/10 bg-[#1A2E42]/40 p-6 sm:p-8"
-                >
-                  <h3 className="text-2xl font-light text-white">{cohort.day}</h3>
-                  <p className="mt-3 text-sm font-light leading-relaxed text-gray-400">{cohort.audience}</p>
-
-                  <dl className="mt-6 space-y-3 text-sm font-light text-gray-200">
-                    <div>
-                      <dt className="sr-only">Meets</dt>
-                      <dd className="text-base text-white">{cohort.time}</dd>
-                    </div>
-                    <div>
-                      <dt className="sr-only">Dates</dt>
-                      <dd>
-                        {cohort.dates}
-                        <span className="block text-gray-500">{cohort.skipped}</span>
-                      </dd>
-                    </div>
-                    <div>
-                      <dt className="sr-only">Location</dt>
-                      <dd>
-                        Legacy Music Studio
-                        <span className="block text-gray-500">Old Town Lewisville, Texas</span>
-                      </dd>
-                    </div>
-                    <div>
-                      <dt className="sr-only">Format</dt>
-                      <dd className="text-gray-500">8 sessions · Maximum 10 participants</dd>
-                    </div>
-                  </dl>
-
-                  <div className="mt-8 flex items-baseline gap-3">
-                    <span className="text-4xl sm:text-5xl font-light text-[#C9A84C]">$279</span>
-                    <span className="text-sm font-light text-gray-400">for the complete 8-week program</span>
-                  </div>
-
-                  <a
-                    href={registrationUrl(cohort.stripeUrl, source)}
-                    data-testid={cohort.testId}
-                    onClick={() => trackEvent('register_click', { cohort: cohort.id, source: source ?? '(none)' })}
-                    className={`${goldButton} mt-8 w-full text-base py-4`}
-                  >
-                    {cohort.cta}
-                  </a>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* ── What you need ────────────────────────────────────────────────── */}
       <section className="px-6 py-20 md:py-24 bg-[#0b1220]">
@@ -413,19 +255,9 @@ export default function GuitarTogether() {
       <section className="px-6 py-24 border-t border-white/10">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-5xl font-light leading-tight text-white mb-5">Stop waiting for someday.</h2>
-          <p className={`text-base md:text-lg font-light text-gray-400 text-balance ${REGISTRATION_OPEN ? 'mb-10' : ''}`}>
+          <p className="text-base md:text-lg font-light text-gray-400 text-balance">
             Eight weeks. Ten people. One guitar you&rsquo;ve been meaning to learn.
           </p>
-          {REGISTRATION_OPEN && (
-            <button
-              data-testid="button-final-choose-class"
-              onClick={goToClasses}
-              className={`${goldButton} w-full sm:w-auto text-base py-4`}
-              style={{ borderColor: GOLD }}
-            >
-              Choose your class
-            </button>
-          )}
         </div>
       </section>
     </main>
